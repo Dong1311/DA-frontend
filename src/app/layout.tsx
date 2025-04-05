@@ -4,7 +4,7 @@ import 'antd/dist/reset.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
-import AppLayout from './[locale]/(protected)/_components/Layout'
+import AppLayout from './(protected)/_components/Layout'
 
 const inter = Inter({ subsets: ['latin'] })
 
