@@ -1,5 +1,4 @@
 'use client'
-
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -31,27 +30,34 @@ import {
   UserSwitchOutlined,
 } from '@ant-design/icons'
 import { Flex } from 'antd'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { Text } from '@/components'
 
 import { HoverMenuItem } from './HoverMenuItem'
 
-const SubItem = ({ icon, label }: { icon: React.ReactNode; label: string }) => (
-  <div className="flex cursor-pointer items-center gap-2 rounded px-3 py-2 hover:bg-[#005ac3]">
-    {icon}
-    <Text className="whitespace-nowrap font-medium text-white">{label}</Text>
-  </div>
-)
+const SubItem = ({ icon, label, href }: { icon: React.ReactNode; label: string; href?: string }) => {
+  const router = useRouter()
+  return (
+    <Flex
+      className="cursor-pointer items-center gap-2 rounded px-3 py-2 hover:bg-[#005ac3]"
+      onClick={() => href && router.push(href)}
+    >
+      {icon}
+      <Text className="whitespace-nowrap font-medium text-white">{label}</Text>
+    </Flex>
+  )
+}
 
 export const SidebarHeader = () => {
   const [collapsed, setCollapsed] = useState(false)
 
   return (
-    <div className="w-full bg-[#0070f4] text-white">
+    <Flex className="w-full bg-[#0070f4] text-white">
       <Flex justify="space-between" wrap="wrap" className="hidden px-4 md:flex">
         <Flex flex={1} wrap="wrap" gap={8}>
-          <HoverMenuItem icon={<EyeOutlined />} label="Tổng quan" />
+          <HoverMenuItem icon={<EyeOutlined />} label="Tổng quan" href="/dashboard" />
 
           <HoverMenuItem icon={<DropboxOutlined />} label="Hàng hóa">
             <SubItem icon={<AppstoreOutlined />} label="Danh mục" />
@@ -128,6 +134,6 @@ export const SidebarHeader = () => {
           <HoverMenuItem icon={<ShopOutlined />} label="Bán hàng" />
         </Flex>
       )}
-    </div>
+    </Flex>
   )
 }

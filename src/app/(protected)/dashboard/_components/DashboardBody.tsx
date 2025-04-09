@@ -2,6 +2,7 @@
 
 import { DollarCircleOutlined, DownOutlined, UndoOutlined } from '@ant-design/icons'
 import { Dropdown, Flex, Tabs } from 'antd'
+import { Empty } from 'antd'
 
 import { Text } from '@/components'
 
@@ -47,13 +48,9 @@ export const DashboardBody = () => {
           </Dropdown>
         </Flex>
 
-        {/* Tabs */}
         <Tabs defaultActiveKey="1" className="text-black">
           <TabPane tab="Theo ngày" key="1">
-            <Flex vertical className="min-h-[200px] items-center justify-center">
-              <img src="/empty-box.svg" className="size-10 opacity-40" />
-              <Text className="mt-2 text-gray-400">Không có dữ liệu</Text>
-            </Flex>
+            <Empty description="Không có dữ liệu" />
           </TabPane>
           <TabPane tab="Theo giờ" key="2" disabled />
           <TabPane tab="Theo thứ" key="3" disabled />

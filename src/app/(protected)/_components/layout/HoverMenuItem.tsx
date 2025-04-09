@@ -1,5 +1,8 @@
+'use client'
+
 import { Dropdown } from 'antd'
 import classNames from 'classnames'
+import { useRouter } from 'next/navigation'
 import { type ReactNode } from 'react'
 
 import { Text } from '@/components'
@@ -9,23 +12,32 @@ interface HoverMenuItemProps {
   label: string
   active?: boolean
   children?: ReactNode
+  href?: string
 }
 
-export const HoverMenuItem = ({ icon, label, active, children }: HoverMenuItemProps) => {
+export const HoverMenuItem = ({ icon, label, active, children, href }: HoverMenuItemProps) => {
+  const router = useRouter()
   const hasChildren = !!children
+
+  const handleClick = () => {
+    if (!hasChildren && href) {
+      router.push(href)
+    }
+  }
 
   return (
     <Dropdown
       dropdownRender={() =>
-        hasChildren ? <div className="mt-[-4px] w-56 rounded-lg bg-[#0070f4] text-white">{children}</div> : null
+        hasChildren ? <div className="mt-[-3px] w-56 rounded-lg bg-[#0070f4] p-1 text-white">{children}</div> : null
       }
       placement="bottomLeft"
       arrow={false}
       trigger={hasChildren ? ['hover'] : []}
     >
       <button
+        onClick={handleClick}
         className={classNames(
-          'h-[44px] flex items-center gap-2 px-5 rounded-md text-white text-sm',
+          'h-[44px] flex items-center gap-2 px-5 rounded-md transition-all text-white text-sm',
           active ? 'bg-[#0070f4]' : 'hover:bg-[#005ac3]'
         )}
       >
