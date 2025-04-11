@@ -29,6 +29,5 @@ export interface CommonFormInputProps<T extends FieldValues> {
   setValueKey?: Path<T>
   autoComplete?: string
 }
-export interface FormInputProps<T extends FieldValues> extends CommonFormInputProps<T> {}
 
 export type OrderType = '+' | '-' | undefined

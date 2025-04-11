@@ -164,7 +164,7 @@ const FormMessage = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagrap
     }
 
     return (
-      <p ref={ref} id={formMessageId} className={cn('!mt-2 w-full text-sm text-error', className)} {...props}>
+      <p ref={ref} id={formMessageId} className={cn('!mt-2 w-full text-sm', className)} {...props}>
         {body}
       </p>
     )
@@ -186,7 +186,7 @@ const UncontrolledFormMessage = forwardRef<
   }
 
   return (
-    <p ref={ref} id={formMessageId} className={cn('mt-2  text-sm text-error', className)} {...props}>
+    <p ref={ref} id={formMessageId} className={cn('mt-2 text-sm', className)} {...props}>
       {body}
     </p>
   )
@@ -197,7 +197,7 @@ export const FormDescription = forwardRef<HTMLParagraphElement, React.HTMLAttrib
   ({ className, ...props }, ref) => {
     const { formDescriptionId } = useFormField()
 
-    return <p ref={ref} id={formDescriptionId} className={cn('!mt-2 text-sm text-typo-medium', className)} {...props} />
+    return <p ref={ref} id={formDescriptionId} className={cn('!mt-2 text-sm', className)} {...props} />
   }
 )
 FormDescription.displayName = 'FormDescription'

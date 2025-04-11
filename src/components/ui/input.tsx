@@ -22,7 +22,7 @@ import { type AntdConfig } from '@/types'
 
 const suffixRender = (suffix: ReactNode) => (
   <Flex gap={14}>
-    <Flex className="text-typo">{suffix}</Flex>
+    <Flex>{suffix}</Flex>
   </Flex>
 )
 
