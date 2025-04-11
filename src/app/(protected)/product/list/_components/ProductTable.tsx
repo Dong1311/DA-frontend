@@ -42,12 +42,12 @@ const columns = [
   {
     title: 'Giá bán',
     dataIndex: 'price',
-    render: (value: number) => value.toLocaleString(),
+    render: (value: number) => value,
   },
   {
     title: 'Giá vốn',
     dataIndex: 'cost',
-    render: (value: number) => value.toLocaleString(),
+    render: (value: number) => value,
   },
   {
     title: 'Tồn kho',

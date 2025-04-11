@@ -60,10 +60,10 @@ export const SidebarHeader = () => {
           <HoverMenuItem icon={<EyeOutlined />} label="Tổng quan" href="/dashboard" />
 
           <HoverMenuItem icon={<DropboxOutlined />} label="Hàng hóa">
-            <SubItem icon={<AppstoreOutlined />} label="Danh mục" />
+            <SubItem icon={<AppstoreOutlined />} label="Danh mục" href="/product/list" />
             <SubItem icon={<MedicineBoxOutlined />} label="Danh mục thuốc" />
             <SubItem icon={<FileDoneOutlined />} label="Đơn thuốc mẫu" />
-            <SubItem icon={<TagsOutlined />} label="Thiết lập giá" />
+            <SubItem icon={<TagsOutlined />} label="Thiết lập giá" href="/product/price-book" />
             <SubItem icon={<CheckSquareOutlined />} label="Kiểm kho" />
           </HoverMenuItem>
 

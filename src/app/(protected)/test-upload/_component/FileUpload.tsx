@@ -7,7 +7,6 @@ const FileUpload = () => {
   const [uploading, setUploading] = useState(false)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  console.log('imageUrl: ', imageUrl)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -26,7 +25,6 @@ const FileUpload = () => {
     setError(null)
 
     try {
-      console.log('Calling API to get presigned URL...')
       const presignResponse = await apiCall(`/upload/presign?filename=${file.name}&mimetype=${file.type}`)
       if (!presignResponse || !presignResponse.uploadUrl || !presignResponse.publicUrl) {
         throw new Error('Missing uploadUrl or publicUrl in response')
@@ -53,7 +51,6 @@ const FileUpload = () => {
 
       setImageUrl(publicUrl)
     } catch (err) {
-      console.error('Error uploading file:', err)
       setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setUploading(false)

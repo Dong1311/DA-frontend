@@ -1,10 +1,15 @@
 'use client'
-import { Layout } from 'antd'
+
+import { Layout, Spin } from 'antd'
 import { Flex } from 'antd'
 import React from 'react'
 
+import { useClientReady } from '@/hooks/useClientReady'
+import { useNProgress } from '@/utils/nprogress'
+
 import { SidebarHeader } from './layout/SidebarHeader'
 import { TopHeader } from './layout/TopHeader'
+
 const { Content } = Layout
 
 type AppLayoutProps = {
@@ -12,6 +17,18 @@ type AppLayoutProps = {
 }
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
+  useNProgress()
+  const isClientReady = useClientReady()
+  if (!isClientReady) {
+    return (
+      <>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
+          <Spin size="large" />
+        </div>
+      </>
+    )
+  }
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <TopHeader />
