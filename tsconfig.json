@@ -5,6 +5,7 @@
     "incremental": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "target": "ES2015",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "bundler",
