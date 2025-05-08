@@ -7,8 +7,9 @@ import type { UpdateProductDto } from '../models/UpdateProductDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-export class ProductService {
+export class ProductsService {
   /**
+   * Create a new product (Admin only)
    * @returns any
    * @throws ApiError
    */
@@ -25,6 +26,7 @@ export class ProductService {
     });
   }
   /**
+   * Get all products
    * @returns any
    * @throws ApiError
    */
@@ -35,6 +37,7 @@ export class ProductService {
     });
   }
   /**
+   * Get a product by ID
    * @returns any
    * @throws ApiError
    */
@@ -52,6 +55,7 @@ export class ProductService {
     });
   }
   /**
+   * Update a product by ID
    * @returns any
    * @throws ApiError
    */
@@ -73,6 +77,7 @@ export class ProductService {
     });
   }
   /**
+   * Delete a product by ID
    * @returns any
    * @throws ApiError
    */

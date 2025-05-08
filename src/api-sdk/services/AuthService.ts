@@ -40,4 +40,24 @@ export class AuthService {
       mediaType: 'application/json',
     });
   }
+  /**
+   * @returns any
+   * @throws ApiError
+   */
+  public static authControllerGoogleAuth(): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/auth/google',
+    });
+  }
+  /**
+   * @returns any
+   * @throws ApiError
+   */
+  public static authControllerGoogleAuthRedirect(): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/auth/google/redirect',
+    });
+  }
 }

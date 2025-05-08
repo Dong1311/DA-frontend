@@ -38,16 +38,6 @@ export const ProductFilters = () => {
           <Checkbox>Thuốc Dị Ứng</Checkbox>
         </Space>
       </Card>
-      <Card size="small" title={<Text className="font-semibold text-black">Nhóm hàng</Text>}>
-        <Input placeholder="Tìm kiếm nhóm hàng" size="small" className="mb-2" />
-        <Space direction="vertical">
-          <Checkbox>Tất cả</Checkbox>
-          <Checkbox>Thực phẩm chức năng</Checkbox>
-          <Checkbox>Dụng cụ Y Tế</Checkbox>
-          <Checkbox>Thuốc chống viêm</Checkbox>
-          <Checkbox>Thuốc Dị Ứng</Checkbox>
-        </Space>
-      </Card>
     </Space>
   )
 }

@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation'
+
 export default function Home() {
-  return <div>123</div>
+  redirect('/dashboard')
 }

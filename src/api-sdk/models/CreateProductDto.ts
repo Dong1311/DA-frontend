@@ -9,5 +9,6 @@ export type CreateProductDto = {
   costPrice: number;
   stock: number;
   reserved: number;
+  images?: Array<string>;
 };
 

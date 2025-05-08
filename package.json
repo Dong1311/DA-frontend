@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "openapi": "openapi -i http://localhost:5000/docs-json -o ./src/api-sdk -c axios --useOptions --exportSchemas true --indent 2 --request ./src/api-sdk/request/index.ts"  },
+    "openapi": "openapi -i http://localhost:5000/docs-json -o ./src/api-sdk -c axios --useOptions --exportSchemas true --indent 2 --request ./src/api-sdk/request/index.ts"
+  },
   "dependencies": {
     "@ant-design/cssinjs": "^1.18.2",
     "@ant-design/icons": "^5.5.1",
@@ -31,6 +32,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.20.0",
     "@svgr/webpack": "^8.1.0",
     "@types/color": "^3.0.6",
     "@types/node": "^20",
@@ -46,6 +48,7 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-tailwindcss": "^3.18.0",
     "lint-staged": "^15.2.7",
+    "openapi-typescript-codegen": "^0.29.0",
     "postcss": "^8",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",

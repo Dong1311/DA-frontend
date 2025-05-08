@@ -25,6 +25,6 @@ export { $UpdateUserDto } from './schemas/$UpdateUserDto';
 
 export { AppService } from './services/AppService';
 export { AuthService } from './services/AuthService';
-export { ProductService } from './services/ProductService';
+export { ProductsService } from './services/ProductsService';
 export { UploadService } from './services/UploadService';
 export { UsersService } from './services/UsersService';

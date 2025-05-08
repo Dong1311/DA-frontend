@@ -27,5 +27,11 @@ export const $CreateProductDto = {
       type: 'number',
       isRequired: true,
     },
+    images: {
+      type: 'array',
+      contains: {
+        type: 'string',
+      },
+    },
   },
 } as const;

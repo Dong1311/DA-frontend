@@ -48,6 +48,15 @@ export default function LoginForm() {
       <button type="submit" className="rounded-md bg-blue-600 py-2 text-white">
         Login
       </button>
+      <button
+        type="button"
+        className="rounded-md bg-red-600 py-2 text-white"
+        onClick={() => {
+          window.location.href = 'http://localhost:5000/auth/google'
+        }}
+      >
+        Login with Google
+      </button>
     </form>
   )
 }
