@@ -1,13 +1,16 @@
 'use client'
 
 import { useMutation } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { AuthService } from '@/api-sdk'
+import { setTokens } from '@/lib/auth'
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const router = useRouter()
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -15,7 +18,8 @@ export default function LoginForm() {
         requestBody: { email, password },
       }),
     onSuccess: (data) => {
-      console.log('Login success:', data)
+      setTokens(data.access_token, data.refresh_token)
+      router.push('/dashboard')
     },
     onError: (err) => {
       console.error('Login failed:', err)

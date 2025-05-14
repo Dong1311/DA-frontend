@@ -1,64 +1,41 @@
 'use client'
+
 import { Table } from 'antd'
+import { useState } from 'react'
 
 import { Text } from '@/components'
+import { useProductList } from '@/hooks/useProductList'
 
-const data = [
-  {
-    key: '1',
-    code: 'SP000032',
-    name: 'PQA viêm mũi dị ứng (Lọ)',
-    price: 300000,
-    cost: 250000,
-    stock: 464,
-    createdAt: '29/03/2025 16:46',
-  },
-  {
-    key: '2',
-    code: 'SP000031',
-    name: 'Ibuprofen 400mg (Viên)',
-    price: 1200,
-    cost: 800,
-    stock: 30,
-    createdAt: '29/03/2025 16:46',
-  },
-]
-
-const columns = [
-  {
-    title: '',
-    dataIndex: 'star',
-    render: () => '⭐',
-  },
-  {
-    title: 'Mã hàng',
-    dataIndex: 'code',
-  },
-  {
-    title: 'Tên hàng',
-    dataIndex: 'name',
-    render: (text: string) => <Text className="text-black">{text}</Text>,
-  },
-  {
-    title: 'Giá bán',
-    dataIndex: 'price',
-    render: (value: number) => value,
-  },
-  {
-    title: 'Giá vốn',
-    dataIndex: 'cost',
-    render: (value: number) => value,
-  },
-  {
-    title: 'Tồn kho',
-    dataIndex: 'stock',
-  },
-  {
-    title: 'Thời gian tạo',
-    dataIndex: 'createdAt',
-  },
-]
+import { EditProductModal } from './EditProductModal'
 
 export const ProductTable = () => {
-  return <Table columns={columns} dataSource={data} pagination={{ pageSize: 10 }} />
+  const { data, isLoading } = useProductList()
+  const [editingProduct, setEditingProduct] = useState<any | null>(null)
+
+  const columns = [
+    { title: 'Mã hàng', dataIndex: 'code' },
+    { title: 'Tên hàng', dataIndex: 'name', render: (text: string) => <Text>{text}</Text> },
+    { title: 'Giá bán', dataIndex: 'salePrice' },
+    { title: 'Giá vốn', dataIndex: 'costPrice' },
+    { title: 'Tồn kho', dataIndex: 'stock' },
+    { title: 'Thời gian tạo', dataIndex: 'createdAt' },
+  ]
+
+  return (
+    <>
+      <Table
+        columns={columns}
+        dataSource={data}
+        loading={isLoading}
+        rowKey="id"
+        pagination={{ pageSize: 10 }}
+        onRow={(record) => ({
+          onClick: () => setEditingProduct(record),
+        })}
+      />
+      {editingProduct && (
+        <EditProductModal product={editingProduct} open={!!editingProduct} onClose={() => setEditingProduct(null)} />
+      )}
+    </>
+  )
 }

@@ -1,39 +1,35 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "format": "prettier --write .",
-    "openapi": "openapi -i http://localhost:5000/docs-json -o ./src/api-sdk -c axios --useOptions --exportSchemas true --indent 2 --request ./src/api-sdk/request/index.ts"
-  },
   "dependencies": {
     "@ant-design/cssinjs": "^1.18.2",
     "@ant-design/icons": "^5.5.1",
     "@ant-design/nextjs-registry": "^1.0.1",
+    "@hookform/resolvers": "^5.0.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@tanstack/react-query": "^5.74.3",
+    "@tanstack/react-query-devtools": "^5.76.0",
     "antd": "^5.21.2",
     "antd-style": "^3.7.0",
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
     "color": "^4.2.3",
     "eslint-plugin-unused-imports": "^4.1.4",
+    "file-saver": "^2.0.5",
+    "js-cookie": "^3.0.5",
     "next": "14.2.4",
     "next-intl": "^3.22.0",
     "nprogress": "^0.2.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-hook-form": "^7.53.0",
+    "react-hook-form": "^7.56.3",
     "tailwind-merge": "^2.5.2",
-    "zod": "^3.23.8"
+    "xlsx": "^0.18.5",
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
     "@types/color": "^3.0.6",
+    "@types/file-saver": "^2.0.7",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/nprogress": "^0.2.3",
     "@types/react": "^18",
@@ -47,10 +43,23 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-tailwindcss": "^3.18.0",
     "lint-staged": "^15.2.7",
+    "openapi-typescript-codegen": "^0.29.0",
     "postcss": "^8",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
-  }
+  },
+  "name": "frontend",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "format": "prettier --write .",
+    "lint": "next lint",
+    "openapi": "openapi-typescript-codegen --input http://localhost:5000/docs-json --output ./src/api-sdk --client axios --useOptions --exportSchemas true --indent 2 --request ./src/api-sdk/request/index.ts",
+    "postgenerate:sdk": "ts-node src/scripts/patch-api-sdk.ts",
+    "start": "next start"
+  },
+  "version": "0.1.0"
 }

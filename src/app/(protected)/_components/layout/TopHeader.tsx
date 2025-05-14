@@ -1,11 +1,20 @@
 'use client'
 
-import { MailOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
-import { Badge, Flex } from 'antd'
+import { LogoutOutlined, MailOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
+import { Badge, Flex, Tooltip } from 'antd'
+import { useRouter } from 'next/navigation'
 
 import { Text } from '@/components'
+import { clearTokens } from '@/lib/auth'
 
 export const TopHeader = () => {
+  const router = useRouter()
+
+  const handleLogout = () => {
+    clearTokens()
+    router.replace('/login')
+  }
+
   return (
     <Flex align="center" justify="space-between" className="h-[50px] border-b border-gray-200 bg-white px-4 text-sm">
       <Flex align="center" className="ms-3 gap-2">
@@ -20,6 +29,10 @@ export const TopHeader = () => {
         <SettingOutlined className="cursor-pointer text-lg" />
         <Text className="font-semibold">0386959930</Text>
         <UserOutlined className="text-lg" />
+
+        <Tooltip title="Logout">
+          <LogoutOutlined className="cursor-pointer text-lg" onClick={handleLogout} />
+        </Tooltip>
       </Flex>
     </Flex>
   )

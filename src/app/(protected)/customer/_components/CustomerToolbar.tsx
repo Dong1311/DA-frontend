@@ -8,9 +8,9 @@ import { useState } from 'react'
 import { useProductList } from '@/hooks/useProductList'
 import { exportProductsToExcel } from '@/utils/exportProductsToExcel'
 
-import { CreateProductModal } from './CreateProductModal'
+import { CreateCustomerModal } from './CreateCustomerModal'
 
-export const ProductToolbar = () => {
+export const CustomerToolbar = () => {
   const [open, setOpen] = useState(false)
   const { data } = useProductList()
 
@@ -34,7 +34,7 @@ export const ProductToolbar = () => {
         <Button icon={<BarsOutlined />} />
       </Flex>
 
-      <CreateProductModal open={open} onClose={() => setOpen(false)} />
+      <CreateCustomerModal open={open} onClose={() => setOpen(false)} />
     </>
   )
 }

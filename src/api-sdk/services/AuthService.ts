@@ -44,6 +44,16 @@ export class AuthService {
    * @returns any
    * @throws ApiError
    */
+  public static authControllerRefresh(): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/auth/refresh',
+    });
+  }
+  /**
+   * @returns any
+   * @throws ApiError
+   */
   public static authControllerGoogleAuth(): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'GET',

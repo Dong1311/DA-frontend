@@ -2,74 +2,74 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateProductDto } from '../models/CreateProductDto';
-import type { ProductResponseDto } from '../models/ProductResponseDto';
-import type { UpdateProductDto } from '../models/UpdateProductDto';
+import type { CreateCustomerDto } from '../models/CreateCustomerDto';
+import type { CustomerResponseDto } from '../models/CustomerResponseDto';
+import type { UpdateCustomerDto } from '../models/UpdateCustomerDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-export class ProductsService {
+export class CustomersService {
   /**
-   * Create a new product
+   * Create a new customer
    * @returns any
    * @throws ApiError
    */
-  public static productControllerCreate({
+  public static customerControllerCreate({
     requestBody,
   }: {
-    requestBody: CreateProductDto,
+    requestBody: CreateCustomerDto,
   }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'POST',
-      url: '/products',
+      url: '/customers',
       body: requestBody,
       mediaType: 'application/json',
     });
   }
   /**
-   * Get all products of current store
-   * @returns ProductResponseDto
+   * Get all customers of current store
+   * @returns CustomerResponseDto
    * @throws ApiError
    */
-  public static productControllerFindAll(): CancelablePromise<Array<ProductResponseDto>> {
+  public static customerControllerFindAll(): CancelablePromise<Array<CustomerResponseDto>> {
     return __request(OpenAPI, {
       method: 'GET',
-      url: '/products',
+      url: '/customers',
     });
   }
   /**
-   * Get a product by ID
+   * Get a customer by ID
    * @returns any
    * @throws ApiError
    */
-  public static productControllerFindOne({
+  public static customerControllerFindOne({
     id,
   }: {
     id: string,
   }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'GET',
-      url: '/products/{id}',
+      url: '/customers/{id}',
       path: {
         'id': id,
       },
     });
   }
   /**
-   * Update a product by ID
+   * Update a customer by ID
    * @returns any
    * @throws ApiError
    */
-  public static productControllerUpdate({
+  public static customerControllerUpdate({
     id,
     requestBody,
   }: {
     id: string,
-    requestBody: UpdateProductDto,
+    requestBody: UpdateCustomerDto,
   }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'PATCH',
-      url: '/products/{id}',
+      url: '/customers/{id}',
       path: {
         'id': id,
       },
@@ -78,18 +78,18 @@ export class ProductsService {
     });
   }
   /**
-   * Delete a product by ID
+   * Delete a customer by ID
    * @returns any
    * @throws ApiError
    */
-  public static productControllerRemove({
+  public static customerControllerRemove({
     id,
   }: {
     id: string,
   }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'DELETE',
-      url: '/products/{id}',
+      url: '/customers/{id}',
       path: {
         'id': id,
       },

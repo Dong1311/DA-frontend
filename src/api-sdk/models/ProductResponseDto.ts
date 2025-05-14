@@ -2,14 +2,17 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CreateProductDto = {
+import type { ProductImageDto } from './ProductImageDto';
+export type ProductResponseDto = {
+  id: string;
   name: string;
   shortName?: string;
   salePrice: number;
   costPrice: number;
   stock: number;
-  unitId?: string;
   reserved: number;
-  images?: Array<string>;
+  createdAt: string;
+  storeId: string;
+  images: Array<ProductImageDto>;
 };
 

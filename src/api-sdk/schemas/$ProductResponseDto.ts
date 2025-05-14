@@ -2,8 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $CreateProductDto = {
+export const $ProductResponseDto = {
   properties: {
+    id: {
+      type: 'string',
+      isRequired: true,
+    },
     name: {
       type: 'string',
       isRequired: true,
@@ -23,18 +27,25 @@ export const $CreateProductDto = {
       type: 'number',
       isRequired: true,
     },
-    unitId: {
-      type: 'string',
-    },
     reserved: {
       type: 'number',
+      isRequired: true,
+    },
+    createdAt: {
+      type: 'string',
+      isRequired: true,
+      format: 'date-time',
+    },
+    storeId: {
+      type: 'string',
       isRequired: true,
     },
     images: {
       type: 'array',
       contains: {
-        type: 'string',
+        type: 'ProductImageDto',
       },
+      isRequired: true,
     },
   },
 } as const;
