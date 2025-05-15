@@ -5,9 +5,9 @@ import { message, Modal } from 'antd'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { CustomersService } from '@/api-sdk'
+import { type CustomerFormValues, customerSchema } from '@/constants/schema'
+import { useUpdateCustomer } from '@/hooks/customer'
 
-import { type CustomerFormValues, customerSchema } from '../schemas/customer.schema'
 import { CustomerForm } from './CustomerForm'
 
 interface Props {
@@ -26,6 +26,7 @@ export const EditCustomerModal = ({ open, onClose, customer }: Props) => {
   })
 
   const { handleSubmit, reset } = methods
+  const { mutateAsync } = useUpdateCustomer()
 
   useEffect(() => {
     if (customer) {
@@ -35,11 +36,7 @@ export const EditCustomerModal = ({ open, onClose, customer }: Props) => {
 
   const onSubmit = async (values: CustomerFormValues) => {
     try {
-      await CustomersService.customerControllerUpdate({
-        id: customer.id,
-        requestBody: values,
-      })
-
+      await mutateAsync({ id: customer.id, requestBody: values })
       message.success('Cập nhật khách hàng thành công')
       onClose()
     } catch (err) {

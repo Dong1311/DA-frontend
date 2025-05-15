@@ -4,8 +4,7 @@ import { Form, Input } from 'antd'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { ControlledNumberInput } from '@/components/ControlledNumberInput'
-
-import { type ProductFormValues } from '../../schemas/product.schema'
+import { type ProductFormValues } from '@/constants/schema'
 
 export const ProductForm = () => {
   const {

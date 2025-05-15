@@ -4,7 +4,7 @@ import { DatePicker, Form, Input, Select } from 'antd'
 import dayjs from 'dayjs'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { type CustomerFormValues } from '@/app/(protected)/customer/schemas/customer.schema'
+import { type CustomerFormValues } from '@/constants/schema'
 
 const { Option } = Select
 

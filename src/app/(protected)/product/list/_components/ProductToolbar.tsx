@@ -5,8 +5,8 @@ import { Button, Flex } from 'antd'
 import { message } from 'antd'
 import { useState } from 'react'
 
-import { useProductList } from '@/hooks/useProductList'
-import { exportProductsToExcel } from '@/utils/exportProductsToExcel'
+import { useProductList } from '@/hooks/product'
+import { exportProductsToExcel } from '@/utils/exportToExcel'
 
 import { CreateProductModal } from './CreateProductModal'
 

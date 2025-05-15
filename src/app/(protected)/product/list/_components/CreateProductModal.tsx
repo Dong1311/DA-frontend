@@ -6,10 +6,10 @@ import type { UploadFile } from 'antd/es/upload/interface'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { useCreateProduct } from '@/hooks/useCreateProduct'
-import { useUploadImage } from '@/hooks/useUploadImage'
+import { type ProductFormValues, productSchema } from '@/constants/schema'
+import { useUploadImage } from '@/hooks/image'
+import { useCreateProduct } from '@/hooks/product'
 
-import { type ProductFormValues, productSchema } from '../../schemas/product.schema'
 import { ProductForm } from './ProductForm'
 import { ProductImageUploader } from './ProductImageUploader'
 

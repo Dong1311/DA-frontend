@@ -6,10 +6,10 @@ import type { UploadFile } from 'antd/es/upload/interface'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { ProductsService } from '@/api-sdk'
-import { useUploadImage } from '@/hooks/useUploadImage'
+import { type ProductFormValues, productSchema } from '@/constants/schema'
+import { useUploadImage } from '@/hooks/image'
+import { useUpdateProduct } from '@/hooks/product'
 
-import { type ProductFormValues, productSchema } from '../../schemas/product.schema'
 import { ProductForm } from './ProductForm'
 import { ProductImageUploader } from './ProductImageUploader'
 
@@ -29,6 +29,7 @@ export const EditProductModal = ({ open, onClose, product }: Props) => {
   })
 
   const { handleSubmit, reset } = methods
+  const { mutateAsync } = useUpdateProduct()
 
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const { uploadToS3 } = useUploadImage()
@@ -48,6 +49,7 @@ export const EditProductModal = ({ open, onClose, product }: Props) => {
 
   const onSubmit = async (values: ProductFormValues) => {
     try {
+      // Upload hình ảnh nếu có
       const imageUrls = await Promise.all(
         fileList.map(async (file) => {
           if (file.originFileObj) return await uploadToS3(file.originFileObj)
@@ -55,10 +57,8 @@ export const EditProductModal = ({ open, onClose, product }: Props) => {
         })
       )
 
-      await ProductsService.productControllerUpdate({
-        id: product.id,
-        requestBody: { ...values, images: imageUrls },
-      })
+      // Cập nhật sản phẩm với các hình ảnh đã tải lên
+      await mutateAsync({ id: product.id, requestBody: { ...values, images: imageUrls } })
 
       message.success('Cập nhật thành công')
       onClose()

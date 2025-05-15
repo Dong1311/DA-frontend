@@ -4,7 +4,7 @@ import { Table } from 'antd'
 import { useState } from 'react'
 
 import { Text } from '@/components'
-import { useProductList } from '@/hooks/useProductList'
+import { useProductList } from '@/hooks/product'
 
 import { EditProductModal } from './EditProductModal'
 

@@ -5,20 +5,20 @@ import { Button, Flex } from 'antd'
 import { message } from 'antd'
 import { useState } from 'react'
 
-import { useProductList } from '@/hooks/product'
-import { exportProductsToExcel } from '@/utils/exportToExcel'
+import { useSupplierList } from '@/hooks/supplier'
+import { exportSuppliersToExcel } from '@/utils/exportToExcel'
 
-import { CreateCustomerModal } from './CreateCustomerModal'
+import { CreateSupplierModal } from './CreateSupplierModal'
 
-export const CustomerToolbar = () => {
+export const SupplierToolbar = () => {
   const [open, setOpen] = useState(false)
-  const { data } = useProductList()
+  const { data } = useSupplierList()
 
   const handleExport = () => {
     if (!data || data.length === 0) {
       return message.warning('Không có dữ liệu để xuất')
     }
-    exportProductsToExcel(data)
+    exportSuppliersToExcel(data)
   }
 
   return (
@@ -34,7 +34,7 @@ export const CustomerToolbar = () => {
         <Button icon={<BarsOutlined />} />
       </Flex>
 
-      <CreateCustomerModal open={open} onClose={() => setOpen(false)} />
+      <CreateSupplierModal open={open} onClose={() => setOpen(false)} />
     </>
   )
 }

@@ -5,9 +5,9 @@ import { message, Modal } from 'antd'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { type CreateCustomerDto } from '@/api-sdk'
-import { useCreateCustomer } from '@/hooks/useCreateCustomer'
+import { type CustomerFormValues, customerSchema } from '@/constants/schema'
+import { useCreateCustomer } from '@/hooks/customer'
 
-import { type CustomerFormValues, customerSchema } from '../schemas/customer.schema'
 import { CustomerForm } from './CustomerForm'
 
 interface Props {
