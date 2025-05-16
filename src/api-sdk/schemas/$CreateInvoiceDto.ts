@@ -2,43 +2,30 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $CreateProductDto = {
+export const $CreateInvoiceDto = {
   properties: {
-    code: {
+    customerId: {
+      type: 'string',
+    },
+    storeId: {
       type: 'string',
       isRequired: true,
     },
-    name: {
-      type: 'string',
+    products: {
+      type: 'ProductSaleDto',
       isRequired: true,
     },
-    shortName: {
-      type: 'string',
-    },
-    salePrice: {
+    totalAmount: {
       type: 'number',
       isRequired: true,
     },
-    costPrice: {
+    discount: {
       type: 'number',
       isRequired: true,
     },
-    stock: {
+    amountPaid: {
       type: 'number',
       isRequired: true,
-    },
-    unitId: {
-      type: 'string',
-    },
-    reserved: {
-      type: 'number',
-      isRequired: true,
-    },
-    images: {
-      type: 'array',
-      contains: {
-        type: 'string',
-      },
     },
   },
 } as const;

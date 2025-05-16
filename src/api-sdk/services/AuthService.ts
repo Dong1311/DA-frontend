@@ -70,4 +70,14 @@ export class AuthService {
       url: '/auth/google/redirect',
     });
   }
+  /**
+   * @returns any
+   * @throws ApiError
+   */
+  public static authControllerLogout(): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/auth/logout',
+    });
+  }
 }

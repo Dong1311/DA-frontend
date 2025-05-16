@@ -12,6 +12,10 @@ export const $ProductResponseDto = {
       type: 'string',
       isRequired: true,
     },
+    code: {
+      type: 'string',
+      isRequired: true,
+    },
     shortName: {
       type: 'string',
     },

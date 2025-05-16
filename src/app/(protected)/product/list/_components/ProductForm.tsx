@@ -15,6 +15,15 @@ export const ProductForm = () => {
   return (
     <Form layout="vertical">
       <Controller
+        name="code"
+        control={control}
+        render={({ field }) => (
+          <Form.Item label="Mã sản phẩm" validateStatus={errors.code && 'error'} help={errors.code?.message}>
+            <Input {...field} />
+          </Form.Item>
+        )}
+      />
+      <Controller
         name="name"
         control={control}
         render={({ field }) => (

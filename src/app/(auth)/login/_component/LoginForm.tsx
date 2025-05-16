@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { AuthService } from '@/api-sdk'
-import { setTokens } from '@/lib/auth'
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')
@@ -13,12 +12,12 @@ export default function LoginForm() {
   const router = useRouter()
 
   const mutation = useMutation({
-    mutationFn: () =>
-      AuthService.authControllerLogin({
+    mutationFn: async () => {
+      return await AuthService.authControllerLogin({
         requestBody: { email, password },
-      }),
-    onSuccess: (data) => {
-      setTokens(data.access_token, data.refresh_token)
+      })
+    },
+    onSuccess: () => {
       router.push('/dashboard')
     },
     onError: (err) => {
@@ -56,7 +55,7 @@ export default function LoginForm() {
         type="button"
         className="rounded-md bg-red-600 py-2 text-white"
         onClick={() => {
-          window.location.href = 'http://localhost:5000/auth/google'
+          window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`
         }}
       >
         Login with Google

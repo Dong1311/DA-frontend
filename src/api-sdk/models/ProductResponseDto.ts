@@ -6,6 +6,7 @@ import type { ProductImageDto } from './ProductImageDto';
 export type ProductResponseDto = {
   id: string;
   name: string;
+  code: string;
   shortName?: string;
   salePrice: number;
   costPrice: number;

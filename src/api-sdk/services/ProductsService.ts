@@ -38,6 +38,24 @@ export class ProductsService {
     });
   }
   /**
+   * Search products by name or code
+   * @returns ProductResponseDto
+   * @throws ApiError
+   */
+  public static productControllerSearch({
+    keyword,
+  }: {
+    keyword: string,
+  }): CancelablePromise<Array<ProductResponseDto>> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/products/search',
+      query: {
+        'keyword': keyword,
+      },
+    });
+  }
+  /**
    * Get a product by ID
    * @returns any
    * @throws ApiError

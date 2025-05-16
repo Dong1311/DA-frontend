@@ -4,15 +4,19 @@ import { LogoutOutlined, MailOutlined, SettingOutlined, UserOutlined } from '@an
 import { Badge, Flex, Tooltip } from 'antd'
 import { useRouter } from 'next/navigation'
 
+import { AuthService } from '@/api-sdk'
 import { Text } from '@/components'
-import { clearTokens } from '@/lib/auth'
 
 export const TopHeader = () => {
   const router = useRouter()
 
-  const handleLogout = () => {
-    clearTokens()
-    router.replace('/login')
+  const handleLogout = async () => {
+    try {
+      await AuthService.authControllerLogout()
+      router.replace('/login')
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
   }
 
   return (

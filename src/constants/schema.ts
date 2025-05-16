@@ -13,6 +13,7 @@ export const supplierSchema = z.object({
 export type SupplierFormValues = z.infer<typeof supplierSchema>
 
 export const productSchema = z.object({
+  code: z.string().min(1, 'Mã sản phẩm là bắt buộc'),
   name: z.string().min(1, 'Tên sản phẩm là bắt buộc'),
   shortName: z.string().optional(),
   salePrice: z.coerce.number().min(0),

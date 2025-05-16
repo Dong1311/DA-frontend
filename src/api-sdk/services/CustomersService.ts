@@ -38,6 +38,24 @@ export class CustomersService {
     });
   }
   /**
+   * Search customers by keyword
+   * @returns CustomerResponseDto
+   * @throws ApiError
+   */
+  public static customerControllerSearch({
+    keyword,
+  }: {
+    keyword: string,
+  }): CancelablePromise<Array<CustomerResponseDto>> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/customers/search',
+      query: {
+        'keyword': keyword,
+      },
+    });
+  }
+  /**
    * Get a customer by ID
    * @returns any
    * @throws ApiError
