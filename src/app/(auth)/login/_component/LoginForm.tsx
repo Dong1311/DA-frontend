@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { AuthService } from '@/api-sdk'
+import { useAuthStore } from '@/stores/authStore'
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const router = useRouter()
+  const { setUser } = useAuthStore()
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -17,7 +19,8 @@ export default function LoginForm() {
         requestBody: { email, password },
       })
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setUser(data.user)
       router.push('/dashboard')
     },
     onError: (err) => {

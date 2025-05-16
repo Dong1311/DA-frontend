@@ -9,6 +9,17 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class AuthService {
   /**
+   * Get current user info
+   * @returns any
+   * @throws ApiError
+   */
+  public static authControllerGetProfile(): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/auth/me',
+    });
+  }
+  /**
    * @returns any
    * @throws ApiError
    */
