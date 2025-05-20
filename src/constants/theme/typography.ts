@@ -1,7 +1,6 @@
 import { type ThemeConfig } from 'antd'
 
 import { GRAY } from '../colors'
-
 export const TYPOGRAPHY: ThemeConfig['token'] = {
   fontSizeHeading5: 16,
   lineHeightHeading5: 1.5,
