@@ -23,7 +23,7 @@ export const ProductSelector = () => {
         } catch (error) {
           console.error(error)
         }
-      }, 500),
+      }, 200),
     []
   )
 
@@ -52,6 +52,7 @@ export const ProductSelector = () => {
           quantity: 1,
           unitPrice: product.salePrice,
           totalPrice: product.salePrice,
+          images: product.images ?? [],
         },
       ])
     }
@@ -67,12 +68,22 @@ export const ProductSelector = () => {
       onChange={setSearchValue}
       onSearch={handleSearch}
       onSelect={handleSelect}
-    >
-      {searchResults.map((product) => (
-        <AutoComplete.Option key={product.id} value={product.id}>
-          {product.name} - {product.code}
-        </AutoComplete.Option>
-      ))}
-    </AutoComplete>
+      options={searchResults.map((product) => ({
+        value: product.id,
+        label: (
+          <div className="flex items-center gap-2">
+            <img
+              src={product.images?.[0]?.url || '/images/noimage.png'}
+              alt={''}
+              style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 4 }}
+            />
+            <div>
+              <div className="text-xs text-gray-500">{product.code}</div>
+              <div>{product.name}</div>
+            </div>
+          </div>
+        ),
+      }))}
+    />
   )
 }

@@ -1,4 +1,3 @@
-// ProductTable.tsx
 'use client'
 
 import { Button, InputNumber, Table } from 'antd'
@@ -22,8 +21,15 @@ export const ProductTable = () => {
       products.filter((p: ProductResponseDto) => p.id !== productId)
     )
   }
-
   const columns = [
+    {
+      title: 'Ảnh',
+      dataIndex: 'images',
+      render: (images: { url: string }[]) => {
+        const url = images?.[0]?.url || '/images/notfound.png'
+        return <img src={url} alt="" style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 4 }} />
+      },
+    },
     { title: 'Mã SP', dataIndex: 'code' },
     {
       title: 'Số lượng',

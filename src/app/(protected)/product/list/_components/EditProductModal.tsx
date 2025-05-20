@@ -27,7 +27,10 @@ export const EditProductModal = ({ open, onClose, product }: Props) => {
       stock: 0,
     },
   })
-
+  const { formState } = methods
+  useEffect(() => {
+    console.log('errors', formState.errors)
+  }, [formState.errors])
   const { handleSubmit, reset } = methods
   const { mutateAsync } = useUpdateProduct()
 
@@ -36,7 +39,10 @@ export const EditProductModal = ({ open, onClose, product }: Props) => {
 
   useEffect(() => {
     if (product) {
-      reset(product)
+      reset({
+        ...product,
+        images: product.images?.map((img: any) => img.url) || [],
+      })
       setFileList(
         product.images?.map((img: any) => ({
           uid: img.id,
@@ -49,15 +55,12 @@ export const EditProductModal = ({ open, onClose, product }: Props) => {
 
   const onSubmit = async (values: ProductFormValues) => {
     try {
-      // Upload hình ảnh nếu có
       const imageUrls = await Promise.all(
         fileList.map(async (file) => {
           if (file.originFileObj) return await uploadToS3(file.originFileObj)
           return file.url || ''
         })
       )
-
-      // Cập nhật sản phẩm với các hình ảnh đã tải lên
       await mutateAsync({ id: product.id, requestBody: { ...values, images: imageUrls } })
 
       message.success('Cập nhật thành công')
@@ -79,12 +82,13 @@ export const EditProductModal = ({ open, onClose, product }: Props) => {
       confirmLoading={methods.formState.isSubmitting}
     >
       <FormProvider {...methods}>
-        <ProductForm />
+        <form id="edit-product-form" onSubmit={handleSubmit(onSubmit)}>
+          <ProductForm />
+          <Form.Item label="Ảnh sản phẩm">
+            <ProductImageUploader fileList={fileList} onChange={setFileList} />
+          </Form.Item>
+        </form>
       </FormProvider>
-
-      <Form.Item label="Ảnh sản phẩm">
-        <ProductImageUploader fileList={fileList} onChange={setFileList} />
-      </Form.Item>
     </Modal>
   )
 }

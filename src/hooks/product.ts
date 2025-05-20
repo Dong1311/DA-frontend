@@ -34,7 +34,6 @@ export const useUpdateProduct = () => {
       }),
 
     onSuccess: () => {
-      // Sau khi cập nhật thành công, làm mới danh sách sản phẩm
       queryClient.invalidateQueries({ queryKey: ['products'] })
     },
   })

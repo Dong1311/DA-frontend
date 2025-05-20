@@ -12,7 +12,6 @@ import {
   FileDoneOutlined,
   FileExcelOutlined,
   FileTextOutlined,
-  FundOutlined,
   MedicineBoxOutlined,
   ScheduleOutlined,
   SettingOutlined,
@@ -78,8 +77,8 @@ export const SidebarHeader = () => {
           </HoverMenuItem>
 
           <HoverMenuItem icon={<TeamOutlined />} label="Đối tác">
-            <SubItem icon={<UserOutlined />} label="Khách hàng" />
-            <SubItem icon={<UserSwitchOutlined />} label="Nhà cung cấp" />
+            <SubItem icon={<UserOutlined />} label="Khách hàng" href="/customer" />
+            <SubItem icon={<UserSwitchOutlined />} label="Nhà cung cấp" href="/supplier" />
             <SubItem icon={<CarOutlined />} label="Đối tác giao hàng" />
             <SubItem icon={<MedicineBoxOutlined />} label="Bác sĩ" />
           </HoverMenuItem>
@@ -89,7 +88,6 @@ export const SidebarHeader = () => {
             <SubItem icon={<ScheduleOutlined />} label="Lịch làm việc" />
             <SubItem icon={<CalendarOutlined />} label="Chấm công" />
             <SubItem icon={<SolutionOutlined />} label="Bảng tính lương" />
-            <SubItem icon={<TagsOutlined />} label="Thiết lập hoa hồng" />
             <SubItem icon={<SettingOutlined />} label="Thiết lập nhân viên" />
           </HoverMenuItem>
 
@@ -104,14 +102,13 @@ export const SidebarHeader = () => {
             <SubItem icon={<UserSwitchOutlined />} label="Nhà cung cấp" />
             <SubItem icon={<UserAddOutlined />} label="Nhân viên" />
             <SubItem icon={<AppstoreOutlined />} label="Kênh bán hàng" />
-            <SubItem icon={<FundOutlined />} label="Tài chính" />
           </HoverMenuItem>
 
           <HoverMenuItem icon={<ShoppingCartOutlined />} label="Bán Online" />
         </Flex>
 
         <Flex wrap="wrap" gap={8} justify="end">
-          <HoverMenuItem icon={<ShopOutlined />} label="Bán hàng" />
+          <HoverMenuItem icon={<ShopOutlined />} label="Bán hàng" href="/sale" />
         </Flex>
       </Flex>
 

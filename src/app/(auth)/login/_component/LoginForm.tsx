@@ -30,6 +30,7 @@ export default function LoginForm() {
 
   return (
     <form
+      autoComplete="on"
       onSubmit={(e) => {
         e.preventDefault()
         mutation.mutate()
@@ -39,6 +40,8 @@ export default function LoginForm() {
       <h2 className="text-center text-2xl font-bold">Login</h2>
       <input
         type="email"
+        autoComplete="username"
+        name="username"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
@@ -46,6 +49,7 @@ export default function LoginForm() {
       />
       <input
         type="password"
+        name="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"

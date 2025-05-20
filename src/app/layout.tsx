@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import React, { Suspense } from 'react'
 
+import { LoadingScreen } from '@/components/LoadingScreen'
 import RouteLoader from '@/components/RouteLoader'
 
 import { Providers } from './providers'
@@ -25,7 +26,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={inter.className}>
         <RouteLoader />
         <Providers>
-          <Suspense fallback={<p>Loading...</p>}>{children}</Suspense>
+          <Suspense fallback={<LoadingScreen />}>{children}</Suspense>
         </Providers>
       </body>
     </html>

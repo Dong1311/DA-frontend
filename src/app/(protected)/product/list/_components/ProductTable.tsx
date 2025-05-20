@@ -13,12 +13,27 @@ export const ProductTable = () => {
   const [editingProduct, setEditingProduct] = useState<any | null>(null)
 
   const columns = [
+    {
+      title: 'Ảnh',
+      dataIndex: 'images',
+      key: 'image',
+      render: (images: { url: string }[]) => {
+        const imageUrl = images?.[0]?.url ?? '/images/noimage.png'
+        return (
+          <img
+            src={imageUrl}
+            alt="Ảnh sản phẩm"
+            style={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 4 }}
+          />
+        )
+      },
+    },
     { title: 'Mã hàng', dataIndex: 'code' },
     { title: 'Tên hàng', dataIndex: 'name', render: (text: string) => <Text>{text}</Text> },
     { title: 'Giá bán', dataIndex: 'salePrice' },
     { title: 'Giá vốn', dataIndex: 'costPrice' },
     { title: 'Tồn kho', dataIndex: 'stock' },
-    { title: 'Thời gian tạo', dataIndex: 'createdAt' },
+    { title: 'Đặt trước', dataIndex: 'reserved' },
   ]
 
   return (
