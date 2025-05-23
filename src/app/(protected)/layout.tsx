@@ -7,8 +7,6 @@ import { useEffect, useState } from 'react'
 import { AuthService } from '@/api-sdk'
 import { useAuthStore } from '@/stores/authStore'
 
-import AppLayout from './_components/Layout'
-
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const { user, setUser } = useAuthStore()
@@ -31,5 +29,5 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     return <Spin tip="Đang tải..." fullscreen />
   }
 
-  return <AppLayout>{children}</AppLayout>
+  return <>{children}</>
 }

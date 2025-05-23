@@ -108,7 +108,9 @@ export const SidebarHeader = () => {
         </Flex>
 
         <Flex wrap="wrap" gap={8} justify="end">
-          <HoverMenuItem icon={<ShopOutlined />} label="Bán hàng" href="/sale" />
+          <a href="/sale" target="_blank" rel="noopener noreferrer">
+            <HoverMenuItem icon={<ShopOutlined />} label="Bán hàng" />
+          </a>
         </Flex>
       </Flex>
 
