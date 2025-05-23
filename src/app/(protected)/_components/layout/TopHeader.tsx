@@ -26,7 +26,7 @@ export const TopHeader = () => {
         <Text className="text-[20px] font-bold text-black">KiotViet</Text>
       </Flex>
 
-      <Flex align="center" className="gap-4 text-black">
+      <Flex align="center" className="me-3 gap-4 text-black">
         <Badge count={5} size="small">
           <MailOutlined className="text-lg" />
         </Badge>

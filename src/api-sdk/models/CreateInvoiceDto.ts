@@ -5,10 +5,16 @@
 import type { ProductSaleDto } from './ProductSaleDto';
 export type CreateInvoiceDto = {
   customerId?: string;
-  storeId: string;
-  products: ProductSaleDto;
+  paymentMethod?: CreateInvoiceDto.paymentMethod;
+  products: Array<ProductSaleDto>;
   totalAmount: number;
   discount: number;
   amountPaid: number;
 };
+export namespace CreateInvoiceDto {
+  export enum paymentMethod {
+    CASH = 'CASH',
+    BANKTRANSFER = 'BANKTRANSFER',
+  }
+}
 

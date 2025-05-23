@@ -2,13 +2,20 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { InvoiceItemDto } from './InvoiceItemDto';
 export type InvoiceResponseDto = {
   id: string;
-  customerId: string;
+  returnId: string | null;
+  customerId: string | null;
+  paymentId: string;
   storeId: string;
+  paymentUrl: string;
+  paymentStatus: string;
   totalAmount: number;
   discount: number;
   amountPaid: number;
   createdAt: string;
+  paymentMethod: string;
+  invoiceItems: Array<InvoiceItemDto>;
 };
 

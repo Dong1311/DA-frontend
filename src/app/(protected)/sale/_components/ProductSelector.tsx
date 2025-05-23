@@ -1,40 +1,18 @@
-'use client'
-
 import { AutoComplete } from 'antd'
-import { debounce } from 'lodash'
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { type ProductResponseDto, ProductsService } from '@/api-sdk'
+import { type ProductResponseDto } from '@/api-sdk'
+import { useProductSearch } from '@/hooks/product'
 
 export const ProductSelector = () => {
-  const [searchResults, setSearchResults] = useState<ProductResponseDto[]>([])
-  const [searchValue, setSearchValue] = useState<string>('')
-
+  const [searchValue, setSearchValue] = useState('')
   const { getValues, setValue } = useFormContext()
 
-  const debouncedSearch = useMemo(
-    () =>
-      debounce(async (value: string) => {
-        if (!value) return setSearchResults([])
-        try {
-          const result = await ProductsService.productControllerSearch({ keyword: value })
-          setSearchResults(result)
-        } catch (error) {
-          console.error(error)
-        }
-      }, 200),
-    []
-  )
-
-  useEffect(() => {
-    return () => {
-      debouncedSearch.cancel()
-    }
-  }, [debouncedSearch])
+  const { data: searchResults = [] } = useProductSearch(searchValue)
 
   const handleSearch = (value: string) => {
-    debouncedSearch(value)
+    setSearchValue(value)
   }
 
   const handleSelect = (productId: string) => {
@@ -56,16 +34,14 @@ export const ProductSelector = () => {
         },
       ])
     }
-
     setSearchValue('')
-    setSearchResults([])
   }
 
   return (
     <AutoComplete
       style={{ width: '100%' }}
       value={searchValue}
-      onChange={setSearchValue}
+      onChange={handleSearch}
       onSearch={handleSearch}
       onSelect={handleSelect}
       options={searchResults.map((product) => ({

@@ -16,6 +16,15 @@ export const useCreateProduct = () => {
   })
 }
 
+export const useProductSearch = (keyword: string) => {
+  return useQuery({
+    queryKey: ['products', 'search', keyword],
+    queryFn: () => ProductsService.productControllerSearch({ keyword }),
+    enabled: keyword.length > 0,
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
 export const useProductList = () => {
   return useQuery({
     queryKey: ['products'],
