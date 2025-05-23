@@ -3,22 +3,33 @@
 import { Button, InputNumber, Table } from 'antd'
 import { useFormContext } from 'react-hook-form'
 
-import { type ProductResponseDto } from '@/api-sdk'
+import { type ProductSaleDto } from '@/api-sdk'
 export const ProductTable = () => {
   const { setValue, watch } = useFormContext()
   const products = watch('products')
 
   const handleQuantityChange = (value: number | null, productId: string) => {
-    const updated = products.map((p: ProductResponseDto) =>
-      p.id === productId && value && value > 0 ? { ...p, quantity: value, totalPrice: p.costPrice * value } : p
-    )
+    if (value === null || value <= 0) return
+    const updated = products.map((p: ProductSaleDto) => {
+      if (p.id === productId) {
+        const costPrice = Number(p.unitPrice) || 0
+        const quantity = value
+        return {
+          ...p,
+          quantity,
+          totalPrice: costPrice * quantity,
+        }
+      }
+      return p
+    })
+
     setValue('products', updated)
   }
 
   const removeProduct = (productId: string) => {
     setValue(
       'products',
-      products.filter((p: ProductResponseDto) => p.id !== productId)
+      products.filter((p: ProductSaleDto) => p.id !== productId)
     )
   }
   const columns = [
