@@ -71,7 +71,7 @@ export const SaleFormContent = () => {
   }
 
   return (
-    <Layout>
+    <Layout className="bg-white">
       <Content style={{ padding: 20 }}>
         <Row>
           <ProductSelector />

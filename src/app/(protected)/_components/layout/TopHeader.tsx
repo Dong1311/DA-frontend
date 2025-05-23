@@ -20,7 +20,7 @@ export const TopHeader = () => {
   }
 
   return (
-    <Flex align="center" justify="space-between" className="h-[50px] border-b border-gray-200 bg-white px-4 text-sm">
+    <Flex align="center" justify="space-between" className="h-[50px] bg-white px-4 text-sm">
       <Flex align="center" className="ms-3 gap-2">
         <img src="/images/kiotviet_logo.png" alt="logo" className="h-6" style={{ width: '40px', height: '40px' }} />
         <Text className="text-[20px] font-bold text-black">KiotViet</Text>

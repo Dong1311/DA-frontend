@@ -1,5 +1,3 @@
-'use client'
-
 import { Tabs } from 'antd'
 import { useState } from 'react'
 
@@ -46,21 +44,25 @@ export const SaleTabs = () => {
   }
 
   return (
-    <Tabs
-      type="editable-card"
-      onChange={onChange}
-      activeKey={activeKey}
-      onEdit={onEdit}
-      hideAdd={false}
-      className="w-full"
-    >
-      {tabs.map((key) => (
-        <TabPane tab={`Hóa đơn ${key}`} key={key} closable={tabs.length > 1}>
-          <SaleFormProvider>
-            <SaleFormContent />
-          </SaleFormProvider>
-        </TabPane>
-      ))}
-    </Tabs>
+    <div style={{ padding: 0, borderRadius: 8 }}>
+      <Tabs
+        type="editable-card"
+        onChange={onChange}
+        activeKey={activeKey}
+        onEdit={onEdit}
+        hideAdd={false}
+        className="w-full"
+      >
+        {tabs.map((key) => (
+          <TabPane tab={`Hóa đơn ${key}`} key={key} closable={tabs.length > 1}>
+            <div style={{ backgroundColor: 'white', borderRadius: 4 }}>
+              <SaleFormProvider>
+                <SaleFormContent />
+              </SaleFormProvider>
+            </div>
+          </TabPane>
+        ))}
+      </Tabs>
+    </div>
   )
 }

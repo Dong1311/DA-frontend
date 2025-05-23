@@ -6,7 +6,6 @@ import React from 'react'
 import { useClientReady } from '@/hooks/useClientReady'
 import { useNProgress } from '@/utils/nprogress'
 
-import { TopHeader } from '../_components/layout/TopHeader'
 const { Content } = Layout
 
 export default function FeatureLayout({ children }: { children: React.ReactNode }) {
@@ -23,7 +22,6 @@ export default function FeatureLayout({ children }: { children: React.ReactNode 
   }
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <TopHeader />
       <Layout>
         <Content style={{ margin: '0 16px' }}>
           <Flex className="min-h-[360px] rounded-lg bg-white">{children}</Flex>
