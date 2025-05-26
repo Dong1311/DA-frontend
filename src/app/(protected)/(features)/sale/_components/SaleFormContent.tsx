@@ -28,6 +28,7 @@ export const SaleFormContent = () => {
       discount: 0,
       amountPaid: 0,
       paymentMethod: cash,
+      customerId: undefined,
     })
   }
 

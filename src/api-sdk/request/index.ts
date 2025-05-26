@@ -5,6 +5,7 @@
 import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig, AxiosResponse, AxiosInstance } from 'axios'
 import FormData from 'form-data'
+import { refreshAccessToken } from '../utils/refreshHandler'
 
 import { ApiError } from '../core/ApiError'
 import type { ApiRequestOptions } from '../core/ApiRequestOptions'
@@ -235,10 +236,10 @@ export const sendRequest = async <T>(
   try {
     return await axiosClient.request(requestConfig)
   } catch (error) {
-    const axiosError = error as AxiosError<T>
-    if (axiosError.response) {
-      return axiosError.response
-    }
+    // const axiosError = error as AxiosError<T>
+    // if (axiosError.response) {
+    //   return axiosError.response
+    // }
     throw error
   }
 }
@@ -317,7 +318,26 @@ export const request = <T>(
       const headers = await getHeaders(config, options, formData)
 
       if (!onCancel.isCancelled) {
-        const response = await sendRequest<T>(config, options, url, body, formData, headers, onCancel, axiosClient)
+        let response: AxiosResponse<T>
+
+        try {
+          response = await sendRequest<T>(config, options, url, body, formData, headers, onCancel, axiosClient)
+        } catch (error) {
+          const axiosError = error as AxiosError<T>
+
+          const isUnauthorized = axios.isAxiosError(axiosError)
+            && axiosError.response?.status === 401
+            && !options.url.includes('/auth/refresh')
+
+          if (isUnauthorized && !onCancel.isCancelled) {
+            await refreshAccessToken()
+
+            response = await sendRequest<T>(config, options, url, body, formData, headers, onCancel, axiosClient)
+          } else {
+            throw error
+          }
+        }
+
         const responseBody = getResponseBody(response)
         const responseHeader = getResponseHeader(response, options.responseHeader)
 

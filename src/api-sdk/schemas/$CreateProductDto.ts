@@ -32,7 +32,6 @@ export const $CreateProductDto = {
     },
     reserved: {
       type: 'number',
-      isRequired: true,
     },
     images: {
       type: 'array',

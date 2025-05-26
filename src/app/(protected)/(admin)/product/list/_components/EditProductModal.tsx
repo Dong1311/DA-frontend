@@ -23,7 +23,6 @@ export const EditProductModal = ({ open, onClose, product }: Props) => {
   const methods = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      reserved: 0,
       stock: 0,
     },
   })
@@ -83,7 +82,7 @@ export const EditProductModal = ({ open, onClose, product }: Props) => {
     >
       <FormProvider {...methods}>
         <form id="edit-product-form" onSubmit={handleSubmit(onSubmit)}>
-          <ProductForm />
+          <ProductForm isEdit />
           <Form.Item label="Ảnh sản phẩm">
             <ProductImageUploader fileList={fileList} onChange={setFileList} />
           </Form.Item>

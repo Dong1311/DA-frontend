@@ -1,8 +1,7 @@
 'use client'
 
 import { BarsOutlined, FileExcelOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons'
-import { Button, Flex } from 'antd'
-import { message } from 'antd'
+import { Button, Flex, message } from 'antd'
 import { useState } from 'react'
 
 import { useProductList } from '@/hooks/product'
@@ -23,14 +22,19 @@ export const ProductToolbar = () => {
 
   return (
     <>
-      <Flex justify="flex-end" gap={8}>
+      <Flex wrap="wrap" justify="flex-end" gap={8} className="w-full">
         <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
-          Thêm mới
+          <span className="hidden lg:inline">Thêm mới</span>
         </Button>
-        <Button icon={<UploadOutlined />}>Import</Button>
+
+        <Button icon={<UploadOutlined />}>
+          <span className="hidden lg:inline">Import</span>
+        </Button>
+
         <Button icon={<FileExcelOutlined />} onClick={handleExport}>
-          Xuất file
+          <span className="hidden lg:inline">Xuất file</span>
         </Button>
+
         <Button icon={<BarsOutlined />} />
       </Flex>
 

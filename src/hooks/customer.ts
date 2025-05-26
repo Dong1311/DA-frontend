@@ -34,8 +34,17 @@ export const useUpdateCustomer = () => {
       }),
 
     onSuccess: () => {
-      // Sau khi cập nhật thành công, làm mới danh sách khách hàng
       queryClient.invalidateQueries({ queryKey: ['customers'] })
     },
   })
 }
+
+export const useCustomerSearch = (keyword: string) => {
+  return useQuery({
+    queryKey: ['customers', 'search', keyword],
+    queryFn: () => CustomersService.customerControllerSearch({ keyword }),
+    enabled: keyword.length > 0,
+    staleTime: 5 * 60 * 1000, 
+  })
+}
+

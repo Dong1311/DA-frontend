@@ -8,6 +8,7 @@ interface ControlledNumberInputProps<T extends FieldValues> {
   name: Path<T>
   label: string
   errorMessage?: string
+  disabled?: boolean
 }
 
 export const ControlledNumberInput = <T extends FieldValues>({
@@ -15,13 +16,14 @@ export const ControlledNumberInput = <T extends FieldValues>({
   name,
   label,
   errorMessage,
+  disabled,
 }: ControlledNumberInputProps<T>) => {
   return (
     <Form.Item label={label} validateStatus={errorMessage ? 'error' : ''} help={errorMessage}>
       <Controller
         name={name}
         control={control}
-        render={({ field }) => <InputNumber {...field} style={{ width: '100%' }} />}
+        render={({ field }) => <InputNumber {...field} style={{ width: '100%' }} disabled={disabled} />}
       />
     </Form.Item>
   )

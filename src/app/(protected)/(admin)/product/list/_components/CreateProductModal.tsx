@@ -21,7 +21,7 @@ interface Props {
 export const CreateProductModal = ({ open, onClose }: Props) => {
   const methods = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
-    defaultValues: { reserved: 0, stock: 0 },
+    defaultValues: { stock: 0 },
   })
   const { handleSubmit, reset } = methods
   const [fileList, setFileList] = useState<UploadFile[]>([])
@@ -59,7 +59,7 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
       confirmLoading={methods.formState.isSubmitting}
     >
       <FormProvider {...methods}>
-        <ProductForm />
+        <ProductForm isEdit={false} />
       </FormProvider>
 
       <Form.Item label="Ảnh sản phẩm">
