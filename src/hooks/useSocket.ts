@@ -1,53 +1,78 @@
-import { useEffect, useState } from 'react'
-import { io, type Socket } from 'socket.io-client'
+import { useEffect, useRef, useState } from 'react';
+import { io, type Socket } from 'socket.io-client';
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL || ''
+const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL || '';
+
+interface ChatMessage {
+  sender: 'user' | 'assistant';
+  content: string;
+}
 
 interface PaymentSuccessPayload {
-  invoiceId: string
-  paymentId: string
-  amountPaid: number
-  status: string
+  invoiceId: string;
+  paymentId: string;
+  amountPaid: number;
+  status: string;
 }
 
 export const useSocket = () => {
-  const [socket, setSocket] = useState<Socket | null>(null)
-  const [messages, setMessages] = useState<any[]>([])
-  const [paymentSuccessData, setPaymentSuccessData] = useState<PaymentSuccessPayload | null>(null)
+  const socketRef = useRef<Socket | null>(null);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [paymentSuccessData, setPaymentSuccessData] = useState<PaymentSuccessPayload | null>(null);
 
   useEffect(() => {
-    const socketIo = io(SOCKET_URL, {
+    console.log('[Hook mount] useSocket initialized');
+
+    if (socketRef.current) return;
+
+    console.log('[useSocket] creating socket...');
+    const socket = io(SOCKET_URL, {
       withCredentials: true,
       extraHeaders: {
-        "my-custom-header": "abcd",
+        'my-custom-header': 'abcd',
       },
-    })
+    });
 
-    setSocket(socketIo)
+    socketRef.current = socket;
 
-    socketIo.on('connect', () => {
-      console.log('Connected to websocket server')
-    })
+    socket.on('connect', () => {
+      console.log('[Socket] connected:', socket.id);
+    });
 
-    socketIo.on('message', (msg) => {
-      setMessages((prev) => [...prev, msg])
-    })
+    const handleChatMessage = (msg: ChatMessage) => {
+      console.log('[Socket] chat_message received:', msg);
+      setMessages((prev) => [...prev, msg]);
+    };
 
-    socketIo.on('payment_success', (data: PaymentSuccessPayload) => {
-      console.log('Received payment_success event:', data)
-      setPaymentSuccessData(data)
-    })
+    const handlePaymentSuccess = (data: PaymentSuccessPayload) => {
+      console.log('[Socket] payment_success received:', data);
+      setPaymentSuccessData(data);
+    };
+
+    socket.on('chat_message', handleChatMessage);
+    socket.on('payment_success', handlePaymentSuccess);
 
     return () => {
-      socketIo.off('message')
-      socketIo.off('payment_success')
-      socketIo.disconnect()
-    }
-  }, [])
+      console.log('[useSocket] cleanup socket');
+      socket.off('chat_message', handleChatMessage);
+      socket.off('payment_success', handlePaymentSuccess);
+      socket.disconnect();
+      socketRef.current = null;
+    };
+  }, []);
 
-  const sendMessage = (msg: any) => {
-    if (socket) socket.emit('message', msg)
-  }
+  const sendMessage = (content: string) => {
+    const socket = socketRef.current;
+    if (!socket) return;
 
-  return { messages, sendMessage, paymentSuccessData }
-}
+    const userMessage: ChatMessage = { sender: 'user', content };
+    setMessages((prev) => [...prev, userMessage]);
+    socket.emit('chat_message', content);
+  };
+
+  return {
+    messages,
+    sendMessage,
+    paymentSuccessData,
+  };
+};
