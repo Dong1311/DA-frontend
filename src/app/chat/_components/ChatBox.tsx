@@ -56,7 +56,7 @@ export const ChatBox: React.FC<ChatBoxProps> = ({ messages, sendMessage }) => {
         ))}
       </div>
 
-      <div className="flex flex-col gap-1">
+      <div className="relative flex flex-col gap-1">
         <input
           type="text"
           value={input}

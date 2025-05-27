@@ -2,74 +2,74 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateSupplierDto } from '../models/CreateSupplierDto';
-import type { SupplierResponseDto } from '../models/SupplierResponseDto';
-import type { UpdateSupplierDto } from '../models/UpdateSupplierDto';
+import type { CreateImportReceiptDto } from '../models/CreateImportReceiptDto';
+import type { ImportReceiptResponseDto } from '../models/ImportReceiptResponseDto';
+import type { UpdateImportReceiptDto } from '../models/UpdateImportReceiptDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-export class SuppliersService {
+export class ImportReceiptsService {
   /**
-   * Create new supplier
+   * Create new import receipt
    * @returns any
    * @throws ApiError
    */
-  public static supplierControllerCreate({
+  public static importReceiptControllerCreate({
     requestBody,
   }: {
-    requestBody: CreateSupplierDto,
+    requestBody: CreateImportReceiptDto,
   }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'POST',
-      url: '/suppliers',
+      url: '/import-receipts',
       body: requestBody,
       mediaType: 'application/json',
     });
   }
   /**
-   * Get all suppliers of current store
-   * @returns SupplierResponseDto
+   * Get all import receipts for current store
+   * @returns ImportReceiptResponseDto
    * @throws ApiError
    */
-  public static supplierControllerFindAll(): CancelablePromise<Array<SupplierResponseDto>> {
+  public static importReceiptControllerFindAll(): CancelablePromise<Array<ImportReceiptResponseDto>> {
     return __request(OpenAPI, {
       method: 'GET',
-      url: '/suppliers',
+      url: '/import-receipts',
     });
   }
   /**
-   * Get supplier by ID
-   * @returns SupplierResponseDto
+   * Get import receipt detail by ID
+   * @returns ImportReceiptResponseDto
    * @throws ApiError
    */
-  public static supplierControllerFindOne({
+  public static importReceiptControllerFindOne({
     id,
   }: {
     id: string,
-  }): CancelablePromise<SupplierResponseDto> {
+  }): CancelablePromise<ImportReceiptResponseDto> {
     return __request(OpenAPI, {
       method: 'GET',
-      url: '/suppliers/{id}',
+      url: '/import-receipts/{id}',
       path: {
         'id': id,
       },
     });
   }
   /**
-   * Update supplier by ID
+   * Update import receipt
    * @returns any
    * @throws ApiError
    */
-  public static supplierControllerUpdate({
+  public static importReceiptControllerUpdate({
     id,
     requestBody,
   }: {
     id: string,
-    requestBody: UpdateSupplierDto,
+    requestBody: UpdateImportReceiptDto,
   }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'PATCH',
-      url: '/suppliers/{id}',
+      url: '/import-receipts/{id}',
       path: {
         'id': id,
       },
@@ -78,18 +78,18 @@ export class SuppliersService {
     });
   }
   /**
-   * Delete supplier by ID
+   * Delete import receipt
    * @returns any
    * @throws ApiError
    */
-  public static supplierControllerRemove({
+  public static importReceiptControllerRemove({
     id,
   }: {
     id: string,
   }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'DELETE',
-      url: '/suppliers/{id}',
+      url: '/import-receipts/{id}',
       path: {
         'id': id,
       },

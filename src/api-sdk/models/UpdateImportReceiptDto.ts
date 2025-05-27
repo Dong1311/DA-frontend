@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $PromptDto = {
-  properties: {
-  },
-} as const;
+export type UpdateImportReceiptDto = {
+};
+

@@ -3,7 +3,6 @@ import {
   AppstoreOutlined,
   BarChartOutlined,
   CalendarOutlined,
-  CarOutlined,
   CheckSquareOutlined,
   DeliveredProcedureOutlined,
   DollarOutlined,
@@ -79,8 +78,6 @@ export const SidebarHeader = () => {
           <HoverMenuItem icon={<TeamOutlined />} label="Đối tác">
             <SubItem icon={<UserOutlined />} label="Khách hàng" href="/customer" />
             <SubItem icon={<UserSwitchOutlined />} label="Nhà cung cấp" href="/supplier" />
-            <SubItem icon={<CarOutlined />} label="Đối tác giao hàng" />
-            <SubItem icon={<MedicineBoxOutlined />} label="Bác sĩ" />
           </HoverMenuItem>
 
           <HoverMenuItem icon={<UserOutlined />} label="Nhân viên">
