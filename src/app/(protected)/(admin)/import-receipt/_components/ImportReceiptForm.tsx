@@ -1,10 +1,11 @@
 'use client'
 
 import { Button, Col, Form, Input, InputNumber, message, Popconfirm, Row, Select, Space, Table } from 'antd'
+import type { ColumnsType } from 'antd/es/table'
 import { useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { type CreateImportReceiptDto } from '@/api-sdk'
+import { type CreateImportReceiptDto, type CreateImportReceiptItemDto } from '@/api-sdk'
 import { type ProductFormValues } from '@/constants/schema'
 import { useProductList } from '@/hooks/product'
 
@@ -78,26 +79,24 @@ export const ImportReceiptForm = () => {
     setOpenCreateModal(false)
   }
 
-  const columns = [
+  const columns: ColumnsType<CreateImportReceiptItemDto> = [
     {
       title: 'Tên sản phẩm',
       dataIndex: 'name',
       key: 'name',
-      render: (_: any, record: any) =>
-        record.newProduct?.name || products?.find((p) => p.id === record.productId)?.name || '-',
+      render: (_, record) => record.newProduct?.name || products?.find((p) => p.id === record.productId)?.name || '-',
     },
     {
       title: 'Mã sản phẩm',
       dataIndex: 'code',
       key: 'code',
-      render: (_: any, record: any) =>
-        record.newProduct?.code || products?.find((p) => p.id === record.productId)?.code || '-',
+      render: (_, record) => record.newProduct?.code || products?.find((p) => p.id === record.productId)?.code || '-',
     },
     {
       title: 'Số lượng',
       dataIndex: 'quantity',
       key: 'quantity',
-      render: (_: any, record: any, index: number) => (
+      render: (_, record, index: number) => (
         <InputNumber
           min={1}
           value={record.quantity}
@@ -109,12 +108,16 @@ export const ImportReceiptForm = () => {
       title: 'Đơn giá',
       dataIndex: 'unitPrice',
       key: 'unitPrice',
-      render: (_: any, record: any, index: number) => (
+      render: (_, record, index: number) => (
         <InputNumber
           min={0}
           value={record.unitPrice}
           formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-          parser={(value) => (value ? value.replace(/\$\s?|(,*)/g, '') : '')}
+          parser={(value) => {
+            if (!value) return 0
+            const num = Number(value.replace(/\$\s?|(,*)/g, ''))
+            return isNaN(num) ? 0 : num
+          }}
           onChange={(val) => handleChangeItem(index, 'unitPrice', val ?? 0)}
         />
       ),
@@ -122,7 +125,7 @@ export const ImportReceiptForm = () => {
     {
       title: 'Hành động',
       key: 'action',
-      render: (_: any, _record: any, index: number) => (
+      render: (_, _record, index: number) => (
         <Popconfirm title="Bạn có chắc muốn xóa?" onConfirm={() => handleRemove(index)}>
           <Button danger>Xóa</Button>
         </Popconfirm>

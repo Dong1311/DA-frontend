@@ -49,6 +49,10 @@ export const SaleFormContent = () => {
   }, [paymentSuccessData])
 
   const onSubmit = async (data: any) => {
+    if (!data.products || data.products.length === 0) {
+      message.error('Đơn hàng trống')
+      return
+    }
     const totalAmount = data.products.reduce((sum: number, p: { totalPrice: number }) => sum + p.totalPrice, 0)
     const payload = { ...data, totalAmount }
 

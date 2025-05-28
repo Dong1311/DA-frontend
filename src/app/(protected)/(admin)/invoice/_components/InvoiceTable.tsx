@@ -1,9 +1,14 @@
 'use client'
 
 import { Table } from 'antd'
+import { useState } from 'react'
 
+import { type InvoiceResponseDto } from '@/api-sdk'
+import { SalesService } from '@/api-sdk/services/SalesService'
 import { Text } from '@/components'
 import { useInvoiceList, useInvoiceSearch } from '@/hooks/invoice'
+
+import { InvoiceDetailModal } from './InvoiceDetailModal'
 
 export const InvoiceTable = ({
   searchKeyword,
@@ -23,6 +28,23 @@ export const InvoiceTable = ({
   })
   const data = searchKeyword ? searchResults : allInvoices
   const isLoading = searchKeyword ? isLoadingSearch : isLoadingAll
+
+  const [selectedInvoice, setSelectedInvoice] = useState<InvoiceResponseDto | null>(null)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [loadingDetail, setLoadingDetail] = useState(false)
+
+  const fetchInvoiceDetail = async (id: string) => {
+    try {
+      setLoadingDetail(true)
+      const detail = await SalesService.salesControllerGetInvoice({ id })
+      setSelectedInvoice(detail)
+      setModalOpen(true)
+    } catch (error) {
+      console.error('Lỗi khi lấy chi tiết hóa đơn', error)
+    } finally {
+      setLoadingDetail(false)
+    }
+  }
 
   const columns = [
     {
@@ -68,7 +90,24 @@ export const InvoiceTable = ({
 
   return (
     <>
-      <Table columns={columns} dataSource={data} loading={isLoading} rowKey="id" pagination={{ pageSize: 10 }} />
+      <Table
+        columns={columns}
+        dataSource={data}
+        loading={isLoading}
+        rowKey="id"
+        pagination={{ pageSize: 10 }}
+        onRow={(record) => ({
+          onClick: () => fetchInvoiceDetail(record.id),
+          style: { cursor: 'pointer' },
+        })}
+      />
+
+      <InvoiceDetailModal
+        open={modalOpen}
+        loading={loadingDetail}
+        invoice={selectedInvoice}
+        onClose={() => setModalOpen(false)}
+      />
     </>
   )
 }
