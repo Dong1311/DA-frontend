@@ -9,10 +9,9 @@ export const $CreateImportReceiptDto = {
       description: `ID nhà cung cấp`,
       isRequired: true,
     },
-    amountDue: {
-      type: 'number',
-      description: `Tổng tiền đơn nhập`,
-      isRequired: true,
+    code: {
+      type: 'string',
+      description: `Mã đơn nhập`,
     },
     name: {
       type: 'string',

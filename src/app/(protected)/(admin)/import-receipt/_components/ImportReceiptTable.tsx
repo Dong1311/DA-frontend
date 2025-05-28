@@ -21,8 +21,15 @@ export const ImportReceiptTable = ({ searchKeyword }: { searchKeyword: string })
   const columns = [
     {
       title: 'Mã đơn',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'code',
+      key: 'code',
+      ellipsis: true,
+      onCell: () => ({ style: { width: '15%' } }),
+    },
+    {
+      title: 'Tên đơn nhập',
+      dataIndex: 'name',
+      key: 'name',
       ellipsis: true,
       onCell: () => ({ style: { width: '15%' } }),
     },
@@ -45,12 +52,6 @@ export const ImportReceiptTable = ({ searchKeyword }: { searchKeyword: string })
       dataIndex: 'amountDue',
       key: 'amountDue',
       render: (val: number) => val.toLocaleString(),
-      onCell: () => ({ style: { width: '15%' } }),
-    },
-    {
-      title: 'Trạng thái',
-      dataIndex: 'status',
-      key: 'status',
       onCell: () => ({ style: { width: '15%' } }),
     },
     // {

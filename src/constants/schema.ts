@@ -61,7 +61,7 @@ export type CreateImportReceiptItemDto = z.infer<typeof importReceiptItemSchema>
 
 export const createImportReceiptSchema = z.object({
   supplierId: z.string().uuid('supplierId phải là UUID'),
-  amountDue: z.coerce.number().min(0, 'Tổng tiền phải lớn hơn hoặc bằng 0'),
+  code: z.string().optional(),
   name: z.string().min(1, 'Tên đơn nhập là bắt buộc'),
   items: z.array(importReceiptItemSchema).min(1, 'Phải có ít nhất một sản phẩm nhập'),
 }).strict()

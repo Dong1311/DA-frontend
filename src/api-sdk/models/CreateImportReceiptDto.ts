@@ -9,9 +9,9 @@ export type CreateImportReceiptDto = {
    */
   supplierId: string;
   /**
-   * Tổng tiền đơn nhập
+   * Mã đơn nhập
    */
-  amountDue: number;
+  code?: string;
   /**
    * Tên đơn nhập
    */

@@ -25,4 +25,57 @@ export class SalesService {
       mediaType: 'application/json',
     });
   }
+  /**
+   * Lấy tất cả hóa đơn của cửa hàng hiện tại
+   * @returns InvoiceResponseDto
+   * @throws ApiError
+   */
+  public static salesControllerGetAllInvoices(): CancelablePromise<Array<InvoiceResponseDto>> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/sales/invoices',
+    });
+  }
+  /**
+   * Tìm kiếm hóa đơn theo từ khóa và khoảng ngày
+   * @returns InvoiceResponseDto
+   * @throws ApiError
+   */
+  public static salesControllerSearchInvoices({
+    keyword,
+    fromDate,
+    toDate,
+  }: {
+    keyword: string,
+    fromDate: string,
+    toDate: string,
+  }): CancelablePromise<Array<InvoiceResponseDto>> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/sales/invoices/search',
+      query: {
+        'keyword': keyword,
+        'fromDate': fromDate,
+        'toDate': toDate,
+      },
+    });
+  }
+  /**
+   * Lấy thông tin hóa đơn theo ID
+   * @returns InvoiceResponseDto
+   * @throws ApiError
+   */
+  public static salesControllerGetInvoice({
+    id,
+  }: {
+    id: string,
+  }): CancelablePromise<InvoiceResponseDto> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/sales/invoice/{id}',
+      path: {
+        'id': id,
+      },
+    });
+  }
 }

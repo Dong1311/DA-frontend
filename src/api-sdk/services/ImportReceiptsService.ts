@@ -38,6 +38,24 @@ export class ImportReceiptsService {
     });
   }
   /**
+   * Search import receipts by keyword (supplier name or status)
+   * @returns ImportReceiptResponseDto
+   * @throws ApiError
+   */
+  public static importReceiptControllerSearch({
+    keyword,
+  }: {
+    keyword: string,
+  }): CancelablePromise<Array<ImportReceiptResponseDto>> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/import-receipts/search',
+      query: {
+        'keyword': keyword,
+      },
+    });
+  }
+  /**
    * Get import receipt detail by ID
    * @returns ImportReceiptResponseDto
    * @throws ApiError
@@ -92,24 +110,6 @@ export class ImportReceiptsService {
       url: '/import-receipts/{id}',
       path: {
         'id': id,
-      },
-    });
-  }
-  /**
-   * Search import receipts by keyword (supplier name or status)
-   * @returns ImportReceiptResponseDto
-   * @throws ApiError
-   */
-  public static importReceiptControllerSearch({
-    keyword,
-  }: {
-    keyword: string,
-  }): CancelablePromise<Array<ImportReceiptResponseDto>> {
-    return __request(OpenAPI, {
-      method: 'GET',
-      url: '/import-receipts/search',
-      query: {
-        'keyword': keyword,
       },
     });
   }

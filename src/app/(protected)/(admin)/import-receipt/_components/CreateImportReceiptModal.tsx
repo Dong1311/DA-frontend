@@ -20,7 +20,6 @@ export const CreateImportReceiptModal = ({ open, onClose }: Props) => {
     resolver: zodResolver(createImportReceiptSchema),
     defaultValues: {
       supplierId: '',
-      amountDue: 0,
       items: [],
     },
   })

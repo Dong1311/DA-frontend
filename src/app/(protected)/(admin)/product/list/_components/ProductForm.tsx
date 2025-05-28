@@ -6,7 +6,12 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { ControlledNumberInput } from '@/components/ControlledNumberInput'
 import { type ProductFormValues } from '@/constants/schema'
 
-export const ProductForm = ({ isEdit }: { isEdit: boolean }) => {
+interface ProductFormProps {
+  isEdit: boolean
+  showStock?: boolean
+}
+
+export const ProductForm = ({ isEdit, showStock = true }: ProductFormProps) => {
   const {
     control,
     formState: { errors },
@@ -55,13 +60,15 @@ export const ProductForm = ({ isEdit }: { isEdit: boolean }) => {
         label="Giá nhập"
         errorMessage={errors.costPrice?.message}
       />
-      <ControlledNumberInput
-        control={control}
-        name="stock"
-        label="Tồn kho"
-        errorMessage={errors.stock?.message}
-        disabled={isEdit}
-      />
+      {showStock && (
+        <ControlledNumberInput
+          control={control}
+          name="stock"
+          label="Tồn kho"
+          errorMessage={errors.stock?.message}
+          disabled={isEdit}
+        />
+      )}
     </Form>
   )
 }

@@ -1,12 +1,10 @@
 'use client'
 
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Divider, Form, Input, Select, Space } from 'antd'
+import { Button, Col, Form, Input, InputNumber, message, Popconfirm, Row, Select, Space, Table } from 'antd'
 import { useState } from 'react'
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 
 import { type CreateImportReceiptDto } from '@/api-sdk'
-import { ControlledNumberInput } from '@/components/ControlledNumberInput'
 import { type ProductFormValues } from '@/constants/schema'
 import { useProductList } from '@/hooks/product'
 
@@ -19,156 +17,192 @@ export const ImportReceiptForm = () => {
   const {
     control,
     setValue,
-    formState: { errors },
     watch,
+    formState: { errors },
   } = useFormContext<FormValues>()
 
   const { data: products } = useProductList()
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'items',
-  })
+  const items = watch('items') || []
+
   const [openCreateModal, setOpenCreateModal] = useState(false)
-  const [creatingIndex, setCreatingIndex] = useState<number | null>(null)
+  const [selectedProductId, setSelectedProductId] = useState<string | undefined>(undefined)
 
-  const items = watch('items')
-  const handleCreateProduct = (newProduct: ProductFormValues) => {
-    if (creatingIndex === null) return
+  const handleAddProduct = () => {
+    if (!selectedProductId) return
 
-    setValue(`items.${creatingIndex}`, {
-      productId: undefined,
-      newProduct,
+    if (items.find((item) => item.productId === selectedProductId)) {
+      message.warning('Sản phẩm đã có trong danh sách')
+      return
+    }
+
+    const product = products?.find((p) => p.id === selectedProductId)
+    if (!product) return
+
+    const newItem = {
+      productId: product.id,
+      newProduct: undefined,
       quantity: 1,
-      unitPrice: newProduct.costPrice ?? 0,
-    })
+      unitPrice: product.costPrice ?? 0,
+    }
 
-    setOpenCreateModal(false)
-    setCreatingIndex(null)
+    setValue('items', [...items, newItem])
+    setSelectedProductId(undefined)
   }
+
+  const handleRemove = (index: number) => {
+    const newItems = [...items]
+    newItems.splice(index, 1)
+    setValue('items', newItems)
+  }
+
+  const handleChangeItem = (index: number, field: 'quantity' | 'unitPrice', value: number) => {
+    const newItems = [...items]
+    newItems[index] = {
+      ...newItems[index],
+      [field]: value,
+    }
+    setValue('items', newItems)
+  }
+
+  const handleCreateProduct = (newProduct: ProductFormValues) => {
+    setValue('items', [
+      ...items,
+      {
+        productId: undefined,
+        newProduct,
+        quantity: 1,
+        unitPrice: newProduct.costPrice ?? 0,
+      },
+    ])
+    setOpenCreateModal(false)
+  }
+
+  const columns = [
+    {
+      title: 'Tên sản phẩm',
+      dataIndex: 'name',
+      key: 'name',
+      render: (_: any, record: any) =>
+        record.newProduct?.name || products?.find((p) => p.id === record.productId)?.name || '-',
+    },
+    {
+      title: 'Mã sản phẩm',
+      dataIndex: 'code',
+      key: 'code',
+      render: (_: any, record: any) =>
+        record.newProduct?.code || products?.find((p) => p.id === record.productId)?.code || '-',
+    },
+    {
+      title: 'Số lượng',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      render: (_: any, record: any, index: number) => (
+        <InputNumber
+          min={1}
+          value={record.quantity}
+          onChange={(val) => handleChangeItem(index, 'quantity', val ?? 1)}
+        />
+      ),
+    },
+    {
+      title: 'Đơn giá',
+      dataIndex: 'unitPrice',
+      key: 'unitPrice',
+      render: (_: any, record: any, index: number) => (
+        <InputNumber
+          min={0}
+          value={record.unitPrice}
+          formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          parser={(value) => (value ? value.replace(/\$\s?|(,*)/g, '') : '')}
+          onChange={(val) => handleChangeItem(index, 'unitPrice', val ?? 0)}
+        />
+      ),
+    },
+    {
+      title: 'Hành động',
+      key: 'action',
+      render: (_: any, _record: any, index: number) => (
+        <Popconfirm title="Bạn có chắc muốn xóa?" onConfirm={() => handleRemove(index)}>
+          <Button danger>Xóa</Button>
+        </Popconfirm>
+      ),
+    },
+  ]
+
   return (
     <>
       <Form layout="vertical">
-        <SupplierSearch />
-        <Form.Item
-          label="Tên đơn nhập"
-          required
-          validateStatus={errors.name ? 'error' : undefined}
-          help={errors.name?.message}
-        >
-          <Controller
-            name="name"
-            control={control}
-            render={({ field }) => <Input {...field} placeholder="Nhập tên đơn nhập" />}
-          />
+        <Row gutter={16}>
+          <Col xs={24} sm={8}>
+            <SupplierSearch />
+          </Col>
+          <Col xs={24} sm={8}>
+            <Form.Item
+              label="Tên đơn nhập"
+              required
+              validateStatus={errors.name ? 'error' : undefined}
+              help={errors.name?.message}
+            >
+              <Controller
+                name="name"
+                control={control}
+                render={({ field }) => <Input {...field} placeholder="Nhập tên đơn nhập" />}
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={8}>
+            <Form.Item label="Mã đơn" validateStatus={errors.code ? 'error' : undefined} help={errors.code?.message}>
+              <Controller
+                name="code"
+                control={control}
+                render={({ field }) => <Input {...field} placeholder="Nhập tên đơn nhập" />}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Form.Item label="Chọn sản phẩm">
+          <Space>
+            <Select
+              showSearch
+              placeholder="Chọn sản phẩm"
+              style={{ width: 300 }}
+              options={
+                products?.map((p) => ({
+                  label: `${p.code} - ${p.name}`,
+                  value: p.id,
+                })) || []
+              }
+              value={selectedProductId}
+              onChange={setSelectedProductId}
+              filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+            />
+            <Button onClick={handleAddProduct} disabled={!selectedProductId}>
+              Thêm
+            </Button>
+
+            <Button type="primary" onClick={() => setOpenCreateModal(true)}>
+              Thêm sản phẩm mới
+            </Button>
+          </Space>
         </Form.Item>
 
         <Form.Item label="Danh sách sản phẩm">
-          {fields.map((field, index) => {
-            const isNewProduct = !!items?.[index]?.newProduct
-
-            return (
-              <Space key={field.id} align="start" style={{ display: 'flex', marginBottom: 8, flexWrap: 'wrap' }}>
-                {!isNewProduct ? (
-                  <Controller
-                    name={`items.${index}.productId` as const}
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        style={{ width: 250 }}
-                        placeholder="Chọn sản phẩm có sẵn"
-                        options={
-                          products?.map((p) => ({
-                            label: `${p.code} - ${p.name}`,
-                            value: p.id,
-                          })) || []
-                        }
-                      />
-                    )}
-                  />
-                ) : (
-                  <Divider plain type="horizontal" style={{ width: '100%' }}>
-                    Tạo sản phẩm mới
-                  </Divider>
-                )}
-
-                <Button
-                  type="link"
-                  onClick={() => {
-                    if (isNewProduct) {
-                      setValue(`items.${index}.newProduct`, undefined)
-                      setValue(`items.${index}.productId`, undefined)
-                    } else {
-                      setCreatingIndex(index)
-                      setOpenCreateModal(true)
-                    }
-                  }}
-                >
-                  {isNewProduct ? 'Chọn sản phẩm có sẵn' : 'Tạo sản phẩm mới'}
-                </Button>
-
-                {isNewProduct && (
-                  <>
-                    <div style={{ width: 250 }}>
-                      <strong>{items[index].newProduct?.name}</strong>
-                      <br />
-                      Mã: {items[index].newProduct?.code}
-                      <br />
-                      Giá bán: {items[index].newProduct?.salePrice}
-                      <br />
-                      Giá nhập: {items[index].newProduct?.costPrice}
-                    </div>
-                  </>
-                )}
-
-                <ControlledNumberInput
-                  control={control}
-                  name={`items.${index}.quantity` as const}
-                  label="Số lượng"
-                  errorMessage={errors.items?.[index]?.quantity?.message}
-                />
-                <ControlledNumberInput
-                  control={control}
-                  name={`items.${index}.unitPrice` as const}
-                  label="Đơn giá"
-                  errorMessage={errors.items?.[index]?.unitPrice?.message}
-                />
-
-                <Button
-                  type="text"
-                  icon={<MinusCircleOutlined />}
-                  onClick={() => remove(index)}
-                  danger
-                  style={{ marginTop: 30 }}
-                />
-              </Space>
-            )
-          })}
-
-          <Button
-            type="dashed"
-            onClick={() =>
-              append({
-                productId: undefined,
-                newProduct: undefined,
-                quantity: 1,
-                unitPrice: 0,
-              })
-            }
-            block
-            icon={<PlusOutlined />}
-          >
-            Thêm sản phẩm
-          </Button>
+          <Table
+            dataSource={items}
+            columns={columns}
+            rowKey={(_, index) => String(index)}
+            pagination={false}
+            locale={{ emptyText: 'Chưa có sản phẩm nào' }}
+            scroll={{ x: 'max-content' }}
+          />
         </Form.Item>
       </Form>
+
       <CreateProductModal
         open={openCreateModal}
-        onClose={() => {
-          setOpenCreateModal(false)
-          setCreatingIndex(null)
-        }}
+        onClose={() => setOpenCreateModal(false)}
         onCreate={handleCreateProduct}
       />
     </>
