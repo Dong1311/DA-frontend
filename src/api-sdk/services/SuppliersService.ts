@@ -38,6 +38,24 @@ export class SuppliersService {
     });
   }
   /**
+   * Search products by name or code
+   * @returns SupplierResponseDto
+   * @throws ApiError
+   */
+  public static supplierControllerSearch({
+    keyword,
+  }: {
+    keyword: string,
+  }): CancelablePromise<Array<SupplierResponseDto>> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/suppliers/search',
+      query: {
+        'keyword': keyword,
+      },
+    });
+  }
+  /**
    * Get supplier by ID
    * @returns SupplierResponseDto
    * @throws ApiError

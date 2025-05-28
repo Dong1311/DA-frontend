@@ -70,7 +70,7 @@ export const SidebarHeader = () => {
             <SubItem icon={<FileExcelOutlined />} label="Hóa đơn" />
             <SubItem icon={<DeliveredProcedureOutlined />} label="Vận đơn" />
             <SubItem icon={<UndoOutlined />} label="Trả hàng" />
-            <SubItem icon={<UploadOutlined />} label="Nhập hàng" />
+            <SubItem icon={<UploadOutlined />} label="Nhập hàng" href="/import-receipt" />
             <SubItem icon={<UploadOutlined />} label="Trả hàng nhập" />
             <SubItem icon={<FileDoneOutlined />} label="Xuất huỷ" />
           </HoverMenuItem>

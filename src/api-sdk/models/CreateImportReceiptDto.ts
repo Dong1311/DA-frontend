@@ -13,9 +13,9 @@ export type CreateImportReceiptDto = {
    */
   amountDue: number;
   /**
-   * Trạng thái đơn nhập
+   * Tên đơn nhập
    */
-  status: string;
+  name: string;
   /**
    * Danh sách các sản phẩm trong đơn nhập
    */

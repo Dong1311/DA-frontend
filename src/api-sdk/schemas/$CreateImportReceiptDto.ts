@@ -14,9 +14,9 @@ export const $CreateImportReceiptDto = {
       description: `Tổng tiền đơn nhập`,
       isRequired: true,
     },
-    status: {
+    name: {
       type: 'string',
-      description: `Trạng thái đơn nhập`,
+      description: `Tên đơn nhập`,
       isRequired: true,
     },
     items: {

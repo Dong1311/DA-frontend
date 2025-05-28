@@ -39,3 +39,31 @@ export const customerSchema = z.object({
 })
 
 export type CustomerFormValues = z.infer<typeof customerSchema>
+
+const newProductSchema = z.object({
+  code: z.string().min(1, 'Mã sản phẩm là bắt buộc'),
+  name: z.string().min(1, 'Tên sản phẩm là bắt buộc'),
+  shortName: z.string().optional(),
+  salePrice: z.coerce.number().min(0),
+  costPrice: z.coerce.number().min(0),
+})
+
+export const importReceiptItemSchema = z
+  .object({
+    productId: z.string().uuid('productId phải là UUID').optional(),
+    newProduct: newProductSchema.optional(),
+    quantity: z.coerce.number().int().min(1, 'Số lượng phải lớn hơn 0'),
+    unitPrice: z.coerce.number().min(0, 'Đơn giá phải lớn hơn hoặc bằng 0'),
+  })
+  .strict()
+
+export type CreateImportReceiptItemDto = z.infer<typeof importReceiptItemSchema>
+
+export const createImportReceiptSchema = z.object({
+  supplierId: z.string().uuid('supplierId phải là UUID'),
+  amountDue: z.coerce.number().min(0, 'Tổng tiền phải lớn hơn hoặc bằng 0'),
+  name: z.string().min(1, 'Tên đơn nhập là bắt buộc'),
+  items: z.array(importReceiptItemSchema).min(1, 'Phải có ít nhất một sản phẩm nhập'),
+}).strict()
+
+export type CreateImportReceiptDto = z.infer<typeof createImportReceiptSchema>

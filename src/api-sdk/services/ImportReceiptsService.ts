@@ -95,4 +95,22 @@ export class ImportReceiptsService {
       },
     });
   }
+  /**
+   * Search import receipts by keyword (supplier name or status)
+   * @returns ImportReceiptResponseDto
+   * @throws ApiError
+   */
+  public static importReceiptControllerSearch({
+    keyword,
+  }: {
+    keyword: string,
+  }): CancelablePromise<Array<ImportReceiptResponseDto>> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/import-receipts/search',
+      query: {
+        'keyword': keyword,
+      },
+    });
+  }
 }

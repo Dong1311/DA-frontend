@@ -16,6 +16,15 @@ export const useCreateSupplier = () => {
   })
 }
 
+export const useSupplierSearch = (keyword: string) => {
+  return useQuery({
+    queryKey: ['products', 'search', keyword],
+    queryFn: () => SuppliersService.supplierControllerSearch({ keyword }),
+    enabled: keyword.length > 0,
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
 export const useSupplierList = () => {
   return useQuery({
     queryKey: ['suppliers'],
