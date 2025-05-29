@@ -1,10 +1,57 @@
-import { Col, Row, Typography } from 'antd'
+import { Button, Col, Form, InputNumber, message, Modal, Row, Typography } from 'antd'
+import { useState } from 'react'
 
 import { type InvoiceResponseDto } from '@/api-sdk'
+import { ReturnsService } from '@/api-sdk'
 
 const { Text, Title } = Typography
 
+type ReturnProductInput = {
+  productId: string
+  code: string
+  name: string
+  maxQuantity: number
+  quantity: number
+  unitPrice: number
+}
+
 export const InvoiceInfo = ({ invoice }: { invoice: InvoiceResponseDto }) => {
+  const [openReturnModal, setOpenReturnModal] = useState(false)
+  const [form] = Form.useForm()
+
+  const returnProducts: ReturnProductInput[] = invoice.invoiceItems.map((item) => ({
+    productId: item.productId,
+    code: item.product?.code || '',
+    name: item.product?.name || '',
+    maxQuantity: item.quantity,
+    quantity: 0,
+    unitPrice: item.unitPrice,
+  }))
+
+  const onSubmitReturn = async (values: any) => {
+    const { products } = values
+
+    const refundAmount = products.reduce((sum: number, p: ReturnProductInput) => sum + p.quantity * p.unitPrice, 0)
+
+    try {
+      await ReturnsService.returnControllerCreateReturn({
+        requestBody: {
+          invoiceId: invoice.id,
+          customerId: invoice.customerId ?? '',
+          refundAmount,
+          status: 'PENDING',
+          storeId: invoice.storeId,
+          products,
+        },
+      })
+      message.success('Tạo phiếu trả hàng thành công')
+      setOpenReturnModal(false)
+      form.resetFields()
+    } catch (_error) {
+      message.error('Tạo phiếu trả hàng thất bại')
+    }
+  }
+
   return (
     <>
       <Title level={4} style={{ marginBottom: 24 }}>
@@ -34,6 +81,43 @@ export const InvoiceInfo = ({ invoice }: { invoice: InvoiceResponseDto }) => {
           <Text strong>Đã thanh toán:</Text> <Text>{invoice.amountPaid.toLocaleString()}</Text>
         </Col>
       </Row>
+
+      <Button type="primary" style={{ marginTop: 24 }} onClick={() => setOpenReturnModal(true)}>
+        Trả hàng
+      </Button>
+
+      <Modal
+        title="Tạo phiếu trả hàng"
+        open={openReturnModal}
+        onCancel={() => setOpenReturnModal(false)}
+        onOk={() => form.submit()}
+        okText="Gửi"
+      >
+        <Form form={form} layout="vertical" onFinish={onSubmitReturn} initialValues={{ products: returnProducts }}>
+          {returnProducts.map((p, idx) => (
+            <Form.Item
+              label={`${p.code} - ${p.name} (tối đa ${p.maxQuantity})`}
+              key={p.productId}
+              name={['products', idx, 'quantity']}
+              rules={[
+                { required: true, message: 'Vui lòng nhập số lượng trả' },
+                {
+                  type: 'number',
+                  min: 0,
+                  max: p.maxQuantity,
+                  message: `Số lượng phải từ 0 đến ${p.maxQuantity}`,
+                },
+              ]}
+            >
+              <InputNumber min={0} max={p.maxQuantity} />
+            </Form.Item>
+          ))}
+
+          <Form.Item name="products" noStyle>
+            <input type="hidden" />
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   )
 }

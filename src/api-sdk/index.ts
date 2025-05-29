@@ -22,6 +22,7 @@ export type { ImportReceiptResponseDto } from './models/ImportReceiptResponseDto
 export type { InvoiceItemDto } from './models/InvoiceItemDto';
 export type { InvoiceResponseDto } from './models/InvoiceResponseDto';
 export type { LoginDto } from './models/LoginDto';
+export type { ProductDto } from './models/ProductDto';
 export type { ProductImageDto } from './models/ProductImageDto';
 export type { ProductResponseDto } from './models/ProductResponseDto';
 export type { ProductSaleDto } from './models/ProductSaleDto';
@@ -52,6 +53,7 @@ export { $ImportReceiptResponseDto } from './schemas/$ImportReceiptResponseDto';
 export { $InvoiceItemDto } from './schemas/$InvoiceItemDto';
 export { $InvoiceResponseDto } from './schemas/$InvoiceResponseDto';
 export { $LoginDto } from './schemas/$LoginDto';
+export { $ProductDto } from './schemas/$ProductDto';
 export { $ProductImageDto } from './schemas/$ProductImageDto';
 export { $ProductResponseDto } from './schemas/$ProductResponseDto';
 export { $ProductSaleDto } from './schemas/$ProductSaleDto';

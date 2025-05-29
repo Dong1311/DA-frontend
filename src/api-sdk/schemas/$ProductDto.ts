@@ -2,35 +2,42 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $InvoiceItemDto = {
+export const $ProductDto = {
   properties: {
     id: {
       type: 'string',
       isRequired: true,
     },
-    invoiceId: {
+    code: {
       type: 'string',
       isRequired: true,
     },
-    productId: {
+    name: {
       type: 'string',
       isRequired: true,
     },
-    quantity: {
+    salePrice: {
       type: 'number',
       isRequired: true,
     },
-    unitPrice: {
+    costPrice: {
       type: 'number',
       isRequired: true,
     },
-    totalPrice: {
+    stock: {
       type: 'number',
       isRequired: true,
     },
-    product: {
-      type: 'ProductDto',
+    reserved: {
+      type: 'number',
       isRequired: true,
+    },
+    storeId: {
+      type: 'string',
+      isRequired: true,
+    },
+    shortName: {
+      type: 'string',
     },
   },
 } as const;
