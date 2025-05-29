@@ -6,7 +6,6 @@ import { useState } from 'react'
 
 import { Text } from '@/components'
 
-import { ProductFilters } from './ProductFilters'
 import { ProductSearch } from './ProductSearch'
 import { ProductTable } from './ProductTable'
 import { ProductToolbar } from './ProductToolbar'
@@ -30,17 +29,16 @@ export const ProductLayout = () => {
       wrap="wrap"
       gap={16}
     >
-      <Flex vertical className="w-full overflow-y-auto px-2 pb-4 md:w-[280px] md:px-4" style={{ flexShrink: 0 }}>
+      <Flex vertical>
         <Text className="mb-4 text-[20px] font-semibold text-black">Hàng hóa</Text>
-        <ProductFilters />
-      </Flex>
 
-      <Flex vertical className="min-w-0 flex-1 overflow-y-auto px-2 md:px-0">
-        <Flex justify="space-between">
-          <ProductSearch onSearch={handleSearch} defaultValue={initialKeyword} />
-          <ProductToolbar />
+        <Flex vertical className="mt-2 min-w-0 flex-1 overflow-y-auto">
+          <Flex justify="space-between" className="mb-4">
+            <ProductSearch onSearch={handleSearch} defaultValue={initialKeyword} />
+            <ProductToolbar />
+          </Flex>
+          <ProductTable searchKeyword={searchKeyword} />
         </Flex>
-        <ProductTable searchKeyword={searchKeyword} />
       </Flex>
     </Flex>
   )

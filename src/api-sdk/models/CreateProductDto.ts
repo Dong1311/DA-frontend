@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ProductUnitDto } from './ProductUnitDto';
 export type CreateProductDto = {
   code: string;
   name: string;
@@ -12,5 +13,6 @@ export type CreateProductDto = {
   unitId?: string;
   reserved?: number;
   images?: Array<string>;
+  productUnits?: Array<ProductUnitDto>;
 };
 

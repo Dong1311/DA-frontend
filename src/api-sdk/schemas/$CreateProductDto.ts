@@ -39,5 +39,11 @@ export const $CreateProductDto = {
         type: 'string',
       },
     },
+    productUnits: {
+      type: 'array',
+      contains: {
+        type: 'ProductUnitDto',
+      },
+    },
   },
 } as const;

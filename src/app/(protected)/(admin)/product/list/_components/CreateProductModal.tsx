@@ -36,8 +36,17 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
           return file.url || ''
         })
       )
+      const fixedUnits = values.productUnits?.map((unit) => ({
+        ...unit,
+        isBaseUnit: unit.isBaseUnit ?? false,
+      }))
 
-      await mutateAsync({ ...values, images: imageUrls })
+      await mutateAsync({
+        ...values,
+        images: imageUrls,
+        productUnits: fixedUnits,
+      })
+
       message.success('Tạo sản phẩm thành công')
       reset()
       setFileList([])
@@ -56,6 +65,7 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
       onOk={handleSubmit(onSubmit)}
       okText="Tạo"
       cancelText="Hủy"
+      width={550}
       confirmLoading={methods.formState.isSubmitting}
     >
       <FormProvider {...methods}>

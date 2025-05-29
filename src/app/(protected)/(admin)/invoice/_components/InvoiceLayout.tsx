@@ -46,8 +46,8 @@ export const InvoiceLayout = () => {
     >
       <Flex vertical className="w-full overflow-y-auto px-2 pb-4 " style={{ flexShrink: 0 }}>
         <Text className="mb-4 text-[20px] font-semibold text-black">Hóa đơn</Text>
-        <Flex vertical className="my-4 min-w-0 flex-1 overflow-y-auto px-2 md:px-0">
-          <Flex justify="space-between">
+        <Flex vertical className="my-2 min-w-0 flex-1 overflow-y-auto px-2 md:px-0">
+          <Flex justify="space-between" className="mb-4">
             <InvoiceSearch
               onSearch={handleSearch}
               defaultValue={initialKeyword}

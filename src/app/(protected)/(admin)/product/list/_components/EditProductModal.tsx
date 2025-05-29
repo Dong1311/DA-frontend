@@ -60,7 +60,21 @@ export const EditProductModal = ({ open, onClose, product }: Props) => {
           return file.url || ''
         })
       )
-      await mutateAsync({ id: product.id, requestBody: { ...values, images: imageUrls } })
+
+      const normalizedUnits =
+        values.productUnits?.map((u) => ({
+          ...u,
+          isBaseUnit: u.isBaseUnit ?? false,
+        })) || []
+
+      await mutateAsync({
+        id: product.id,
+        requestBody: {
+          ...values,
+          images: imageUrls,
+          productUnits: normalizedUnits,
+        },
+      })
 
       message.success('Cập nhật thành công')
       onClose()
@@ -78,6 +92,7 @@ export const EditProductModal = ({ open, onClose, product }: Props) => {
       onOk={handleSubmit(onSubmit)}
       okText="Cập nhật"
       cancelText="Hủy"
+      width={550}
       confirmLoading={methods.formState.isSubmitting}
     >
       <FormProvider {...methods}>

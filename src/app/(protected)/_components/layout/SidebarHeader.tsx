@@ -4,13 +4,11 @@ import {
   BarChartOutlined,
   CalendarOutlined,
   CheckSquareOutlined,
-  DollarOutlined,
   DropboxOutlined,
   EyeOutlined,
   FileDoneOutlined,
   FileExcelOutlined,
   FileTextOutlined,
-  MedicineBoxOutlined,
   ScheduleOutlined,
   SettingOutlined,
   ShopOutlined,
@@ -58,9 +56,8 @@ export const SidebarHeader = () => {
 
           <HoverMenuItem icon={<DropboxOutlined />} label="Hàng hóa">
             <SubItem icon={<AppstoreOutlined />} label="Danh mục" href="/product/list" />
-            <SubItem icon={<MedicineBoxOutlined />} label="Danh mục thuốc" />
             <SubItem icon={<FileDoneOutlined />} label="Đơn thuốc mẫu" />
-            <SubItem icon={<TagsOutlined />} label="Thiết lập giá" href="/product/price-book" />
+            <SubItem icon={<TagsOutlined />} label="Thiết lập giá" href="/product/pricebook" />
             <SubItem icon={<CheckSquareOutlined />} label="Kiểm kho" />
           </HoverMenuItem>
 
@@ -84,8 +81,6 @@ export const SidebarHeader = () => {
             <SubItem icon={<SolutionOutlined />} label="Bảng tính lương" />
             <SubItem icon={<SettingOutlined />} label="Thiết lập nhân viên" />
           </HoverMenuItem>
-
-          <HoverMenuItem icon={<DollarOutlined />} label="Sổ quỹ" />
 
           <HoverMenuItem icon={<FileTextOutlined />} label="Báo cáo">
             <SubItem icon={<BarChartOutlined />} label="Cuối ngày" />
@@ -117,7 +112,6 @@ export const SidebarHeader = () => {
           <HoverMenuItem icon={<SwapOutlined />} label="Giao dịch" />
           <HoverMenuItem icon={<TeamOutlined />} label="Đối tác" />
           <HoverMenuItem icon={<UserOutlined />} label="Nhân viên" />
-          <HoverMenuItem icon={<DollarOutlined />} label="Sổ quỹ" />
           <HoverMenuItem icon={<FileTextOutlined />} label="Báo cáo" />
           <HoverMenuItem icon={<ShoppingCartOutlined />} label="Bán Online" />
           <HoverMenuItem icon={<ShopOutlined />} label="Bán hàng" />

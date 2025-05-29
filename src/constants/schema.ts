@@ -12,14 +12,27 @@ export const supplierSchema = z.object({
 
 export type SupplierFormValues = z.infer<typeof supplierSchema>
 
+const productUnitSchema = z.object({
+  unitName: z.string().min(1, 'Tên đơn vị là bắt buộc'),
+  conversionFactor: z.number().min(0.0001, 'Tỉ lệ quy đổi phải lớn hơn 0'),
+  isBaseUnit: z.boolean().optional(),
+})
+
 export const productSchema = z.object({
   code: z.string().min(1, 'Mã sản phẩm là bắt buộc'),
   name: z.string().min(1, 'Tên sản phẩm là bắt buộc'),
   shortName: z.string().optional(),
-  salePrice: z.coerce.number().min(0),
-  costPrice: z.coerce.number().min(0),
-  stock: z.coerce.number().min(0),
-  images: z.array(z.string()).optional(),
+  salePrice: z.coerce.number().min(0, 'Giá bán phải lớn hơn hoặc bằng 0'),
+  costPrice: z.coerce.number().min(0, 'Giá nhập phải lớn hơn hoặc bằng 0'),
+  stock: z.coerce.number().min(0, 'Tồn kho phải lớn hơn hoặc bằng 0'),
+  images: z.array(z.string().url()).optional(),
+  productUnits: z
+    .array(productUnitSchema)
+    .min(1, 'Phải có ít nhất 1 đơn vị sản phẩm')
+    .refine(
+      (productUnits) => productUnits.filter((u) => u.isBaseUnit === true).length === 1,
+      'Phải có đúng 1 đơn vị cơ bản'
+    )
 })
 
 export type ProductFormValues = z.infer<typeof productSchema>
