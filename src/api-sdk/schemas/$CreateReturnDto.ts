@@ -21,7 +21,6 @@ export const $CreateReturnDto = {
     },
     status: {
       type: 'string',
-      isRequired: true,
     },
     storeId: {
       type: 'string',

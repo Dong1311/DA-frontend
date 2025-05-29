@@ -1,6 +1,6 @@
 'use client'
 
-import { Table } from 'antd'
+import { message, Table } from 'antd'
 import { useState } from 'react'
 
 import { type InvoiceResponseDto } from '@/api-sdk'
@@ -36,11 +36,11 @@ export const InvoiceTable = ({
   const fetchInvoiceDetail = async (id: string) => {
     try {
       setLoadingDetail(true)
+      setModalOpen(true)
       const detail = await SalesService.salesControllerGetInvoice({ id })
       setSelectedInvoice(detail)
-      setModalOpen(true)
-    } catch (error) {
-      console.error('Lỗi khi lấy chi tiết hóa đơn', error)
+    } catch (_error) {
+      message.error('Lỗi khi lấy chi tiết hóa đơn')
     } finally {
       setLoadingDetail(false)
     }

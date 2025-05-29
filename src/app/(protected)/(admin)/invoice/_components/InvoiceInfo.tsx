@@ -29,9 +29,14 @@ export const InvoiceInfo = ({ invoice }: { invoice: InvoiceResponseDto }) => {
   }))
 
   const onSubmitReturn = async (values: any) => {
-    const { products } = values
+    const productsToReturn: ReturnProductInput[] = values.products.filter((p: ReturnProductInput) => p.quantity > 0)
 
-    const refundAmount = products.reduce((sum: number, p: ReturnProductInput) => sum + p.quantity * p.unitPrice, 0)
+    if (productsToReturn.length === 0) {
+      message.warning('Vui lòng chọn ít nhất một sản phẩm để trả')
+      return
+    }
+
+    const refundAmount = productsToReturn.reduce((sum, p) => sum + p.quantity * p.unitPrice, 0)
 
     try {
       await ReturnsService.returnControllerCreateReturn({
@@ -39,16 +44,17 @@ export const InvoiceInfo = ({ invoice }: { invoice: InvoiceResponseDto }) => {
           invoiceId: invoice.id,
           customerId: invoice.customerId ?? '',
           refundAmount,
-          status: 'PENDING',
           storeId: invoice.storeId,
-          products,
+          products: productsToReturn,
         },
       })
       message.success('Tạo phiếu trả hàng thành công')
       setOpenReturnModal(false)
       form.resetFields()
-    } catch (_error) {
-      message.error('Tạo phiếu trả hàng thất bại')
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || error?.message || 'Tạo phiếu trả hàng thất bại'
+
+      message.error(errorMsg)
     }
   }
 

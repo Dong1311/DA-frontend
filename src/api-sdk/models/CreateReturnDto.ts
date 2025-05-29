@@ -8,7 +8,7 @@ export type CreateReturnDto = {
   employeeId?: string;
   customerId: string;
   refundAmount: number;
-  status: string;
+  status?: string;
   storeId: string;
   products: Array<ReturnProductDto>;
 };

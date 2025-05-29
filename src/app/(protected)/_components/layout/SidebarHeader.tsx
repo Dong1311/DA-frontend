@@ -4,7 +4,6 @@ import {
   BarChartOutlined,
   CalendarOutlined,
   CheckSquareOutlined,
-  DeliveredProcedureOutlined,
   DollarOutlined,
   DropboxOutlined,
   EyeOutlined,
@@ -67,11 +66,9 @@ export const SidebarHeader = () => {
 
           <HoverMenuItem icon={<SwapOutlined />} label="Giao dịch">
             <SubItem icon={<ShoppingOutlined />} label="Đặt hàng" />
-            <SubItem icon={<FileExcelOutlined />} label="Hóa đơn" />
-            <SubItem icon={<DeliveredProcedureOutlined />} label="Vận đơn" />
+            <SubItem icon={<FileExcelOutlined />} label="Hóa đơn" href="/invoice" />
             <SubItem icon={<UndoOutlined />} label="Trả hàng" />
             <SubItem icon={<UploadOutlined />} label="Nhập hàng" href="/import-receipt" />
-            <SubItem icon={<UploadOutlined />} label="Trả hàng nhập" />
             <SubItem icon={<FileDoneOutlined />} label="Xuất huỷ" />
           </HoverMenuItem>
 
@@ -96,12 +93,8 @@ export const SidebarHeader = () => {
             <SubItem icon={<ShoppingOutlined />} label="Đặt hàng" />
             <SubItem icon={<DropboxOutlined />} label="Hàng hóa" />
             <SubItem icon={<UserOutlined />} label="Khách hàng" />
-            <SubItem icon={<UserSwitchOutlined />} label="Nhà cung cấp" />
             <SubItem icon={<UserAddOutlined />} label="Nhân viên" />
-            <SubItem icon={<AppstoreOutlined />} label="Kênh bán hàng" />
           </HoverMenuItem>
-
-          <HoverMenuItem icon={<ShoppingCartOutlined />} label="Bán Online" />
         </Flex>
 
         <Flex wrap="wrap" gap={8} justify="end">
