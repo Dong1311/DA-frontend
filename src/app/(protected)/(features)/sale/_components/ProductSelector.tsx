@@ -5,22 +5,24 @@ import { useFormContext } from 'react-hook-form'
 import { useProductSearch } from '@/hooks/product'
 
 import type { ProductSaleFormDto } from './ProductTable'
+
 export const ProductSelector = () => {
   const [searchValue, setSearchValue] = useState('')
   const { getValues, setValue } = useFormContext()
 
-  const { data: searchResults = [] } = useProductSearch(searchValue, 1, 1000)
+  const { data: searchResults } = useProductSearch(searchValue, 1, 1000)
+
+  const items = searchResults?.items ?? []
 
   const handleSearch = (value: string) => {
     setSearchValue(value)
   }
 
   const handleSelect = (productId: string) => {
-    const product = searchResults.find((p: any) => p.id === productId)
+    const product = items.find((p) => p.id === productId)
     if (!product) return
 
     const current = getValues('products') as ProductSaleFormDto[]
-
     const exists = current.find((p) => p.id === product.id)
     if (exists) return
 
@@ -54,13 +56,13 @@ export const ProductSelector = () => {
       onChange={handleSearch}
       onSearch={handleSearch}
       onSelect={handleSelect}
-      options={searchResults.map((product: any) => ({
+      options={items.map((product) => ({
         value: product.id,
         label: (
           <div className="flex items-center gap-2">
             <img
               src={product.images?.[0]?.url || '/images/noimage.png'}
-              alt={''}
+              alt=""
               style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 4 }}
             />
             <div>

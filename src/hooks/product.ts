@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 
-import { type CreateProductDto, ProductsService } from '@/api-sdk'
+import { type CreateProductDto, type PaginatedProductResponseDto,ProductsService } from '@/api-sdk'
 import { type ProductFormValues } from '@/constants/schema'
 
 export const useCreateProduct = () => {
@@ -16,15 +16,10 @@ export const useCreateProduct = () => {
   })
 }
 
-export const useProductSearch = (keyword: string, page: number, limit: number) => {
-  return useQuery({
-    queryKey: ['products', 'search', keyword, page],
-    queryFn: () =>
-      ProductsService.productControllerSearch({
-        keyword,
-        page,
-        limit,
-      }),
+export const useProductSearch = (keyword: string, page = 1, limit = 10) => {
+  return useQuery<PaginatedProductResponseDto>({
+    queryKey: ['products', 'search', keyword, page, limit],
+    queryFn: () => ProductsService.productControllerSearch({ keyword, page, limit }),
     enabled: keyword.length > 0,
     staleTime: 5 * 60 * 1000,
   })

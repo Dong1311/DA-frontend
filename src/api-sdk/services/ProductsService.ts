@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateProductDto } from '../models/CreateProductDto';
+import type { PaginatedProductResponseDto } from '../models/PaginatedProductResponseDto';
 import type { UpdateProductDto } from '../models/UpdateProductDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -27,7 +28,7 @@ export class ProductsService {
   }
   /**
    * Get all products of current store
-   * @returns any
+   * @returns PaginatedProductResponseDto Paginated product list
    * @throws ApiError
    */
   public static productControllerFindAll({
@@ -36,7 +37,7 @@ export class ProductsService {
   }: {
     limit?: number,
     page?: number,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<PaginatedProductResponseDto> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/products',
@@ -48,7 +49,7 @@ export class ProductsService {
   }
   /**
    * Search products by name or code
-   * @returns any
+   * @returns PaginatedProductResponseDto Paginated search result of products
    * @throws ApiError
    */
   public static productControllerSearch({
@@ -59,7 +60,7 @@ export class ProductsService {
     keyword: string,
     limit?: number,
     page?: number,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<PaginatedProductResponseDto> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/products/search',

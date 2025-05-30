@@ -14,10 +14,13 @@ export const ProductToolbar = () => {
   const { data } = useProductList(1, 1000)
 
   const handleExport = () => {
-    if (!data || data.length === 0) {
+    const products = data?.items ?? []
+
+    if (products.length === 0) {
       return message.warning('Không có dữ liệu để xuất')
     }
-    exportProductsToExcel(data)
+
+    exportProductsToExcel(products)
   }
 
   return (
@@ -26,10 +29,6 @@ export const ProductToolbar = () => {
         <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
           <span className="hidden lg:inline">Thêm mới</span>
         </Button>
-
-        {/* <Button icon={<UploadOutlined />}>
-          <span className="hidden lg:inline">Import</span>
-        </Button> */}
 
         <Button icon={<FileExcelOutlined />} onClick={handleExport}>
           <span className="hidden lg:inline">Xuất file</span>
