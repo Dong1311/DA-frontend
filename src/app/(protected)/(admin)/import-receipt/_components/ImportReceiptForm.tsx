@@ -22,7 +22,7 @@ export const ImportReceiptForm = () => {
     formState: { errors },
   } = useFormContext<FormValues>()
 
-  const { data: products } = useProductList()
+  const { data: products } = useProductList(1, 1000)
 
   const items = watch('items') || []
 
@@ -37,7 +37,7 @@ export const ImportReceiptForm = () => {
       return
     }
 
-    const product = products?.find((p) => p.id === selectedProductId)
+    const product = products?.find((p: any) => p.id === selectedProductId)
     if (!product) return
 
     const newItem = {
@@ -84,13 +84,15 @@ export const ImportReceiptForm = () => {
       title: 'Tên sản phẩm',
       dataIndex: 'name',
       key: 'name',
-      render: (_, record) => record.newProduct?.name || products?.find((p) => p.id === record.productId)?.name || '-',
+      render: (_, record) =>
+        record.newProduct?.name || products?.find((p: any) => p.id === record.productId)?.name || '-',
     },
     {
       title: 'Mã sản phẩm',
       dataIndex: 'code',
       key: 'code',
-      render: (_, record) => record.newProduct?.code || products?.find((p) => p.id === record.productId)?.code || '-',
+      render: (_, record) =>
+        record.newProduct?.code || products?.find((p: any) => p.id === record.productId)?.code || '-',
     },
     {
       title: 'Số lượng',
@@ -172,14 +174,18 @@ export const ImportReceiptForm = () => {
               placeholder="Chọn sản phẩm"
               style={{ width: 300 }}
               options={
-                products?.map((p) => ({
+                products?.map((p: any) => ({
                   label: `${p.code} - ${p.name}`,
                   value: p.id,
                 })) || []
               }
               value={selectedProductId}
               onChange={setSelectedProductId}
-              filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+              filterOption={(input, option) =>
+                String(option?.label ?? '')
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
             />
             <Button onClick={handleAddProduct} disabled={!selectedProductId}>
               Thêm

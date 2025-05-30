@@ -8,9 +8,18 @@ import { useCustomerList, useCustomerSearch } from '@/hooks/customer'
 
 import { EditCustomerModal } from './EditCustomerModal'
 
-export const CustomerTable = ({ searchKeyword }: { searchKeyword: string }) => {
-  const { data: allCustomers, isLoading: isLoadingAll } = useCustomerList()
-  const { data: searchResults, isLoading: isLoadingSearch } = useCustomerSearch(searchKeyword)
+export const CustomerTable = ({
+  searchKeyword,
+  page,
+  onPageChange,
+}: {
+  searchKeyword: string
+  page: number
+  onPageChange: (page: number) => void
+}) => {
+  const limit = 10
+  const { data: allCustomers, isLoading: isLoadingAll } = useCustomerList(page, limit)
+  const { data: searchResults, isLoading: isLoadingSearch } = useCustomerSearch(searchKeyword, page, limit)
 
   const data = searchKeyword ? searchResults : allCustomers
   const isLoading = searchKeyword ? isLoadingSearch : isLoadingAll
@@ -65,7 +74,18 @@ export const CustomerTable = ({ searchKeyword }: { searchKeyword: string }) => {
 
   return (
     <>
-      <Table columns={columns} dataSource={data} loading={isLoading} rowKey="id" pagination={{ pageSize: 10 }} />
+      <Table
+        columns={columns}
+        dataSource={data?.items || []}
+        loading={isLoading}
+        rowKey="id"
+        pagination={{
+          current: page,
+          pageSize: limit,
+          total: data?.total || 0,
+          onChange: onPageChange,
+        }}
+      />
       {editingCustomer && (
         <EditCustomerModal
           customer={editingCustomer}

@@ -6,6 +6,7 @@ export const $CreateInvoiceDto = {
   properties: {
     customerId: {
       type: 'string',
+      description: `ID khách hàng (nếu có)`,
     },
     paymentMethod: {
       type: 'Enum',
@@ -19,14 +20,17 @@ export const $CreateInvoiceDto = {
     },
     totalAmount: {
       type: 'number',
+      description: `Tổng tiền hóa đơn sau chiết khấu`,
       isRequired: true,
     },
     discount: {
       type: 'number',
+      description: `Chiết khấu tổng cộng`,
       isRequired: true,
     },
     amountPaid: {
       type: 'number',
+      description: `Số tiền khách đã trả (có thể < tổng)`,
       isRequired: true,
     },
   },

@@ -3,6 +3,11 @@
 import { Card, Input, List, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
+interface CustomerDto {
+  id: string
+  name: string
+  phone?: string
+}
 
 import { useCustomerSearch } from '@/hooks/customer'
 
@@ -12,7 +17,7 @@ export const CustomerInfo = () => {
   const { setValue, watch } = useFormContext()
   const customerId = watch('customerId')
 
-  const { data: customers, isLoading } = useCustomerSearch(keyword)
+  const { data: customers, isLoading } = useCustomerSearch(keyword, 1, 1000)
 
   const handleSelectCustomer = (customer: any) => {
     setValue('customerId', customer.id)
@@ -45,7 +50,7 @@ export const CustomerInfo = () => {
             <List
               bordered
               style={{ marginTop: 12, maxHeight: 200, overflowY: 'auto' }}
-              dataSource={customers}
+              dataSource={customers as CustomerDto[]}
               renderItem={(item) => (
                 <List.Item onClick={() => handleSelectCustomer(item)} style={{ cursor: 'pointer' }}>
                   <strong>{item.name}</strong> {item.phone && `- ${item.phone}`}

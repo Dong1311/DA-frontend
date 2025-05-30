@@ -5,18 +5,22 @@ import { Table } from 'antd'
 import { Text } from '@/components'
 import { useImportReceiptList, useImportReceiptSearch } from '@/hooks/import-receipt'
 
-// import { EditImportReceiptModal } from './EditImportReceiptModal'
+export const ImportReceiptTable = ({
+  searchKeyword,
+  page,
+  onPageChange,
+}: {
+  searchKeyword: string
+  page: number
+  onPageChange: (page: number) => void
+}) => {
+  const limit = 10
 
-export const ImportReceiptTable = ({ searchKeyword }: { searchKeyword: string }) => {
-  const { data: allReceipts, isLoading: isLoadingAll } = useImportReceiptList()
+  const { data: allReceipts, isLoading: isLoadingAll } = useImportReceiptList(page, limit)
+  const { data: searchResults, isLoading: isLoadingSearch } = useImportReceiptSearch(searchKeyword, page, limit)
 
-  const { data: searchResults, isLoading: isLoadingSearch } = useImportReceiptSearch(searchKeyword)
-
-  const data = searchKeyword ? (searchResults ?? []) : (allReceipts ?? [])
-
+  const data = searchKeyword ? searchResults : allReceipts
   const isLoading = searchKeyword ? isLoadingSearch : isLoadingAll
-
-  // const [editingReceipt, setEditingReceipt] = useState<any | null>(null)
 
   const columns = [
     {
@@ -54,30 +58,20 @@ export const ImportReceiptTable = ({ searchKeyword }: { searchKeyword: string })
       render: (val: number) => val.toLocaleString(),
       onCell: () => ({ style: { width: '15%' } }),
     },
-    // {
-    //   title: '',
-    //   key: 'actions',
-    //   onCell: () => ({ style: { width: '15%' } }),
-    //   render: (_: any, record: any) => (
-    //     <div style={{ display: 'flex', gap: 8 }}>
-    //       <Button type="link" onClick={() => setEditingReceipt(record)}>
-    //         Sửa
-    //       </Button>
-    //     </div>
-    //   ),
-    // },
   ]
 
   return (
-    <>
-      <Table columns={columns} dataSource={data} loading={isLoading} rowKey="id" pagination={{ pageSize: 10 }} />
-      {/* {editingReceipt && (
-        <EditImportReceiptModal
-          importReceipt={editingReceipt}
-          open={!!editingReceipt}
-          onClose={() => setEditingReceipt(null)}
-        />
-      )} */}
-    </>
+    <Table
+      columns={columns}
+      dataSource={data?.items || []}
+      loading={isLoading}
+      rowKey="id"
+      pagination={{
+        current: page,
+        pageSize: limit,
+        total: data?.total || 0,
+        onChange: onPageChange,
+      }}
+    />
   )
 }

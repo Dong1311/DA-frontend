@@ -16,21 +16,21 @@ export const useCreateSupplier = () => {
   })
 }
 
-export const useSupplierSearch = (keyword: string) => {
+export const useSupplierList = (page: number, limit: number) => {
   return useQuery({
-    queryKey: ['products', 'search', keyword],
-    queryFn: () => SuppliersService.supplierControllerSearch({ keyword }),
-    enabled: keyword.length > 0,
-    staleTime: 5 * 60 * 1000,
+    queryKey: ['suppliers', page],
+    queryFn: () => SuppliersService.supplierControllerFindAll({ page, limit }),
   })
 }
 
-export const useSupplierList = () => {
+export const useSupplierSearch = (keyword: string, page: number, limit: number) => {
   return useQuery({
-    queryKey: ['suppliers'],
-    queryFn: () => SuppliersService.supplierControllerFindAll(),
+    queryKey: ['suppliers', 'search', keyword, page],
+    queryFn: () => SuppliersService.supplierControllerSearch({ keyword, page, limit }),
+    enabled: !!keyword,
   })
 }
+
 
 export const useUpdateSupplier = () => {
   const queryClient = useQueryClient()

@@ -1,39 +1,49 @@
-import { AutoComplete } from 'antd'
+import { AutoComplete, message } from 'antd'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { type ProductResponseDto } from '@/api-sdk'
 import { useProductSearch } from '@/hooks/product'
 
+import type { ProductSaleFormDto } from './ProductTable'
 export const ProductSelector = () => {
   const [searchValue, setSearchValue] = useState('')
   const { getValues, setValue } = useFormContext()
 
-  const { data: searchResults = [] } = useProductSearch(searchValue)
+  const { data: searchResults = [] } = useProductSearch(searchValue, 1, 1000)
 
   const handleSearch = (value: string) => {
     setSearchValue(value)
   }
 
   const handleSelect = (productId: string) => {
-    const product = searchResults.find((p) => p.id === productId)
+    const product = searchResults.find((p: any) => p.id === productId)
     if (!product) return
 
-    const current = getValues('products') as ProductResponseDto[]
+    const current = getValues('products') as ProductSaleFormDto[]
+
     const exists = current.find((p) => p.id === product.id)
-    if (!exists) {
-      setValue('products', [
-        ...current,
-        {
-          id: product.id,
-          code: product.code,
-          quantity: 1,
-          unitPrice: product.salePrice,
-          totalPrice: product.salePrice,
-          images: product.images ?? [],
-        },
-      ])
+    if (exists) return
+
+    const baseUnit = product.productUnits?.[0]
+    if (!baseUnit) {
+      message.error(`Sản phẩm "${product.code}" không có đơn vị`)
+      return
     }
+
+    setValue('products', [
+      ...current,
+      {
+        id: product.id,
+        code: product.code,
+        quantity: 1,
+        unitId: baseUnit.id,
+        unitPrice: baseUnit.unitPrice,
+        totalPrice: baseUnit.unitPrice,
+        images: product.images ?? [],
+        productUnits: product.productUnits ?? [],
+      },
+    ])
+
     setSearchValue('')
   }
 
@@ -44,7 +54,7 @@ export const ProductSelector = () => {
       onChange={handleSearch}
       onSearch={handleSearch}
       onSelect={handleSelect}
-      options={searchResults.map((product) => ({
+      options={searchResults.map((product: any) => ({
         value: product.id,
         label: (
           <div className="flex items-center gap-2">

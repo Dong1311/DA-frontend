@@ -8,9 +8,19 @@ import { useSupplierList, useSupplierSearch } from '@/hooks/supplier'
 
 import { EditSupplierModal } from './EditSupplierModal'
 
-export const SupplierTable = ({ searchKeyword }: { searchKeyword: string }) => {
-  const { data: allSuppliers, isLoading: isLoadingAll } = useSupplierList()
-  const { data: searchResults, isLoading: isLoadingSearch } = useSupplierSearch(searchKeyword)
+export const SupplierTable = ({
+  searchKeyword,
+  page,
+  onPageChange,
+}: {
+  searchKeyword: string
+  page: number
+  onPageChange: (page: number) => void
+}) => {
+  const limit = 10
+
+  const { data: allSuppliers, isLoading: isLoadingAll } = useSupplierList(page, limit)
+  const { data: searchResults, isLoading: isLoadingSearch } = useSupplierSearch(searchKeyword, page, limit)
 
   const data = searchKeyword ? searchResults : allSuppliers
   const isLoading = searchKeyword ? isLoadingSearch : isLoadingAll
@@ -55,10 +65,15 @@ export const SupplierTable = ({ searchKeyword }: { searchKeyword: string }) => {
     <>
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={data?.items || []}
         loading={isLoading}
         rowKey="id"
-        pagination={{ pageSize: 10 }}
+        pagination={{
+          current: page,
+          pageSize: limit,
+          total: data?.total || 0,
+          onChange: onPageChange,
+        }}
         onRow={(record) => ({
           onClick: () => setEditingSupplier(record),
           style: { cursor: 'pointer' },

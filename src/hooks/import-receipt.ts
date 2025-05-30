@@ -19,12 +19,22 @@ export const useCreateImportReceipt = () => {
   })
 }
 
-export const useImportReceiptList = () => {
-  return useQuery<ImportReceiptResponseDto[]>({
-    queryKey: ['importReceipts'],
-    queryFn: () => ImportReceiptsService.importReceiptControllerFindAll(),
+export const useImportReceiptList = (page: number, limit: number) => {
+  return useQuery({
+    queryKey: ['importReceipts', page],
+    queryFn: () => ImportReceiptsService.importReceiptControllerFindAll({ page, limit }),
   })
 }
+
+export const useImportReceiptSearch = (keyword: string, page: number, limit: number) => {
+  return useQuery({
+    queryKey: ['importReceipts', 'search', keyword, page],
+    queryFn: () => ImportReceiptsService.importReceiptControllerSearch({ keyword, page, limit }),
+    enabled: !!keyword,
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
 
 export const useImportReceiptDetail = (id: string) => {
   return useQuery<ImportReceiptResponseDto>({
@@ -60,11 +70,3 @@ export const useRemoveImportReceipt = () => {
   })
 }
 
-export const useImportReceiptSearch = (keyword: string) => {
-  return useQuery<ImportReceiptResponseDto[]>({
-    queryKey: ['importReceipts', 'search', keyword],
-    queryFn: () => ImportReceiptsService.importReceiptControllerSearch({ keyword }),
-    enabled: keyword.length > 0,
-    staleTime: 5 * 60 * 1000,
-  })
-}

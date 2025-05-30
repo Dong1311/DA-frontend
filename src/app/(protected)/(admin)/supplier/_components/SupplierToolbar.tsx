@@ -12,7 +12,7 @@ import { CreateSupplierModal } from './CreateSupplierModal'
 
 export const SupplierToolbar = () => {
   const [open, setOpen] = useState(false)
-  const { data } = useSupplierList()
+  const { data } = useSupplierList(1, 1000)
 
   const handleExport = () => {
     if (!data || data.length === 0) {

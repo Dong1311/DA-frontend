@@ -3,7 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateCustomerDto } from '../models/CreateCustomerDto';
-import type { CustomerResponseDto } from '../models/CustomerResponseDto';
 import type { UpdateCustomerDto } from '../models/UpdateCustomerDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -28,30 +27,46 @@ export class CustomersService {
   }
   /**
    * Get all customers of current store
-   * @returns CustomerResponseDto
+   * @returns any
    * @throws ApiError
    */
-  public static customerControllerFindAll(): CancelablePromise<Array<CustomerResponseDto>> {
+  public static customerControllerFindAll({
+    limit,
+    page,
+  }: {
+    limit?: number,
+    page?: number,
+  }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/customers',
+      query: {
+        'limit': limit,
+        'page': page,
+      },
     });
   }
   /**
-   * Search customers by keyword
-   * @returns CustomerResponseDto
+   * Search customers by name, phone or address
+   * @returns any
    * @throws ApiError
    */
   public static customerControllerSearch({
     keyword,
+    limit,
+    page,
   }: {
     keyword: string,
-  }): CancelablePromise<Array<CustomerResponseDto>> {
+    limit?: number,
+    page?: number,
+  }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/customers/search',
       query: {
         'keyword': keyword,
+        'limit': limit,
+        'page': page,
       },
     });
   }

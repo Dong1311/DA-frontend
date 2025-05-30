@@ -27,31 +27,45 @@ export class ImportReceiptsService {
     });
   }
   /**
-   * Get all import receipts for current store
-   * @returns ImportReceiptResponseDto
+   * @returns any
    * @throws ApiError
    */
-  public static importReceiptControllerFindAll(): CancelablePromise<Array<ImportReceiptResponseDto>> {
+  public static importReceiptControllerFindAll({
+    limit,
+    page,
+  }: {
+    limit?: number,
+    page?: number,
+  }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/import-receipts',
+      query: {
+        'limit': limit,
+        'page': page,
+      },
     });
   }
   /**
-   * Search import receipts by keyword (supplier name or status)
-   * @returns ImportReceiptResponseDto
+   * @returns any
    * @throws ApiError
    */
   public static importReceiptControllerSearch({
     keyword,
+    limit,
+    page,
   }: {
     keyword: string,
-  }): CancelablePromise<Array<ImportReceiptResponseDto>> {
+    limit?: number,
+    page?: number,
+  }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/import-receipts/search',
       query: {
         'keyword': keyword,
+        'limit': limit,
+        'page': page,
       },
     });
   }

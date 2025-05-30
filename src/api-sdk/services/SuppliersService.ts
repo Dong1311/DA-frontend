@@ -3,7 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateSupplierDto } from '../models/CreateSupplierDto';
-import type { SupplierResponseDto } from '../models/SupplierResponseDto';
 import type { UpdateSupplierDto } from '../models/UpdateSupplierDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -27,49 +26,45 @@ export class SuppliersService {
     });
   }
   /**
-   * Get all suppliers of current store
-   * @returns SupplierResponseDto
+   * @returns any
    * @throws ApiError
    */
-  public static supplierControllerFindAll(): CancelablePromise<Array<SupplierResponseDto>> {
+  public static supplierControllerFindAll({
+    limit,
+    page,
+  }: {
+    limit?: number,
+    page?: number,
+  }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/suppliers',
+      query: {
+        'limit': limit,
+        'page': page,
+      },
     });
   }
   /**
-   * Search products by name or code
-   * @returns SupplierResponseDto
+   * @returns any
    * @throws ApiError
    */
   public static supplierControllerSearch({
     keyword,
+    limit,
+    page,
   }: {
     keyword: string,
-  }): CancelablePromise<Array<SupplierResponseDto>> {
+    limit?: number,
+    page?: number,
+  }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/suppliers/search',
       query: {
         'keyword': keyword,
-      },
-    });
-  }
-  /**
-   * Get supplier by ID
-   * @returns SupplierResponseDto
-   * @throws ApiError
-   */
-  public static supplierControllerFindOne({
-    id,
-  }: {
-    id: string,
-  }): CancelablePromise<SupplierResponseDto> {
-    return __request(OpenAPI, {
-      method: 'GET',
-      url: '/suppliers/{id}',
-      path: {
-        'id': id,
+        'limit': limit,
+        'page': page,
       },
     });
   }

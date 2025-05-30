@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, message, Modal } from 'antd'
 import type { UploadFile } from 'antd/es/upload/interface'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { type ProductFormValues, productSchema } from '@/constants/schema'
@@ -30,32 +30,48 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
 
   const onSubmit = async (values: ProductFormValues) => {
     try {
+      console.log('[onSubmit] Form values:', values)
+
       const imageUrls = await Promise.all(
         fileList.map(async (file) => {
-          if (file.originFileObj) return uploadToS3(file.originFileObj)
+          if (file.originFileObj) {
+            const uploadedUrl = await uploadToS3(file.originFileObj)
+            console.log('[onSubmit] Uploaded image:', uploadedUrl)
+            return uploadedUrl
+          }
+          console.log('[onSubmit] Existing image URL:', file.url)
           return file.url || ''
         })
       )
+
       const fixedUnits = values.productUnits?.map((unit) => ({
         ...unit,
         isBaseUnit: unit.isBaseUnit ?? false,
       }))
 
-      await mutateAsync({
+      const payload = {
         ...values,
         images: imageUrls,
         productUnits: fixedUnits,
-      })
+      }
+
+      console.log('[onSubmit] Final payload to send:', payload)
+
+      await mutateAsync(payload)
 
       message.success('Tạo sản phẩm thành công')
       reset()
       setFileList([])
       onClose()
     } catch (err) {
-      console.error(err)
+      console.error('[onSubmit] Error while creating product:', err)
       message.error('Tạo sản phẩm thất bại')
     }
   }
+
+  useEffect(() => {
+    console.log('[Form errors]', methods.formState.errors)
+  }, [methods.formState.errors])
 
   return (
     <Modal

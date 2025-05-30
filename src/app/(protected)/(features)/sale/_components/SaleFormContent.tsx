@@ -5,19 +5,20 @@ import { useEffect, useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { SalesService } from '@/api-sdk'
-import { CreateInvoiceDto } from '@/api-sdk'
+import { type CreateInvoiceDto, type ProductSaleDto } from '@/api-sdk'
 import { useSocket } from '@/hooks/useSocket'
 
 import { CustomerInfo } from './CustomerInfo'
 import { OrderSummary } from './OrderSummary'
 import { PaymentMethods } from './PaymentMethods'
 import { ProductSelector } from './ProductSelector'
-import { ProductTable } from './ProductTable'
+import { type ProductSaleFormDto, ProductTable } from './ProductTable'
+
 const { Content } = Layout
+const CASH = 'CASH'
 
 export const SaleFormContent = () => {
   const { handleSubmit, reset } = useFormContext()
-  const cash = CreateInvoiceDto.paymentMethod.CASH
   const paymentWindowRef = useRef<Window | null>(null)
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null)
   const { paymentSuccessData } = useSocket()
@@ -27,7 +28,7 @@ export const SaleFormContent = () => {
       products: [],
       discount: 0,
       amountPaid: 0,
-      paymentMethod: cash,
+      paymentMethod: CASH,
       customerId: undefined,
     })
   }
@@ -49,17 +50,33 @@ export const SaleFormContent = () => {
   }, [paymentSuccessData])
 
   const onSubmit = async (data: any) => {
-    if (!data.products || data.products.length === 0) {
+    const products: ProductSaleFormDto[] = data.products
+    if (!products || products.length === 0) {
       message.error('Đơn hàng trống')
       return
     }
-    const totalAmount = data.products.reduce((sum: number, p: { totalPrice: number }) => sum + p.totalPrice, 0)
-    const payload = { ...data, totalAmount }
+
+    const cleanedProducts: ProductSaleDto[] = products.map((p) => ({
+      id: p.id,
+      code: p.code,
+      quantity: p.quantity,
+      unitPrice: p.unitPrice,
+      totalPrice: p.totalPrice,
+      unitId: p.unitId,
+    }))
+
+    const totalAmount = cleanedProducts.reduce((sum, p) => sum + p.totalPrice, 0)
+
+    const payload: CreateInvoiceDto = {
+      ...data,
+      totalAmount,
+      products: cleanedProducts,
+    }
 
     try {
       const response = await SalesService.salesControllerCreateInvoice({ requestBody: payload })
 
-      if (payload.paymentMethod === cash) {
+      if (payload.paymentMethod === CASH) {
         message.success('Tạo đơn hàng thành công!')
         resetForm()
       } else if (response.paymentUrl) {

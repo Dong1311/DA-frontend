@@ -22,26 +22,27 @@ interface Props {
 export const EditProductModal = ({ open, onClose, product }: Props) => {
   const methods = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
-    defaultValues: {
-      stock: 0,
-    },
+    defaultValues: { stock: 0 },
   })
-  const { formState } = methods
-  useEffect(() => {
-    console.log('errors', formState.errors)
-  }, [formState.errors])
+
   const { handleSubmit, reset } = methods
   const { mutateAsync } = useUpdateProduct()
-
-  const [fileList, setFileList] = useState<UploadFile[]>([])
   const { uploadToS3 } = useUploadImage()
+  const [fileList, setFileList] = useState<UploadFile[]>([])
 
   useEffect(() => {
     if (product) {
       reset({
         ...product,
         images: product.images?.map((img: any) => img.url) || [],
+        productUnits:
+          product.productUnits?.map((u: any) => ({
+            unitName: u.unitName,
+            conversionFactor: u.conversionFactor,
+            isBaseUnit: u.isBaseUnit ?? false,
+          })) || [],
       })
+
       setFileList(
         product.images?.map((img: any) => ({
           uid: img.id,
@@ -62,9 +63,10 @@ export const EditProductModal = ({ open, onClose, product }: Props) => {
       )
 
       const normalizedUnits =
-        values.productUnits?.map((u) => ({
-          ...u,
-          isBaseUnit: u.isBaseUnit ?? false,
+        values.productUnits?.map((unit) => ({
+          unitName: unit.unitName,
+          conversionFactor: unit.conversionFactor,
+          isBaseUnit: unit.isBaseUnit ?? false,
         })) || []
 
       await mutateAsync({
@@ -76,11 +78,11 @@ export const EditProductModal = ({ open, onClose, product }: Props) => {
         },
       })
 
-      message.success('Cập nhật thành công')
+      message.success('Cập nhật sản phẩm thành công')
       onClose()
     } catch (err) {
       console.error(err)
-      message.error('Cập nhật thất bại')
+      message.error('Cập nhật sản phẩm thất bại')
     }
   }
 

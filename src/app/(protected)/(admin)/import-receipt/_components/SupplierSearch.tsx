@@ -11,11 +11,11 @@ export const SupplierSearch = () => {
   const [searchText, setSearchText] = useState('')
   const supplierId = watch('supplierId')
 
-  const { data: suppliers, isLoading } = useSupplierList()
+  const { data: suppliers, isLoading } = useSupplierList(1, 1000)
 
   const filteredSuppliers = useMemo(() => {
     if (!searchText) return suppliers ?? []
-    return suppliers?.filter((s) => s.name.toLowerCase().includes(searchText.toLowerCase())) ?? []
+    return suppliers?.filter((s: any) => s.name.toLowerCase().includes(searchText.toLowerCase())) ?? []
   }, [searchText, suppliers])
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export const SupplierSearch = () => {
         onSearch={(val) => setSearchText(val)}
         onClear={() => setSearchText('')}
         loading={isLoading}
-        options={filteredSuppliers.map((s) => ({
+        options={filteredSuppliers.map((s: any) => ({
           label: s.name,
           value: s.id,
         }))}

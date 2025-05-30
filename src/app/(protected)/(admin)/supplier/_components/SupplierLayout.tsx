@@ -2,25 +2,41 @@
 
 import { Flex } from 'antd'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Text } from '@/components'
 
 import { SupplierSearch } from './SupplierSearch'
 import { SupplierTable } from './SupplierTable'
 import { SupplierToolbar } from './SupplierToolbar'
+
 export const SupplierLayout = () => {
   const router = useRouter()
-
   const searchParams = useSearchParams()
+
   const initialKeyword = searchParams.get('search') || ''
+  const initialPage = parseInt(searchParams.get('page') || '1', 10)
+
   const [searchKeyword, setSearchKeyword] = useState(initialKeyword)
+  const [page, setPage] = useState(initialPage)
+
+  // Đồng bộ lại page khi URL thay đổi
+  useEffect(() => {
+    setSearchKeyword(searchParams.get('search') || '')
+    setPage(parseInt(searchParams.get('page') || '1', 10))
+  }, [searchParams])
 
   const handleSearch = (keyword: string) => {
     const params = new URLSearchParams()
     if (keyword) params.set('search', keyword)
+    params.set('page', '1') // reset page về 1 khi search mới
     router.replace(`?${params.toString()}`)
-    setSearchKeyword(keyword)
+  }
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('page', newPage.toString())
+    router.replace(`?${params.toString()}`)
   }
 
   return (
@@ -31,14 +47,14 @@ export const SupplierLayout = () => {
       gap={16}
     >
       <Flex vertical>
-        <Text className="mb-4 text-[20px] font-semibold text-black">Khách hàng</Text>
+        <Text className="mb-4 text-[20px] font-semibold text-black">Nhà cung cấp</Text>
 
         <Flex vertical className="mt-2 min-w-0 flex-1 overflow-y-auto">
           <Flex justify="space-between" className="mb-4">
             <SupplierSearch onSearch={handleSearch} defaultValue={initialKeyword} />
             <SupplierToolbar />
           </Flex>
-          <SupplierTable searchKeyword={searchKeyword} />
+          <SupplierTable searchKeyword={searchKeyword} page={page} onPageChange={handlePageChange} />
         </Flex>
       </Flex>
     </Flex>

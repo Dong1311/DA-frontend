@@ -1,7 +1,8 @@
 'use client'
+
 import { Flex } from 'antd'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Text } from '@/components'
 
@@ -12,18 +13,29 @@ import { PricebookToolbar } from './PricebookToolbar'
 export const PricebookLayout = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
+
   const initialKeyword = searchParams.get('search') || ''
+  const initialPage = parseInt(searchParams.get('page') || '1', 10)
+
   const [searchKeyword, setSearchKeyword] = useState(initialKeyword)
+  const [page, setPage] = useState(initialPage)
 
   const handleSearch = (keyword: string) => {
     const params = new URLSearchParams()
     if (keyword) params.set('search', keyword)
+    params.set('page', '1')
     router.replace(`?${params.toString()}`)
     setSearchKeyword(keyword)
+    setPage(1)
   }
 
+  useEffect(() => {
+    setPage(initialPage)
+    setSearchKeyword(initialKeyword)
+  }, [initialPage, initialKeyword])
+
   return (
-    <Flex vertical className="min-h-screen w-full overflow-x-hidden bg-[#f5f6f8] p-4 pt-2 ">
+    <Flex vertical className="min-h-screen w-full overflow-x-hidden bg-[#f5f6f8] p-4 pt-2">
       <Flex vertical className="w-full overflow-y-auto px-2 pb-4 md:w-[280px] ">
         <Text className="mb-4 text-[20px] font-semibold text-black">Bảng giá</Text>
       </Flex>
@@ -34,7 +46,7 @@ export const PricebookLayout = () => {
           <PricebookToolbar />
         </Flex>
 
-        <PricebookTable searchKeyword={searchKeyword} />
+        <PricebookTable searchKeyword={searchKeyword} page={page} onPageChange={setPage} />
       </Flex>
     </Flex>
   )

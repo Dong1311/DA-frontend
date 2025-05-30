@@ -3,7 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateProductDto } from '../models/CreateProductDto';
-import type { ProductResponseDto } from '../models/ProductResponseDto';
 import type { UpdateProductDto } from '../models/UpdateProductDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -28,30 +27,46 @@ export class ProductsService {
   }
   /**
    * Get all products of current store
-   * @returns ProductResponseDto
+   * @returns any
    * @throws ApiError
    */
-  public static productControllerFindAll(): CancelablePromise<Array<ProductResponseDto>> {
+  public static productControllerFindAll({
+    limit,
+    page,
+  }: {
+    limit?: number,
+    page?: number,
+  }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/products',
+      query: {
+        'limit': limit,
+        'page': page,
+      },
     });
   }
   /**
    * Search products by name or code
-   * @returns ProductResponseDto
+   * @returns any
    * @throws ApiError
    */
   public static productControllerSearch({
     keyword,
+    limit,
+    page,
   }: {
     keyword: string,
-  }): CancelablePromise<Array<ProductResponseDto>> {
+    limit?: number,
+    page?: number,
+  }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/products/search',
       query: {
         'keyword': keyword,
+        'limit': limit,
+        'page': page,
       },
     });
   }

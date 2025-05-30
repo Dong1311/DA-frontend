@@ -11,7 +11,7 @@ import { CreateProductModal } from './CreateProductModal'
 
 export const ProductToolbar = () => {
   const [open, setOpen] = useState(false)
-  const { data } = useProductList()
+  const { data } = useProductList(1, 1000)
 
   const handleExport = () => {
     if (!data || data.length === 0) {

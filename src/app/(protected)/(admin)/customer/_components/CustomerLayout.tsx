@@ -2,7 +2,7 @@
 
 import { Flex } from 'antd'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Text } from '@/components'
 
@@ -11,16 +11,30 @@ import { CustomerTable } from './CustomerTable'
 
 export const CustomerLayout = () => {
   const router = useRouter()
-
   const searchParams = useSearchParams()
+
   const initialKeyword = searchParams.get('search') || ''
+  const initialPage = parseInt(searchParams.get('page') || '1', 10)
+
   const [searchKeyword, setSearchKeyword] = useState(initialKeyword)
+  const [page, setPage] = useState(initialPage)
+
+  useEffect(() => {
+    setSearchKeyword(searchParams.get('search') || '')
+    setPage(parseInt(searchParams.get('page') || '1', 10))
+  }, [searchParams])
 
   const handleSearch = (keyword: string) => {
     const params = new URLSearchParams()
     if (keyword) params.set('search', keyword)
+    params.set('page', '1')
     router.replace(`?${params.toString()}`)
-    setSearchKeyword(keyword)
+  }
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('page', newPage.toString())
+    router.replace(`?${params.toString()}`)
   }
 
   return (
@@ -37,7 +51,7 @@ export const CustomerLayout = () => {
           <Flex justify="space-between" className="mb-4">
             <CustomerSearch onSearch={handleSearch} defaultValue={initialKeyword} />
           </Flex>
-          <CustomerTable searchKeyword={searchKeyword} />
+          <CustomerTable searchKeyword={searchKeyword} page={page} onPageChange={handlePageChange} />
         </Flex>
       </Flex>
     </Flex>

@@ -16,12 +16,22 @@ export const useCreateCustomer = () => {
   })
 }
 
-export const useCustomerList = () => {
+export const useCustomerList = (page: number, limit: number) => {
   return useQuery({
-    queryKey: ['customers'],
-    queryFn: () => CustomersService.customerControllerFindAll(),
+    queryKey: ['customers', page],
+    queryFn: () => CustomersService.customerControllerFindAll({ page, limit }),
   })
 }
+
+export const useCustomerSearch = (keyword: string, page: number, limit: number) => {
+  return useQuery({
+    queryKey: ['customers', 'search', keyword, page],
+    queryFn: () => CustomersService.customerControllerSearch({ keyword, page, limit }),
+    enabled: !!keyword,
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
 
 export const useUpdateCustomer = () => {
   const queryClient = useQueryClient()
@@ -39,12 +49,4 @@ export const useUpdateCustomer = () => {
   })
 }
 
-export const useCustomerSearch = (keyword: string) => {
-  return useQuery({
-    queryKey: ['customers', 'search', keyword],
-    queryFn: () => CustomersService.customerControllerSearch({ keyword }),
-    enabled: keyword.length > 0,
-    staleTime: 5 * 60 * 1000, 
-  })
-}
 

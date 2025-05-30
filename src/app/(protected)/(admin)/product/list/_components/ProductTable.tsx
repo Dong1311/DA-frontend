@@ -1,6 +1,5 @@
-'use client'
-
 import { Button, Table } from 'antd'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
 import { Text } from '@/components'
@@ -9,9 +8,15 @@ import { useProductList, useProductSearch } from '@/hooks/product'
 import { EditProductModal } from './EditProductModal'
 
 export const ProductTable = ({ searchKeyword }: { searchKeyword: string }) => {
-  const { data: allProducts, isLoading: isLoadingAll } = useProductList()
+  const [limit] = useState(10)
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const initialPage = parseInt(searchParams.get('page') || '1', 10)
+  const [page, setPage] = useState(initialPage)
 
-  const { data: searchResults, isLoading: isLoadingSearch } = useProductSearch(searchKeyword)
+  const { data: allProducts, isLoading: isLoadingAll } = useProductList(page, limit)
+
+  const { data: searchResults, isLoading: isLoadingSearch } = useProductSearch(searchKeyword, page, limit)
 
   const data = searchKeyword ? searchResults : allProducts
   const isLoading = searchKeyword ? isLoadingSearch : isLoadingAll
@@ -23,72 +28,46 @@ export const ProductTable = ({ searchKeyword }: { searchKeyword: string }) => {
       title: 'Ảnh',
       dataIndex: 'images',
       key: 'image',
-      onCell: () => ({ style: { width: '8%' } }),
       render: (images: { url: string }[]) => {
         const imageUrl = images?.[0]?.url ?? '/images/noimage.png'
-        return (
-          <img
-            src={imageUrl}
-            alt="Ảnh sản phẩm"
-            style={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 4 }}
-          />
-        )
+        return <img src={imageUrl} alt="Ảnh" style={{ width: 50, height: 50, objectFit: 'cover' }} />
       },
     },
-    {
-      title: 'Mã hàng',
-      dataIndex: 'code',
-      ellipsis: true,
-      onCell: () => ({ style: { width: '15%' } }),
-    },
-    {
-      title: 'Tên hàng',
-      dataIndex: 'name',
-      ellipsis: true,
-      onCell: () => ({ style: { width: '25%' } }),
-      render: (text: string) => <Text>{text}</Text>,
-    },
-    {
-      title: 'Giá bán',
-      dataIndex: 'salePrice',
-      ellipsis: true,
-      onCell: () => ({ style: { width: '12%' } }),
-    },
-    {
-      title: 'Giá vốn',
-      dataIndex: 'costPrice',
-      ellipsis: true,
-      onCell: () => ({ style: { width: '12%' } }),
-    },
-    {
-      title: 'Tồn kho',
-      dataIndex: 'stock',
-      ellipsis: true,
-      onCell: () => ({ style: { width: '8%' } }),
-    },
-    {
-      title: 'Đặt trước',
-      dataIndex: 'reserved',
-      ellipsis: true,
-      onCell: () => ({ style: { width: '8%' } }),
-    },
+    { title: 'Mã hàng', dataIndex: 'code' },
+    { title: 'Tên hàng', dataIndex: 'name', render: (text: string) => <Text>{text}</Text> },
+    { title: 'Giá bán', dataIndex: 'salePrice' },
+    { title: 'Giá vốn', dataIndex: 'costPrice' },
+    { title: 'Tồn kho', dataIndex: 'stock' },
+    { title: 'Đặt trước', dataIndex: 'reserved' },
     {
       title: '',
-      key: 'actions',
-      onCell: () => ({ style: { width: '12%' } }),
       render: (_: any, record: any) => (
-        <div style={{ display: 'flex', gap: 8 }}>
-          <Button type="link" onClick={() => setEditingProduct(record)}>
-            Sửa
-          </Button>
-        </div>
+        <Button type="link" onClick={() => setEditingProduct(record)}>
+          Sửa
+        </Button>
       ),
     },
   ]
 
   return (
     <>
-      <Table columns={columns} dataSource={data} loading={isLoading} rowKey="id" pagination={{ pageSize: 10 }} />
+      <Table
+        columns={columns}
+        dataSource={data?.items || []}
+        loading={isLoading}
+        rowKey="id"
+        pagination={{
+          current: page,
+          pageSize: limit,
+          total: data?.total || 0,
+          onChange: (p) => {
+            setPage(p)
+            const params = new URLSearchParams(searchParams.toString())
+            params.set('page', p.toString())
+            router.replace(`?${params.toString()}`)
+          },
+        }}
+      />
       {editingProduct && (
         <EditProductModal product={editingProduct} open={!!editingProduct} onClose={() => setEditingProduct(null)} />
       )}

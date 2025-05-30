@@ -2,7 +2,7 @@
 
 import { Flex } from 'antd'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Text } from '@/components'
 
@@ -13,14 +13,29 @@ import { ImportReceiptToolbar } from './ImportReceiptToolbar'
 export const ImportReceiptLayout = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
+
   const initialKeyword = searchParams.get('search') || ''
+  const initialPage = parseInt(searchParams.get('page') || '1', 10)
+
   const [searchKeyword, setSearchKeyword] = useState(initialKeyword)
+  const [page, setPage] = useState(initialPage)
+
+  useEffect(() => {
+    setSearchKeyword(searchParams.get('search') || '')
+    setPage(parseInt(searchParams.get('page') || '1', 10))
+  }, [searchParams])
 
   const handleSearch = (keyword: string) => {
     const params = new URLSearchParams()
     if (keyword) params.set('search', keyword)
+    params.set('page', '1')
     router.replace(`?${params.toString()}`)
-    setSearchKeyword(keyword)
+  }
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('page', newPage.toString())
+    router.replace(`?${params.toString()}`)
   }
 
   return (
@@ -30,9 +45,6 @@ export const ImportReceiptLayout = () => {
       wrap="wrap"
       gap={16}
     >
-      {/* <Flex vertical className="w-full overflow-y-auto px-2 pb-4 md:w-[280px] md:px-4" style={{ flexShrink: 0 }}>
-      </Flex> */}
-
       <Flex vertical className="w-full p-0">
         <Text className="mb-4 text-[20px] font-semibold text-black">Đơn nhập hàng</Text>
         <Flex vertical className="min-w-0 flex-1 overflow-y-auto px-2 md:px-0">
@@ -40,7 +52,7 @@ export const ImportReceiptLayout = () => {
             <ImportReceiptSearch onSearch={handleSearch} defaultValue={initialKeyword} />
             <ImportReceiptToolbar />
           </Flex>
-          <ImportReceiptTable searchKeyword={searchKeyword} />
+          <ImportReceiptTable searchKeyword={searchKeyword} page={page} onPageChange={handlePageChange} />
         </Flex>
       </Flex>
     </Flex>

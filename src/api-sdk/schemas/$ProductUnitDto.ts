@@ -4,6 +4,9 @@
 /* eslint-disable */
 export const $ProductUnitDto = {
   properties: {
+    id: {
+      type: 'string',
+    },
     unitName: {
       type: 'string',
       isRequired: true,
@@ -15,6 +18,9 @@ export const $ProductUnitDto = {
     isBaseUnit: {
       type: 'boolean',
       isRequired: true,
+    },
+    unitPrice: {
+      type: 'number',
     },
   },
 } as const;

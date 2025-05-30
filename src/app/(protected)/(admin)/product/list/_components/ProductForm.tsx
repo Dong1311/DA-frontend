@@ -1,7 +1,7 @@
 'use client'
 
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Checkbox, Col, Form, Input, InputNumber, Row, Space } from 'antd'
+import { Button, Col, Form, Input, InputNumber, Row, Space } from 'antd'
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form'
 
 import { ControlledNumberInput } from '@/components/ControlledNumberInput'
@@ -22,6 +22,7 @@ export const ProductForm = ({ isEdit, showStock = true }: ProductFormProps) => {
     control,
     name: 'productUnits',
   })
+  console.log(fields)
 
   return (
     <Form layout="vertical">
@@ -131,7 +132,8 @@ export const ProductForm = ({ isEdit, showStock = true }: ProductFormProps) => {
                 >
                   <InputNumber
                     type="number"
-                    step="0.0001"
+                    step={1}
+                    precision={0}
                     placeholder="Tỉ lệ quy đổi so với đơn vị cơ bản"
                     {...field}
                     disabled={index === 0}
@@ -140,18 +142,7 @@ export const ProductForm = ({ isEdit, showStock = true }: ProductFormProps) => {
               )}
             />
 
-            {index === 0 && (
-              <Controller
-                name={`productUnits.${index}.isBaseUnit`}
-                control={control}
-                defaultValue={field.isBaseUnit ?? true}
-                render={() => (
-                  <Checkbox checked disabled>
-                    Đơn vị cơ bản
-                  </Checkbox>
-                )}
-              />
-            )}
+            {index === 0 && <span style={{ fontStyle: 'normal', fontWeight: 'normal' }}>Đơn vị cơ bản</span>}
 
             {index !== 0 && <MinusCircleOutlined onClick={() => remove(index)} style={{ color: 'red' }} />}
           </Space>
@@ -159,7 +150,7 @@ export const ProductForm = ({ isEdit, showStock = true }: ProductFormProps) => {
 
         <Button
           type="dashed"
-          onClick={() => append({ unitName: '', conversionFactor: 1, isBaseUnit: false })}
+          onClick={() => append({ unitName: '', conversionFactor: 1, isBaseUnit: fields.length === 0 })}
           block
           icon={<PlusOutlined />}
         >
