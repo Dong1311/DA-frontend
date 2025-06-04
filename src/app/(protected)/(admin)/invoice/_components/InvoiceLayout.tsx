@@ -1,6 +1,6 @@
 'use client'
 
-import { Flex } from 'antd'
+import { Flex, message } from 'antd'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -29,6 +29,12 @@ export const InvoiceLayout = () => {
     setFromDate(searchParams.get('fromDate') || undefined)
     setToDate(searchParams.get('toDate') || undefined)
     setPage(parseInt(searchParams.get('page') || '1', 10))
+
+    const showReturnMessage = localStorage.getItem('return_notice')
+    if (showReturnMessage === '1') {
+      message.info('Chọn hóa đơn để trả hàng')
+      localStorage.removeItem('return_notice')
+    }
   }, [searchParams])
 
   const handleSearch = (params: { keyword: string; fromDate?: string; toDate?: string }) => {

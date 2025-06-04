@@ -2,9 +2,9 @@ import { Button, Col, Form, InputNumber, message, Modal, Row, Typography } from 
 import { useState } from 'react'
 
 import { type InvoiceResponseDto } from '@/api-sdk'
-import { ReturnsService } from '@/api-sdk'
-
-const { Text, Title } = Typography
+import { Text } from '@/components'
+import { useCreateReturn } from '@/hooks/return'
+const { Title } = Typography
 
 type ReturnProductInput = {
   productId: string
@@ -18,6 +18,7 @@ type ReturnProductInput = {
 export const InvoiceInfo = ({ invoice }: { invoice: InvoiceResponseDto }) => {
   const [openReturnModal, setOpenReturnModal] = useState(false)
   const [form] = Form.useForm()
+  const createReturn = useCreateReturn()
 
   const returnProducts: ReturnProductInput[] = invoice.invoiceItems.map((item) => ({
     productId: item.productId,
@@ -28,7 +29,7 @@ export const InvoiceInfo = ({ invoice }: { invoice: InvoiceResponseDto }) => {
     unitPrice: item.unitPrice,
   }))
 
-  const onSubmitReturn = async (values: any) => {
+  const onSubmitReturn = (values: any) => {
     const productsToReturn: ReturnProductInput[] = values.products.filter((p: ReturnProductInput) => p.quantity > 0)
 
     if (productsToReturn.length === 0) {
@@ -38,24 +39,26 @@ export const InvoiceInfo = ({ invoice }: { invoice: InvoiceResponseDto }) => {
 
     const refundAmount = productsToReturn.reduce((sum, p) => sum + p.quantity * p.unitPrice, 0)
 
-    try {
-      await ReturnsService.returnControllerCreateReturn({
-        requestBody: {
-          invoiceId: invoice.id,
-          customerId: invoice.customerId ?? '',
-          refundAmount,
-          storeId: invoice.storeId,
-          products: productsToReturn,
+    createReturn.mutate(
+      {
+        invoiceId: invoice.id,
+        customerId: invoice.customerId ?? '',
+        refundAmount,
+        storeId: invoice.storeId,
+        products: productsToReturn,
+      },
+      {
+        onSuccess: () => {
+          message.success('Tạo phiếu trả hàng thành công')
+          setOpenReturnModal(false)
+          form.resetFields()
         },
-      })
-      message.success('Tạo phiếu trả hàng thành công')
-      setOpenReturnModal(false)
-      form.resetFields()
-    } catch (error: any) {
-      const errorMsg = error?.response?.data?.message || error?.message || 'Tạo phiếu trả hàng thất bại'
-
-      message.error(errorMsg)
-    }
+        onError: (error: any) => {
+          const errorMsg = error?.response?.data?.message || error?.message || 'Tạo phiếu trả hàng thất bại'
+          message.error(errorMsg)
+        },
+      }
+    )
   }
 
   return (

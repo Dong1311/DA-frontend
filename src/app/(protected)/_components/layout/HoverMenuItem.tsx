@@ -13,21 +13,24 @@ interface HoverMenuItemProps {
   active?: boolean
   children?: ReactNode
   href?: string
+  onClick?: () => void
 }
 
-export const HoverMenuItem = ({ icon, label, active, children, href }: HoverMenuItemProps) => {
+export const HoverMenuItem = ({ icon, label, active, children, href, onClick }: HoverMenuItemProps) => {
   const router = useRouter()
   const hasChildren = !!children
 
   const handleClick = () => {
-    if (!hasChildren && href) {
+    if (onClick) {
+      onClick()
+    } else if (!hasChildren && href) {
       router.push(href)
     }
   }
 
   return (
     <Dropdown
-      dropdownRender={() =>
+      popupRender={() =>
         hasChildren ? <div className="mt-[-3px] w-56 rounded-lg bg-[#0070f4] p-1 text-white">{children}</div> : null
       }
       placement="bottomLeft"

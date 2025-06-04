@@ -2,13 +2,17 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $ReturnResponseDto = {
+export const $InvoiceDto = {
   properties: {
     id: {
       type: 'string',
       isRequired: true,
     },
-    employeeId: {
+    createdAt: {
+      type: 'string',
+      isRequired: true,
+    },
+    returnId: {
       type: 'string',
       isRequired: true,
       isNullable: true,
@@ -16,41 +20,51 @@ export const $ReturnResponseDto = {
     customerId: {
       type: 'string',
       isRequired: true,
+      isNullable: true,
     },
-    refundAmount: {
+    totalAmount: {
       type: 'number',
       isRequired: true,
     },
-    status: {
-      type: 'string',
+    discount: {
+      type: 'number',
+      isRequired: true,
+    },
+    amountPaid: {
+      type: 'number',
       isRequired: true,
     },
     storeId: {
       type: 'string',
       isRequired: true,
     },
-    invoiceId: {
-      type: 'string',
+    paymentMethod: {
+      type: 'Enum',
       isRequired: true,
     },
-    returnItems: {
+    paymentId: {
+      type: 'string',
+      isRequired: true,
+      isNullable: true,
+    },
+    paymentStatus: {
+      type: 'Enum',
+      isRequired: true,
+    },
+    invoiceItems: {
       type: 'array',
       contains: {
-        type: 'ReturnItemDto',
+        type: 'InvoiceResponseDto',
       },
       isRequired: true,
     },
-    invoice: {
-      type: 'InvoiceDto',
-      isRequired: true,
-    },
     customer: {
-      type: 'CustomerDto',
+      type: 'all-of',
+      contains: [{
+        type: 'CustomerDto',
+      }],
       isRequired: true,
-    },
-    createdAt: {
-      type: 'string',
-      isRequired: true,
+      isNullable: true,
     },
   },
 } as const;

@@ -2,33 +2,24 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $ReturnItemDto = {
+export const $PaginatedReturnResponseDto = {
   properties: {
-    id: {
-      type: 'string',
+    items: {
+      type: 'array',
+      contains: {
+        type: 'ReturnDto',
+      },
       isRequired: true,
     },
-    returnId: {
-      type: 'string',
-      isRequired: true,
-    },
-    productId: {
-      type: 'string',
-      isRequired: true,
-    },
-    unitId: {
-      type: 'string',
-      isRequired: true,
-    },
-    quantity: {
+    total: {
       type: 'number',
       isRequired: true,
     },
-    unitPrice: {
+    page: {
       type: 'number',
       isRequired: true,
     },
-    totalPrice: {
+    limit: {
       type: 'number',
       isRequired: true,
     },

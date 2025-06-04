@@ -4,7 +4,9 @@
 /* eslint-disable */
 export type ReturnItemDto = {
   id: string;
+  returnId: string;
   productId: string;
+  unitId: string;
   quantity: number;
   unitPrice: number;
   totalPrice: number;

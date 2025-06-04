@@ -42,7 +42,10 @@ const SubItem = ({ icon, label, href }: { icon: React.ReactNode; label: string; 
 
 export const SidebarHeader = () => {
   const [collapsed, setCollapsed] = useState(false)
-
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({})
+  const toggleGroup = (key: string) => {
+    setOpenGroups((prev) => ({ ...prev, [key]: !prev[key] }))
+  }
   return (
     <Flex className="w-full bg-[#0070f4] text-white">
       <Flex justify="space-between" wrap="wrap" className="hidden px-4 md:flex">
@@ -57,11 +60,11 @@ export const SidebarHeader = () => {
           </HoverMenuItem>
 
           <HoverMenuItem icon={<SwapOutlined />} label="Giao dịch">
-            <SubItem icon={<ShoppingOutlined />} label="Đặt hàng" />
+            <SubItem icon={<ShoppingOutlined />} label="Đặt hàng" href="/order" />
             <SubItem icon={<FileExcelOutlined />} label="Hóa đơn" href="/invoice" />
-            <SubItem icon={<UndoOutlined />} label="Trả hàng" />
+            <SubItem icon={<UndoOutlined />} label="Trả hàng" href="/return" />
             <SubItem icon={<UploadOutlined />} label="Nhập hàng" href="/import-receipt" />
-            <SubItem icon={<FileDoneOutlined />} label="Xuất huỷ" />
+            <SubItem icon={<FileDoneOutlined />} label="Xuất huỷ" href="/cancel" />
           </HoverMenuItem>
 
           <HoverMenuItem icon={<TeamOutlined />} label="Đối tác">
@@ -69,11 +72,11 @@ export const SidebarHeader = () => {
             <SubItem icon={<UserSwitchOutlined />} label="Nhà cung cấp" href="/supplier" />
           </HoverMenuItem>
           <HoverMenuItem icon={<FileTextOutlined />} label="Báo cáo">
-            <SubItem icon={<BarChartOutlined />} label="Cuối ngày" />
-            <SubItem icon={<ShoppingCartOutlined />} label="Bán hàng" />
-            <SubItem icon={<ShoppingOutlined />} label="Đặt hàng" />
-            <SubItem icon={<DropboxOutlined />} label="Hàng hóa" />
-            <SubItem icon={<UserOutlined />} label="Khách hàng" />
+            <SubItem icon={<BarChartOutlined />} label="Cuối ngày" href="/reports/daily" />
+            <SubItem icon={<ShoppingCartOutlined />} label="Bán hàng" href="/reports/sales" />
+            <SubItem icon={<ShoppingOutlined />} label="Đặt hàng" href="/reports/orders" />
+            <SubItem icon={<DropboxOutlined />} label="Hàng hóa" href="/reports/products" />
+            <SubItem icon={<UserOutlined />} label="Khách hàng" href="/reports/customers" />
           </HoverMenuItem>
         </Flex>
 
@@ -91,15 +94,56 @@ export const SidebarHeader = () => {
       </Flex>
 
       {collapsed && (
-        <Flex vertical justify="start" gap={8} className="px-4 pb-2 md:hidden">
-          <HoverMenuItem icon={<EyeOutlined />} label="Tổng quan" />
-          <HoverMenuItem icon={<DropboxOutlined />} label="Hàng hóa" />
-          <HoverMenuItem icon={<SwapOutlined />} label="Giao dịch" />
-          <HoverMenuItem icon={<TeamOutlined />} label="Đối tác" />
-          <HoverMenuItem icon={<UserOutlined />} label="Nhân viên" />
-          <HoverMenuItem icon={<FileTextOutlined />} label="Báo cáo" />
-          <HoverMenuItem icon={<ShoppingCartOutlined />} label="Bán Online" />
-          <HoverMenuItem icon={<ShopOutlined />} label="Bán hàng" />
+        <Flex vertical justify="start" className="px-4 pb-2 md:hidden" gap={8}>
+          <HoverMenuItem icon={<EyeOutlined />} label="Tổng quan" href="/dashboard" />
+
+          <div>
+            <HoverMenuItem icon={<DropboxOutlined />} label="Hàng hóa" onClick={() => toggleGroup('products')} />
+            {openGroups['products'] && (
+              <Flex vertical className="ml-6 mt-2" gap={4}>
+                <SubItem icon={<AppstoreOutlined />} label="Danh mục" href="/product/list" />
+                <SubItem icon={<TagsOutlined />} label="Bảng giá" href="/product/pricebook" />
+              </Flex>
+            )}
+          </div>
+
+          <div>
+            <HoverMenuItem icon={<SwapOutlined />} label="Giao dịch" onClick={() => toggleGroup('transactions')} />
+            {openGroups['transactions'] && (
+              <Flex vertical className="ml-6 mt-2" gap={4}>
+                <SubItem icon={<ShoppingOutlined />} label="Đặt hàng" href="/order" />
+                <SubItem icon={<FileExcelOutlined />} label="Hóa đơn" href="/invoice" />
+                <SubItem icon={<UndoOutlined />} label="Trả hàng" href="/return" />
+                <SubItem icon={<UploadOutlined />} label="Nhập hàng" href="/import-receipt" />
+                <SubItem icon={<FileDoneOutlined />} label="Xuất huỷ" href="/cancel" />
+              </Flex>
+            )}
+          </div>
+
+          <div>
+            <HoverMenuItem icon={<TeamOutlined />} label="Đối tác" onClick={() => toggleGroup('partners')} />
+            {openGroups['partners'] && (
+              <Flex vertical className="ml-6 mt-2" gap={4}>
+                <SubItem icon={<UserOutlined />} label="Khách hàng" href="/customer" />
+                <SubItem icon={<UserSwitchOutlined />} label="Nhà cung cấp" href="/supplier" />
+              </Flex>
+            )}
+          </div>
+
+          <div>
+            <HoverMenuItem icon={<FileTextOutlined />} label="Báo cáo" onClick={() => toggleGroup('reports')} />
+            {openGroups['reports'] && (
+              <Flex vertical className="ml-6 mt-2" gap={4}>
+                <SubItem icon={<BarChartOutlined />} label="Cuối ngày" href="/reports/daily" />
+                <SubItem icon={<ShoppingCartOutlined />} label="Bán hàng" href="/reports/sales" />
+                <SubItem icon={<ShoppingOutlined />} label="Đặt hàng" href="/reports/orders" />
+                <SubItem icon={<DropboxOutlined />} label="Hàng hóa" href="/reports/products" />
+                <SubItem icon={<UserOutlined />} label="Khách hàng" href="/reports/customers" />
+              </Flex>
+            )}
+          </div>
+
+          <HoverMenuItem icon={<ShopOutlined />} label="Bán hàng" href="/sale" />
         </Flex>
       )}
     </Flex>

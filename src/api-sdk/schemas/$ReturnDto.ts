@@ -2,35 +2,32 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $ReturnItemDto = {
+export const $ReturnDto = {
   properties: {
     id: {
       type: 'string',
       isRequired: true,
     },
-    returnId: {
+    code: {
       type: 'string',
       isRequired: true,
     },
-    productId: {
+    name: {
       type: 'string',
       isRequired: true,
     },
-    unitId: {
+    storeId: {
       type: 'string',
       isRequired: true,
     },
-    quantity: {
-      type: 'number',
+    invoiceId: {
+      type: 'string',
       isRequired: true,
     },
-    unitPrice: {
-      type: 'number',
+    createdAt: {
+      type: 'string',
       isRequired: true,
-    },
-    totalPrice: {
-      type: 'number',
-      isRequired: true,
+      format: 'date-time',
     },
   },
 } as const;

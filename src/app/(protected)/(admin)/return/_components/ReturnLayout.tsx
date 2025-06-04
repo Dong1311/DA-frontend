@@ -6,11 +6,11 @@ import { useEffect, useState } from 'react'
 
 import { Text } from '@/components'
 
-import { SupplierSearch } from './SupplierSearch'
-import { SupplierTable } from './SupplierTable'
-import { SupplierToolbar } from './SupplierToolbar'
+import { ReturnSearch } from './ReturnSearch'
+import { ReturnTable } from './ReturnTable'
+import { ReturnToolbar } from './ReturnToolbar'
 
-export const SupplierLayout = () => {
+export const ReturnLayout = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -20,7 +20,6 @@ export const SupplierLayout = () => {
   const [searchKeyword, setSearchKeyword] = useState(initialKeyword)
   const [page, setPage] = useState(initialPage)
 
-  // Đồng bộ lại page khi URL thay đổi
   useEffect(() => {
     setSearchKeyword(searchParams.get('search') || '')
     setPage(parseInt(searchParams.get('page') || '1', 10))
@@ -29,7 +28,7 @@ export const SupplierLayout = () => {
   const handleSearch = (keyword: string) => {
     const params = new URLSearchParams()
     if (keyword) params.set('search', keyword)
-    params.set('page', '1') // reset page về 1 khi search mới
+    params.set('page', '1')
     router.replace(`?${params.toString()}`)
   }
 
@@ -42,14 +41,14 @@ export const SupplierLayout = () => {
   return (
     <Flex className="min-h-screen w-full bg-[#f5f6f8] p-4 pt-2 md:pt-4" vertical>
       <Flex vertical>
-        <Text className="mb-4 text-[20px] font-semibold text-black">Nhà cung cấp</Text>
+        <Text className="mb-4 text-[20px] font-semibold text-black">Phiếu trả hàng</Text>
 
         <Flex vertical className="mt-2 min-w-0 flex-1 overflow-y-auto">
           <Flex justify="space-between" className="mb-4">
-            <SupplierSearch onSearch={handleSearch} defaultValue={initialKeyword} />
-            <SupplierToolbar />
+            <ReturnSearch onSearch={handleSearch} defaultValue={initialKeyword} />
+            <ReturnToolbar />
           </Flex>
-          <SupplierTable searchKeyword={searchKeyword} page={page} onPageChange={handlePageChange} />
+          <ReturnTable searchKeyword={searchKeyword} page={page} onPageChange={handlePageChange} />
         </Flex>
       </Flex>
     </Flex>
