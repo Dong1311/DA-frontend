@@ -83,7 +83,7 @@ export const InvoiceTable = ({
       title: 'Khách hàng',
       dataIndex: 'customer',
       ellipsis: true,
-      render: (customer: { name?: string }) => <Text>{customer?.name ?? ''}</Text>,
+      render: (customer: { name?: string }) => <Text>{customer?.name ?? 'Khách lẻ'}</Text>,
       onCell: () => ({ style: { width: '8%' } }),
     },
   ]

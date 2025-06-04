@@ -2,25 +2,20 @@
 import {
   AppstoreOutlined,
   BarChartOutlined,
-  CalendarOutlined,
   CheckSquareOutlined,
   DropboxOutlined,
   EyeOutlined,
   FileDoneOutlined,
   FileExcelOutlined,
   FileTextOutlined,
-  ScheduleOutlined,
-  SettingOutlined,
   ShopOutlined,
   ShoppingCartOutlined,
   ShoppingOutlined,
-  SolutionOutlined,
   SwapOutlined,
   TagsOutlined,
   TeamOutlined,
   UndoOutlined,
   UploadOutlined,
-  UserAddOutlined,
   UserOutlined,
   UserSwitchOutlined,
 } from '@ant-design/icons'
@@ -57,7 +52,7 @@ export const SidebarHeader = () => {
           <HoverMenuItem icon={<DropboxOutlined />} label="Hàng hóa">
             <SubItem icon={<AppstoreOutlined />} label="Danh mục" href="/product/list" />
             <SubItem icon={<FileDoneOutlined />} label="Đơn thuốc mẫu" />
-            <SubItem icon={<TagsOutlined />} label="Thiết lập giá" href="/product/pricebook" />
+            <SubItem icon={<TagsOutlined />} label="Bảng giá" href="/product/pricebook" />
             <SubItem icon={<CheckSquareOutlined />} label="Kiểm kho" />
           </HoverMenuItem>
 
@@ -73,22 +68,12 @@ export const SidebarHeader = () => {
             <SubItem icon={<UserOutlined />} label="Khách hàng" href="/customer" />
             <SubItem icon={<UserSwitchOutlined />} label="Nhà cung cấp" href="/supplier" />
           </HoverMenuItem>
-
-          <HoverMenuItem icon={<UserOutlined />} label="Nhân viên">
-            <SubItem icon={<UserOutlined />} label="Nhân viên" />
-            <SubItem icon={<ScheduleOutlined />} label="Lịch làm việc" />
-            <SubItem icon={<CalendarOutlined />} label="Chấm công" />
-            <SubItem icon={<SolutionOutlined />} label="Bảng tính lương" />
-            <SubItem icon={<SettingOutlined />} label="Thiết lập nhân viên" />
-          </HoverMenuItem>
-
           <HoverMenuItem icon={<FileTextOutlined />} label="Báo cáo">
             <SubItem icon={<BarChartOutlined />} label="Cuối ngày" />
             <SubItem icon={<ShoppingCartOutlined />} label="Bán hàng" />
             <SubItem icon={<ShoppingOutlined />} label="Đặt hàng" />
             <SubItem icon={<DropboxOutlined />} label="Hàng hóa" />
             <SubItem icon={<UserOutlined />} label="Khách hàng" />
-            <SubItem icon={<UserAddOutlined />} label="Nhân viên" />
           </HoverMenuItem>
         </Flex>
 

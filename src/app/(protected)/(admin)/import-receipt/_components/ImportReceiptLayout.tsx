@@ -40,14 +40,14 @@ export const ImportReceiptLayout = () => {
 
   return (
     <Flex
-      className="min-h-screen w-full overflow-x-hidden bg-[#f5f6f8] p-4 pt-2 md:pt-4"
+      className="min-h-screen w-full overflow-x-auto bg-[#f5f6f8] p-4 pt-2 md:pt-4"
       justify="space-between"
       wrap="wrap"
       gap={16}
     >
-      <Flex vertical className="w-full p-0">
+      <Flex vertical className="w-full p-0" wrap="wrap">
         <Text className="mb-4 text-[20px] font-semibold text-black">Đơn nhập hàng</Text>
-        <Flex vertical className="min-w-0 flex-1 overflow-y-auto px-2 md:px-0">
+        <Flex vertical className="flex-1 overflow-y-auto px-2 md:px-0" wrap="wrap">
           <Flex justify="space-between" className="my-4">
             <ImportReceiptSearch onSearch={handleSearch} defaultValue={initialKeyword} />
             <ImportReceiptToolbar />

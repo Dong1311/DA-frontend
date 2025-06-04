@@ -6,7 +6,6 @@ export const useInvoiceList = () => {
   return useQuery({
     queryKey: ['invoices'],
     queryFn: () => SalesService.salesControllerGetAllInvoices(),
-    staleTime: 5 * 60 * 1000, 
   })
 }
 

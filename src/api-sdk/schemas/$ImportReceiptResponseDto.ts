@@ -8,10 +8,18 @@ export const $ImportReceiptResponseDto = {
       type: 'string',
       isRequired: true,
     },
+    code: {
+      type: 'string',
+      isRequired: true,
+    },
     createdAt: {
       type: 'string',
       isRequired: true,
       format: 'date-time',
+    },
+    name: {
+      type: 'string',
+      isRequired: true,
     },
     supplierId: {
       type: 'string',

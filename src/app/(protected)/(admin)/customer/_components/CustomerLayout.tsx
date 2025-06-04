@@ -39,7 +39,7 @@ export const CustomerLayout = () => {
 
   return (
     <Flex
-      className="h-screen w-full overflow-hidden bg-[#f5f6f8] p-4 pt-2 md:pt-4"
+      className="min-h-screen w-full overflow-x-hidden bg-[#f5f6f8] p-4 pt-2 md:pt-4"
       justify="space-between"
       wrap="wrap"
       gap={16}

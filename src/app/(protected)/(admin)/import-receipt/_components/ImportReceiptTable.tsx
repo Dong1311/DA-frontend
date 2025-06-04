@@ -1,9 +1,12 @@
 'use client'
 
-import { Table } from 'antd'
+import { Button, Table } from 'antd'
+import { useState } from 'react'
 
 import { Text } from '@/components'
-import { useImportReceiptList, useImportReceiptSearch } from '@/hooks/import-receipt'
+import { useImportReceiptDetail, useImportReceiptList, useImportReceiptSearch } from '@/hooks/import-receipt'
+
+import { ImportReceiptEditModal } from './ImportReceiptEditModal'
 
 export const ImportReceiptTable = ({
   searchKeyword,
@@ -16,8 +19,12 @@ export const ImportReceiptTable = ({
 }) => {
   const limit = 10
 
-  const { data: allReceipts, isLoading: isLoadingAll } = useImportReceiptList(page, limit)
+  const { data: allReceipts, isLoading: isLoadingAll, refetch: refetchList } = useImportReceiptList(page, limit)
   const { data: searchResults, isLoading: isLoadingSearch } = useImportReceiptSearch(searchKeyword, page, limit)
+
+  const [editingId, setEditingId] = useState<string | null>(null)
+
+  const { data: editingReceipt, isLoading: isEditingLoading } = useImportReceiptDetail(editingId ?? '')
 
   const data = searchKeyword ? searchResults : allReceipts
   const isLoading = searchKeyword ? isLoadingSearch : isLoadingAll
@@ -41,6 +48,7 @@ export const ImportReceiptTable = ({
       title: 'Ngày tạo',
       dataIndex: 'createdAt',
       key: 'createdAt',
+      ellipsis: true,
       render: (date: string) => new Date(date).toLocaleDateString(),
       onCell: () => ({ style: { width: '15%' } }),
     },
@@ -48,6 +56,7 @@ export const ImportReceiptTable = ({
       title: 'Nhà cung cấp',
       dataIndex: 'supplier',
       key: 'supplier',
+      ellipsis: true,
       render: (supplier: { name: string }) => <Text>{supplier?.name}</Text>,
       onCell: () => ({ style: { width: '25%' } }),
     },
@@ -55,23 +64,63 @@ export const ImportReceiptTable = ({
       title: 'Tổng tiền',
       dataIndex: 'amountDue',
       key: 'amountDue',
+      ellipsis: true,
       render: (val: number) => val.toLocaleString(),
+      onCell: () => ({ style: { width: '15%' } }),
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      ellipsis: true,
+      key: 'status',
+      render: (status: string) => (
+        <Text type={status === 'COMPLETED' ? 'success' : 'secondary'}>
+          {status === 'COMPLETED' ? 'Đã nhập hàng' : 'Bản nháp'}
+        </Text>
+      ),
+      onCell: () => ({ style: { width: '15%' } }),
+    },
+
+    {
+      title: 'Hành động',
+      key: 'actions',
+      ellipsis: true,
+      render: (_: any, record: { id: string; status: string }) => (
+        <Button disabled={record.status === 'COMPLETED'} onClick={() => setEditingId(record.id)}>
+          Chỉnh sửa
+        </Button>
+      ),
       onCell: () => ({ style: { width: '15%' } }),
     },
   ]
 
   return (
-    <Table
-      columns={columns}
-      dataSource={data?.items || []}
-      loading={isLoading}
-      rowKey="id"
-      pagination={{
-        current: page,
-        pageSize: limit,
-        total: data?.total || 0,
-        onChange: onPageChange,
-      }}
-    />
+    <>
+      <div className="w-full overflow-x-auto">
+        <Table
+          columns={columns}
+          dataSource={data?.items || []}
+          loading={isLoading}
+          rowKey="id"
+          scroll={{ x: 'max-content' }}
+          pagination={{
+            current: page,
+            pageSize: limit,
+            total: data?.total || 0,
+            onChange: onPageChange,
+          }}
+        />
+      </div>
+
+      {editingReceipt && (
+        <ImportReceiptEditModal
+          open={!!editingId}
+          onClose={() => setEditingId(null)}
+          isLoading={isEditingLoading}
+          receipt={editingReceipt}
+          refetchList={refetchList}
+        />
+      )}
+    </>
   )
 }

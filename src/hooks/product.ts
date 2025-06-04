@@ -21,7 +21,6 @@ export const useProductSearch = (keyword: string, page = 1, limit = 10) => {
     queryKey: ['products', 'search', keyword, page, limit],
     queryFn: () => ProductsService.productControllerSearch({ keyword, page, limit }),
     enabled: keyword.length > 0,
-    staleTime: 5 * 60 * 1000,
   })
 }
 
@@ -29,7 +28,6 @@ export const useProductList = (page: number, limit: number) => {
   return useQuery({
     queryKey: ['products', page],
     queryFn: () => ProductsService.productControllerFindAll({ page, limit }),
-    staleTime: 5 * 60 * 1000,
   })
 }
 
@@ -44,7 +42,7 @@ export const useUpdateProduct = () => {
       }),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] })
+      queryClient.invalidateQueries({ predicate: query => query.queryKey[0] === 'products' })
     },
   })
 }

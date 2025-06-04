@@ -6,16 +6,17 @@ import { useFormContext } from 'react-hook-form'
 
 import { useSupplierList } from '@/hooks/supplier'
 
-export const SupplierSearch = () => {
+export const SupplierSearch = ({ disabled = false }: { disabled?: boolean }) => {
   const { setValue, watch } = useFormContext()
   const [searchText, setSearchText] = useState('')
   const supplierId = watch('supplierId')
 
-  const { data: suppliers, isLoading } = useSupplierList(1, 1000)
+  const { data, isLoading } = useSupplierList(1, 1000)
+  const suppliers = useMemo(() => data?.items ?? [], [data])
 
   const filteredSuppliers = useMemo(() => {
-    if (!searchText) return suppliers ?? []
-    return suppliers?.filter((s: any) => s.name.toLowerCase().includes(searchText.toLowerCase())) ?? []
+    if (!searchText) return suppliers
+    return suppliers.filter((s: any) => s.name.toLowerCase().includes(searchText.toLowerCase()))
   }, [searchText, suppliers])
 
   useEffect(() => {
@@ -32,6 +33,7 @@ export const SupplierSearch = () => {
       help={supplierId ? undefined : 'Vui lòng chọn nhà cung cấp'}
     >
       <Select
+        disabled={disabled}
         showSearch
         allowClear
         placeholder="Chọn nhà cung cấp"

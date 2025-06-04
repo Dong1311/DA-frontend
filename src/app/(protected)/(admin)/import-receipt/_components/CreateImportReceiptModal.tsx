@@ -5,7 +5,8 @@ import { Divider, message, Modal } from 'antd'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { type CreateImportReceiptDto, createImportReceiptSchema } from '@/constants/schema'
+import { type CreateImportReceiptDto } from '@/api-sdk'
+import { createImportReceiptSchema } from '@/constants/schema'
 import { useCreateImportReceipt } from '@/hooks/import-receipt'
 
 import { ImportReceiptForm } from './ImportReceiptForm'
@@ -52,7 +53,7 @@ export const CreateImportReceiptModal = ({ open, onClose }: Props) => {
       open={open}
       onCancel={onClose}
       onOk={handleSubmit(onSubmit, onInvalid)}
-      okText="Tạo"
+      okText="Lưu nháp"
       cancelText="Hủy"
       confirmLoading={submitting}
       width={900}
@@ -63,7 +64,6 @@ export const CreateImportReceiptModal = ({ open, onClose }: Props) => {
       </FormProvider>
 
       <Divider />
-      {/* Có thể thêm phần preview tổng tiền, trạng thái... */}
     </Modal>
   )
 }

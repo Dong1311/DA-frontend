@@ -2,16 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateNewProductDto } from './CreateNewProductDto';
 export type CreateImportReceiptItemDto = {
   /**
-   * ID sản phẩm đã có (không cần nếu tạo sản phẩm mới)
+   * ID sản phẩm đã có
    */
-  productId?: string;
-  /**
-   * Thông tin sản phẩm mới nếu tạo mới
-   */
-  newProduct?: CreateNewProductDto;
+  productId: string;
   /**
    * Số lượng nhập
    */
@@ -20,5 +15,9 @@ export type CreateImportReceiptItemDto = {
    * Đơn giá nhập
    */
   unitPrice: number;
+  /**
+   * ID đơn vị
+   */
+  unitId: string;
 };
 

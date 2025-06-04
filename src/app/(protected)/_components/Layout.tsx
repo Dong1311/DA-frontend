@@ -35,7 +35,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       <SidebarHeader />
       <Layout>
         <Content style={{ margin: '0 16px' }}>
-          <Flex className="min-h-[360px] rounded-lg bg-white p-6">{children}</Flex>
+          <Flex className="min-h-[360px] rounded-lg bg-[#f5f6f8] p-6">{children}</Flex>
         </Content>
       </Layout>
     </Layout>

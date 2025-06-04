@@ -36,10 +36,10 @@ export const useImportReceiptSearch = (keyword: string, page: number, limit: num
 }
 
 
-export const useImportReceiptDetail = (id: string) => {
+export const useImportReceiptDetail = (id: string | null) => {
   return useQuery<ImportReceiptResponseDto>({
     queryKey: ['importReceipts', id],
-    queryFn: () => ImportReceiptsService.importReceiptControllerFindOne({ id }),
+    queryFn: () => ImportReceiptsService.importReceiptControllerFindOne({ id: id! }),
     enabled: !!id,
   })
 }

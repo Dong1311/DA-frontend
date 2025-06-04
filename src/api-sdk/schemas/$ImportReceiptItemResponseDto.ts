@@ -20,6 +20,10 @@ export const $ImportReceiptItemResponseDto = {
       type: 'number',
       isRequired: true,
     },
+    unitId: {
+      type: 'string',
+      isRequired: true,
+    },
     totalPrice: {
       type: 'number',
       isRequired: true,

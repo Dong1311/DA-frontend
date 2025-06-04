@@ -7,6 +7,7 @@ export type ImportReceiptItemResponseDto = {
   productId: string;
   quantity: number;
   unitPrice: number;
+  unitId: string;
   totalPrice: number;
 };
 

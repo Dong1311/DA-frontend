@@ -6,14 +6,8 @@ export const $CreateImportReceiptItemDto = {
   properties: {
     productId: {
       type: 'string',
-      description: `ID sản phẩm đã có (không cần nếu tạo sản phẩm mới)`,
-    },
-    newProduct: {
-      type: 'all-of',
-      description: `Thông tin sản phẩm mới nếu tạo mới`,
-      contains: [{
-        type: 'CreateNewProductDto',
-      }],
+      description: `ID sản phẩm đã có`,
+      isRequired: true,
     },
     quantity: {
       type: 'number',
@@ -23,6 +17,11 @@ export const $CreateImportReceiptItemDto = {
     unitPrice: {
       type: 'number',
       description: `Đơn giá nhập`,
+      isRequired: true,
+    },
+    unitId: {
+      type: 'string',
+      description: `ID đơn vị`,
       isRequired: true,
     },
   },
