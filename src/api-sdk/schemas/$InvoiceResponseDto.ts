@@ -22,6 +22,14 @@ export const $InvoiceResponseDto = {
       type: 'string',
       isRequired: true,
     },
+    customer: {
+      type: 'all-of',
+      contains: [{
+        type: 'CustomerDto',
+      }],
+      isRequired: true,
+      isNullable: true,
+    },
     storeId: {
       type: 'string',
       isRequired: true,
@@ -59,6 +67,10 @@ export const $InvoiceResponseDto = {
       contains: {
         type: 'InvoiceItemDto',
       },
+      isRequired: true,
+    },
+    unit: {
+      type: 'ProductUnitDto',
       isRequired: true,
     },
   },

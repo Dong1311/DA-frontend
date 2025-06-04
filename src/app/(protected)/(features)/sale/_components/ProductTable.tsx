@@ -7,6 +7,7 @@ import { type ProductSaleDto, type ProductUnitDto } from '@/api-sdk'
 import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas'
 
 export type ProductSaleFormDto = ProductSaleDto & {
+  stock: number
   productUnits: ProductUnitDto[]
   images: { url: string }[]
 }
@@ -14,7 +15,7 @@ export type ProductSaleFormDto = ProductSaleDto & {
 export const ProductTable = () => {
   const { setValue, watch } = useFormContext()
   const products: ProductSaleFormDto[] = watch('products')
-
+  console.log(products)
   const handleQuantityChange = (value: number | null, productId: string) => {
     if (value === null || value <= 0) return
     const updated = products.map((p) => {
@@ -60,7 +61,7 @@ export const ProductTable = () => {
       title: 'Ảnh',
       dataIndex: 'images',
       render: (images: { url: string }[]) => {
-        const url = images?.[0]?.url || '/images/notfound.png'
+        const url = images?.[0]?.url || '/images/noimage.png'
         return <img src={url} alt="" style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 4 }} />
       },
     },
@@ -84,7 +85,12 @@ export const ProductTable = () => {
       title: 'Số lượng',
       dataIndex: 'quantity',
       render: (quantity: number, record: ProductSaleFormDto) => (
-        <InputNumber min={1} value={quantity} onChange={(val) => handleQuantityChange(val, record.id)} />
+        <InputNumber
+          min={1}
+          max={record.stock}
+          value={quantity}
+          onChange={(val) => handleQuantityChange(val, record.id)}
+        />
       ),
     },
     {

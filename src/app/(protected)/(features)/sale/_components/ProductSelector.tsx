@@ -20,6 +20,7 @@ export const ProductSelector = () => {
 
   const handleSelect = (productId: string) => {
     const product = items.find((p) => p.id === productId)
+    // console.log(product)
     if (!product) return
 
     const current = getValues('products') as ProductSaleFormDto[]
@@ -40,6 +41,7 @@ export const ProductSelector = () => {
         quantity: 1,
         unitId: baseUnit.id,
         unitPrice: baseUnit.unitPrice,
+        stock: product.stock,
         totalPrice: baseUnit.unitPrice,
         images: product.images ?? [],
         productUnits: product.productUnits ?? [],

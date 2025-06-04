@@ -4,8 +4,8 @@ import { Button, Col, Layout, message, Row } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { SalesService } from '@/api-sdk'
 import { type CreateInvoiceDto, type ProductSaleDto } from '@/api-sdk'
+import { useCreateInvoice } from '@/hooks/invoice'
 import { useSocket } from '@/hooks/useSocket'
 
 import { CustomerInfo } from './CustomerInfo'
@@ -48,6 +48,7 @@ export const SaleFormContent = () => {
     resetForm()
     setPaymentUrl(null)
   }, [paymentSuccessData])
+  const { mutateAsync: createInvoice, isPending } = useCreateInvoice()
 
   const onSubmit = async (data: any) => {
     const products: ProductSaleFormDto[] = data.products
@@ -74,7 +75,7 @@ export const SaleFormContent = () => {
     }
 
     try {
-      const response = await SalesService.salesControllerCreateInvoice({ requestBody: payload })
+      const response = await createInvoice(payload)
 
       if (payload.paymentMethod === CASH) {
         message.success('Tạo đơn hàng thành công!')
@@ -109,7 +110,7 @@ export const SaleFormContent = () => {
           </Col>
         </Row>
         <Row justify="end" style={{ marginTop: 24 }}>
-          <Button type="primary" onClick={handleSubmit(onSubmit)}>
+          <Button type="primary" onClick={handleSubmit(onSubmit)} loading={isPending}>
             Thanh toán
           </Button>
         </Row>

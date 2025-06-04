@@ -40,7 +40,7 @@ export const InvoiceSearch = ({
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           allowClear
-          style={{ width: 250 }}
+          style={{ maxWidth: 250 }}
         />
       </Col>
       <Col span={6}>

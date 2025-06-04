@@ -86,8 +86,8 @@ export const ImportReceiptTable = ({
       key: 'actions',
       ellipsis: true,
       render: (_: any, record: { id: string; status: string }) => (
-        <Button disabled={record.status === 'COMPLETED'} onClick={() => setEditingId(record.id)}>
-          Chỉnh sửa
+        <Button onClick={() => setEditingId(record.id)}>
+          {record.status === 'COMPLETED' ? 'Chi tiết' : 'Chỉnh sửa'}
         </Button>
       ),
       onCell: () => ({ style: { width: '15%' } }),

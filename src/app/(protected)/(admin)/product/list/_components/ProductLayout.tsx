@@ -25,23 +25,17 @@ export const ProductLayout = () => {
   }
 
   return (
-    <Flex
-      className="min-h-screen w-full overflow-x-hidden bg-[#f5f6f8] p-4 pt-2 md:pt-4"
-      justify="space-between"
-      wrap="wrap"
-      gap={16}
-    >
-      <Flex vertical className="w-full">
-        <Text className="mb-4 text-[20px] font-semibold text-black">Hàng hóa</Text>
+    <Flex className="min-h-screen w-full bg-[#f5f6f8] p-4 pt-2 md:pt-4" vertical>
+      <Text className="mb-4 text-[20px] font-semibold text-black">Hàng hóa</Text>
 
-        <Flex vertical className="mt-2 min-w-0 flex-1 overflow-y-auto">
-          <Flex justify="space-between" className="mb-4">
-            <ProductSearch onSearch={handleSearch} defaultValue={initialKeyword} />
-            <ProductToolbar />
-          </Flex>
-          <ProductTable searchKeyword={searchKeyword} />
-        </Flex>
+      <Flex justify="space-between" className="mb-4">
+        <ProductSearch onSearch={handleSearch} defaultValue={initialKeyword} />
+        <ProductToolbar />
       </Flex>
+
+      <div className="w-full max-w-full overflow-x-auto rounded-md bg-white p-4 shadow">
+        <ProductTable searchKeyword={searchKeyword} />
+      </div>
     </Flex>
   )
 }

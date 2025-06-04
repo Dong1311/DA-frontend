@@ -14,20 +14,28 @@ export const InvoiceTable = ({
   searchKeyword,
   fromDate,
   toDate,
+  page,
+  onPageChange,
 }: {
   searchKeyword: string
   fromDate?: string
   toDate?: string
+  page: number
+  onPageChange: (page: number) => void
 }) => {
-  const { data: allInvoices, isLoading: isLoadingAll } = useInvoiceList()
+  const limit = 10
 
+  const { data: allInvoices, isLoading: isLoadingAll } = useInvoiceList(page, limit)
   const { data: searchResults, isLoading: isLoadingSearch } = useInvoiceSearch({
     keyword: searchKeyword,
     fromDate,
     toDate,
+    page,
+    limit,
   })
-  const data = searchKeyword ? searchResults : allInvoices
-  const isLoading = searchKeyword ? isLoadingSearch : isLoadingAll
+
+  const data = searchKeyword || fromDate || toDate ? searchResults : allInvoices
+  const isLoading = searchKeyword || fromDate || toDate ? isLoadingSearch : isLoadingAll
 
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceResponseDto | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
@@ -39,7 +47,7 @@ export const InvoiceTable = ({
       setModalOpen(true)
       const detail = await SalesService.salesControllerGetInvoice({ id })
       setSelectedInvoice(detail)
-    } catch (_error) {
+    } catch {
       message.error('Lỗi khi lấy chi tiết hóa đơn')
     } finally {
       setLoadingDetail(false)
@@ -50,41 +58,29 @@ export const InvoiceTable = ({
     {
       title: 'Ngày tạo',
       dataIndex: 'createdAt',
-      ellipsis: true,
-      onCell: () => ({ style: { width: '25%' } }),
       render: (date: string) => <Text>{new Date(date).toLocaleString()}</Text>,
     },
     {
       title: 'Tổng tiền',
       dataIndex: 'totalAmount',
-      ellipsis: true,
-      onCell: () => ({ style: { width: '12%' } }),
     },
     {
       title: 'Giảm giá',
       dataIndex: 'discount',
-      ellipsis: true,
-      onCell: () => ({ style: { width: '12%' } }),
     },
     {
       title: 'Phương thức',
       dataIndex: 'paymentMethod',
-      ellipsis: true,
       render: (text: string) => <Text>{text === 'BANKTRANSFER' ? 'Chuyển khoản' : 'Tiền mặt'}</Text>,
-      onCell: () => ({ style: { width: '8%' } }),
     },
     {
       title: 'Trạng thái',
       dataIndex: 'paymentStatus',
-      ellipsis: true,
-      onCell: () => ({ style: { width: '8%' } }),
     },
     {
       title: 'Khách hàng',
       dataIndex: 'customer',
-      ellipsis: true,
       render: (customer: { name?: string }) => <Text>{customer?.name ?? 'Khách lẻ'}</Text>,
-      onCell: () => ({ style: { width: '8%' } }),
     },
   ]
 
@@ -92,10 +88,16 @@ export const InvoiceTable = ({
     <>
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={data?.items || []}
         loading={isLoading}
         rowKey="id"
-        pagination={{ pageSize: 10 }}
+        scroll={{ x: 'max-content' }}
+        pagination={{
+          current: page,
+          pageSize: limit,
+          total: data?.total || 0,
+          onChange: onPageChange,
+        }}
         onRow={(record) => ({
           onClick: () => fetchInvoiceDetail(record.id),
           style: { cursor: 'pointer' },

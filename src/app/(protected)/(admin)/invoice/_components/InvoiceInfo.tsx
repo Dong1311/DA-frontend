@@ -71,6 +71,9 @@ export const InvoiceInfo = ({ invoice }: { invoice: InvoiceResponseDto }) => {
           <Text strong>Ngày tạo:</Text> <Text>{new Date(invoice.createdAt).toLocaleString()}</Text>
         </Col>
         <Col span={12}>
+          <Text strong>Khách hàng: </Text> <Text>{invoice.customer ? invoice.customer.name : ''}</Text>
+        </Col>
+        <Col span={12}>
           <Text strong>Trạng thái:</Text> <Text>{invoice.paymentStatus}</Text>
         </Col>
         <Col span={12}>

@@ -55,6 +55,7 @@ export const ProductTable = ({ searchKeyword }: { searchKeyword: string }) => {
         columns={columns}
         dataSource={data?.items || []}
         loading={isLoading}
+        scroll={{ x: 'max-content' }}
         rowKey="id"
         pagination={{
           current: page,

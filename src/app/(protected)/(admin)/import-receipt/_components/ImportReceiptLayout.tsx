@@ -39,7 +39,7 @@ export const ImportReceiptLayout = () => {
   }
 
   return (
-    <Flex className="min-h-screen w-full bg-[#f5f6f8] p-4 pt-2 md:pt-4" vertical>
+    <Flex className="min-h-screen w-full bg-[#f5f6f8] pt-2 sm:p-4 md:pt-4" vertical>
       <Text className="mb-4 text-[20px] font-semibold text-black">Đơn nhập hàng</Text>
 
       <Flex justify="space-between" className="my-4">

@@ -19,6 +19,11 @@ const invoiceItemColumns = [
     key: 'quantity',
   },
   {
+    title: 'Đơn vị',
+    render: (_: any, record: any) => record.unit.unitName ?? '-',
+    key: 'unit',
+  },
+  {
     title: 'Đơn giá',
     dataIndex: 'unitPrice',
     key: 'unitPrice',

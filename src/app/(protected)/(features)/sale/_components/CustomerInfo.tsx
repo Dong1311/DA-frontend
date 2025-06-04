@@ -1,25 +1,29 @@
 'use client'
 
-import { Card, Input, List, Spin } from 'antd'
+import { Card, Empty, Input, List, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
+
 interface CustomerDto {
   id: string
   name: string
   phone?: string
+  address?: string
 }
 
 import { useCustomerSearch } from '@/hooks/customer'
 
 export const CustomerInfo = () => {
   const [keyword, setKeyword] = useState('')
-  const [selectedCustomer, setSelectedCustomer] = useState<any | null>(null)
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerDto | null>(null)
   const { setValue, watch } = useFormContext()
   const customerId = watch('customerId')
 
-  const { data: customers, isLoading } = useCustomerSearch(keyword, 1, 1000)
+  const { data, isLoading } = useCustomerSearch(keyword, 1, 1000)
 
-  const handleSelectCustomer = (customer: any) => {
+  const customers = data?.items ?? []
+
+  const handleSelectCustomer = (customer: CustomerDto) => {
     setValue('customerId', customer.id)
     setSelectedCustomer(customer)
     setKeyword('')
@@ -32,40 +36,50 @@ export const CustomerInfo = () => {
   }, [customerId])
 
   return (
-    <div>
-      <Card title="Thông tin khách hàng">
-        <Input.Search
-          placeholder="Tìm khách hàng (F4)"
-          enterButton="Tìm"
-          size="large"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-        />
+    <Card title="Thông tin khách hàng">
+      <Input.Search
+        placeholder="Tìm khách hàng (F4)"
+        enterButton="Tìm"
+        size="large"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+      />
 
-        {isLoading ? (
-          <Spin style={{ marginTop: 12 }} />
-        ) : (
-          keyword &&
-          customers && (
+      {isLoading && <Spin style={{ marginTop: 12 }} />}
+
+      {!isLoading && keyword && (
+        <>
+          {customers.length > 0 ? (
             <List
               bordered
               style={{ marginTop: 12, maxHeight: 200, overflowY: 'auto' }}
-              dataSource={customers as CustomerDto[]}
-              renderItem={(item) => (
-                <List.Item onClick={() => handleSelectCustomer(item)} style={{ cursor: 'pointer' }}>
-                  <strong>{item.name}</strong> {item.phone && `- ${item.phone}`}
-                </List.Item>
-              )}
+              dataSource={customers}
+              renderItem={(item) => {
+                const customer = item as CustomerDto
+                return (
+                  <List.Item onClick={() => handleSelectCustomer(customer)} style={{ cursor: 'pointer' }}>
+                    <div>
+                      <strong>{customer.name}</strong>
+                      {customer.phone && ` - ${customer.phone}`}
+                      {customer.address && <div style={{ fontSize: 12, color: '#666' }}>{customer.address}</div>}
+                    </div>
+                  </List.Item>
+                )
+              }}
             />
-          )
-        )}
+          ) : (
+            <Empty style={{ marginTop: 12 }} description="Không tìm thấy khách hàng nào" />
+          )}
+        </>
+      )}
 
-        {selectedCustomer && (
-          <div style={{ marginTop: 12 }}>
-            {selectedCustomer.name} {selectedCustomer.phone && `- ${selectedCustomer.phone}`}
-          </div>
-        )}
-      </Card>
-    </div>
+      {selectedCustomer && (
+        <div style={{ marginTop: 12 }}>
+          <strong>{selectedCustomer.name}</strong>
+          {selectedCustomer.phone && ` - ${selectedCustomer.phone}`}
+          {selectedCustomer.address && <div style={{ fontSize: 12 }}>{selectedCustomer.address}</div>}
+        </div>
+      )}
+    </Card>
   )
 }

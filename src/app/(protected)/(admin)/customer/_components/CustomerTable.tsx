@@ -77,6 +77,7 @@ export const CustomerTable = ({
       <Table
         columns={columns}
         dataSource={data?.items || []}
+        scroll={{ x: 'max-content' }}
         loading={isLoading}
         rowKey="id"
         pagination={{
