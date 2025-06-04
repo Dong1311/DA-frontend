@@ -96,21 +96,19 @@ export const ImportReceiptTable = ({
 
   return (
     <>
-      <div className="w-full overflow-x-auto">
-        <Table
-          columns={columns}
-          dataSource={data?.items || []}
-          loading={isLoading}
-          rowKey="id"
-          scroll={{ x: 'max-content' }}
-          pagination={{
-            current: page,
-            pageSize: limit,
-            total: data?.total || 0,
-            onChange: onPageChange,
-          }}
-        />
-      </div>
+      <Table
+        columns={columns}
+        dataSource={data?.items || []}
+        loading={isLoading}
+        rowKey="id"
+        scroll={{ x: 'max-content' }}
+        pagination={{
+          current: page,
+          pageSize: limit,
+          total: data?.total || 0,
+          onChange: onPageChange,
+        }}
+      />
 
       {editingReceipt && (
         <ImportReceiptEditModal
