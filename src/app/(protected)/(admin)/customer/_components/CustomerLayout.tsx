@@ -8,7 +8,7 @@ import { Text } from '@/components'
 
 import { CustomerSearch } from './CustomerSearch'
 import { CustomerTable } from './CustomerTable'
-
+import { CustomerToolbar } from './CustomerToolbar'
 export const CustomerLayout = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -43,6 +43,7 @@ export const CustomerLayout = () => {
 
       <Flex justify="space-between" className="mb-4">
         <CustomerSearch onSearch={handleSearch} defaultValue={searchKeyword} />
+        <CustomerToolbar />
       </Flex>
 
       <div className="w-full max-w-full overflow-x-auto rounded-md bg-white p-4 shadow">

@@ -90,3 +90,17 @@ export const stockCheckSchema = z.object({
 })
 
 export type StockCheckFormValues = z.infer<typeof stockCheckSchema>
+
+export const disposalReceiptItemSchema = z.object({
+  productId: z.string().uuid('Vui lòng chọn sản phẩm'),
+  unitId: z.string().uuid('Vui lòng chọn đơn vị'),
+  quantity: z.coerce.number().int().min(1, 'Số lượng phải lớn hơn 0'),
+  unitPrice: z.coerce.number().min(0, 'Đơn giá phải >= 0'),
+})
+
+export const disposalReceiptSchema = z.object({
+  note: z.string().min(1, 'Vui lòng nhập ghi chú'),
+  items: z.array(disposalReceiptItemSchema).min(1, 'Phải có ít nhất 1 sản phẩm'),
+})
+
+export type DisposalReceiptFormValues = z.infer<typeof disposalReceiptSchema>

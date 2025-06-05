@@ -63,7 +63,7 @@ export const SidebarHeader = () => {
             <SubItem icon={<FileExcelOutlined />} label="Hóa đơn" href="/invoice" />
             <SubItem icon={<UndoOutlined />} label="Trả hàng" href="/return" />
             <SubItem icon={<UploadOutlined />} label="Nhập hàng" href="/import-receipt" />
-            <SubItem icon={<FileDoneOutlined />} label="Xuất huỷ" href="/cancel" />
+            <SubItem icon={<FileDoneOutlined />} label="Xuất huỷ" href="/disposal-receipts" />
           </HoverMenuItem>
 
           <HoverMenuItem icon={<TeamOutlined />} label="Đối tác">
@@ -115,7 +115,7 @@ export const SidebarHeader = () => {
                 <SubItem icon={<FileExcelOutlined />} label="Hóa đơn" href="/invoice" />
                 <SubItem icon={<UndoOutlined />} label="Trả hàng" href="/return" />
                 <SubItem icon={<UploadOutlined />} label="Nhập hàng" href="/import-receipt" />
-                <SubItem icon={<FileDoneOutlined />} label="Xuất huỷ" href="/cancel" />
+                <SubItem icon={<FileDoneOutlined />} label="Xuất huỷ" href="/disposal-receipts" />
               </Flex>
             )}
           </div>
