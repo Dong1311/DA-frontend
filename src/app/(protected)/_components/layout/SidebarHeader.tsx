@@ -54,9 +54,8 @@ export const SidebarHeader = () => {
 
           <HoverMenuItem icon={<DropboxOutlined />} label="Hàng hóa">
             <SubItem icon={<AppstoreOutlined />} label="Danh mục" href="/product/list" />
-            <SubItem icon={<FileDoneOutlined />} label="Đơn thuốc mẫu" />
             <SubItem icon={<TagsOutlined />} label="Bảng giá" href="/product/pricebook" />
-            <SubItem icon={<CheckSquareOutlined />} label="Kiểm kho" />
+            <SubItem icon={<CheckSquareOutlined />} label="Kiểm kho" href="/product/stock-check" />
           </HoverMenuItem>
 
           <HoverMenuItem icon={<SwapOutlined />} label="Giao dịch">

@@ -38,7 +38,6 @@ export const ProductTable = ({ searchKeyword }: { searchKeyword: string }) => {
     { title: 'Giá bán', dataIndex: 'salePrice' },
     { title: 'Giá vốn', dataIndex: 'costPrice' },
     { title: 'Tồn kho', dataIndex: 'stock' },
-    { title: 'Đặt trước', dataIndex: 'reserved' },
     {
       title: '',
       render: (_: any, record: any) => (

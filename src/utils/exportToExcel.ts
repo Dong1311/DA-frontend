@@ -8,7 +8,6 @@ export const exportProductsToExcel = (products: any[]) => {
     'Giá bán': item.salePrice,
     'Giá vốn': item.costPrice,
     'Tồn kho': item.stock,
-    "Đặt trước": item.reserved,
     'Ngày tạo': new Date(item.createdAt).toLocaleString(),
   }))
 

@@ -77,4 +77,16 @@ export const createImportReceiptSchema = z.object({
   items: z.array(importReceiptItemSchema).min(1, 'Phải có ít nhất một sản phẩm nhập'),
 }).strict()
 
+export const stockCheckItemSchema = z.object({
+  productId: z.string().uuid('Vui lòng chọn sản phẩm'),
+  unitId: z.string().uuid('Vui lòng chọn đơn vị'),
+  quantityInStock: z.coerce.number().int().min(0, 'Tồn kho phải >= 0'),
+  quantityActual: z.coerce.number().int().min(0, 'Thực tế phải >= 0'),
+})
 
+export const stockCheckSchema = z.object({
+  balancedAt: z.string().optional(), 
+  details: z.array(stockCheckItemSchema).min(1, 'Phải có ít nhất 1 sản phẩm kiểm'),
+})
+
+export type StockCheckFormValues = z.infer<typeof stockCheckSchema>
