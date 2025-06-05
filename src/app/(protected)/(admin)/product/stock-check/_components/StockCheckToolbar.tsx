@@ -11,7 +11,7 @@ export const StockCheckToolbar = () => {
 
   return (
     <>
-      <Flex wrap="wrap" justify="flex-end" gap={8} className="w-full">
+      <Flex wrap="wrap" justify="flex-end" gap={8}>
         <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
           <span className="hidden lg:inline">Thêm mới</span>
         </Button>

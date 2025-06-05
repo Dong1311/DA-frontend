@@ -102,6 +102,7 @@ export const SidebarHeader = () => {
               <Flex vertical className="ml-6 mt-2" gap={4}>
                 <SubItem icon={<AppstoreOutlined />} label="Danh mục" href="/product/list" />
                 <SubItem icon={<TagsOutlined />} label="Bảng giá" href="/product/pricebook" />
+                <SubItem icon={<CheckSquareOutlined />} label="Kiểm kho" href="/product/stock-check" />
               </Flex>
             )}
           </div>
