@@ -44,6 +44,7 @@ export { StockCheckResponseDto } from './models/StockCheckResponseDto';
 export type { UpdateCustomerDto } from './models/UpdateCustomerDto';
 export type { UpdateImportReceiptDto } from './models/UpdateImportReceiptDto';
 export type { UpdateProductDto } from './models/UpdateProductDto';
+export type { UpdateStockCheckDto } from './models/UpdateStockCheckDto';
 export type { UpdateSupplierDto } from './models/UpdateSupplierDto';
 export { UpdateUserDto } from './models/UpdateUserDto';
 
@@ -84,6 +85,7 @@ export { $StockCheckResponseDto } from './schemas/$StockCheckResponseDto';
 export { $UpdateCustomerDto } from './schemas/$UpdateCustomerDto';
 export { $UpdateImportReceiptDto } from './schemas/$UpdateImportReceiptDto';
 export { $UpdateProductDto } from './schemas/$UpdateProductDto';
+export { $UpdateStockCheckDto } from './schemas/$UpdateStockCheckDto';
 export { $UpdateSupplierDto } from './schemas/$UpdateSupplierDto';
 export { $UpdateUserDto } from './schemas/$UpdateUserDto';
 

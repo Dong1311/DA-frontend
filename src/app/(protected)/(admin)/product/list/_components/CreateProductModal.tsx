@@ -30,16 +30,12 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
 
   const onSubmit = async (values: ProductFormValues) => {
     try {
-      console.log('[onSubmit] Form values:', values)
-
       const imageUrls = await Promise.all(
         fileList.map(async (file) => {
           if (file.originFileObj) {
             const uploadedUrl = await uploadToS3(file.originFileObj)
-            console.log('[onSubmit] Uploaded image:', uploadedUrl)
             return uploadedUrl
           }
-          console.log('[onSubmit] Existing image URL:', file.url)
           return file.url || ''
         })
       )
@@ -54,8 +50,6 @@ export const CreateProductModal = ({ open, onClose }: Props) => {
         images: imageUrls,
         productUnits: fixedUnits,
       }
-
-      console.log('[onSubmit] Final payload to send:', payload)
 
       await mutateAsync(payload)
 

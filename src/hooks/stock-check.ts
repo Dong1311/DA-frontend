@@ -1,7 +1,6 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { type CreateStockCheckDto, StockCheckService } from '@/api-sdk'
-
+import { type CreateStockCheckDto, StockCheckService , type UpdateStockCheckDto} from '@/api-sdk'
 interface StockCheckSearchParams {
   keyword?: string
   fromDate?: string
@@ -51,8 +50,27 @@ export const useStockCheckSearch = ({
 }
 
 export const useCreateStockCheck = () => {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: (payload: CreateStockCheckDto) =>
       StockCheckService.stockCheckControllerCreate({ requestBody: payload }),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['stock-checks'] })
+    },
+  })
+}
+
+export const useUpdateStockCheck = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: UpdateStockCheckDto }) =>
+      StockCheckService.stockCheckControllerUpdate({ id, requestBody: payload }),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['stock-checks'] })
+    },
   })
 }

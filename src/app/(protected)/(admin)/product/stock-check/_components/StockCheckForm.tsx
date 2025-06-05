@@ -16,7 +16,6 @@ export const StockCheckForm = () => {
     setValue,
     formState: { errors },
   } = useFormContext<StockCheckFormValues>()
-
   const { fields, append, remove } = useFieldArray({ control, name: 'details' })
   const productsQuery = useProductList(1, 1000)
   const products = productsQuery.data?.items ?? []

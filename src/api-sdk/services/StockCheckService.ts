@@ -5,6 +5,7 @@
 import type { CreateStockCheckDto } from '../models/CreateStockCheckDto';
 import type { PaginatedStockCheckResponseDto } from '../models/PaginatedStockCheckResponseDto';
 import type { StockCheckResponseDto } from '../models/StockCheckResponseDto';
+import type { UpdateStockCheckDto } from '../models/UpdateStockCheckDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -57,7 +58,7 @@ export class StockCheckService {
     requestBody,
   }: {
     id: string,
-    requestBody: CreateStockCheckDto,
+    requestBody: UpdateStockCheckDto,
   }): CancelablePromise<StockCheckResponseDto> {
     return __request(OpenAPI, {
       method: 'PUT',

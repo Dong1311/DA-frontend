@@ -22,7 +22,6 @@ export const ProductForm = ({ isEdit, showStock = true }: ProductFormProps) => {
     control,
     name: 'productUnits',
   })
-  console.log(fields)
 
   return (
     <Form layout="vertical">

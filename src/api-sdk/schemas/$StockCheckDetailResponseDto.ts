@@ -32,5 +32,13 @@ export const $StockCheckDetailResponseDto = {
       type: 'number',
       isRequired: true,
     },
+    product: {
+      type: 'ProductDto',
+      isRequired: true,
+    },
+    unit: {
+      type: 'ProductUnitDto',
+      isRequired: true,
+    },
   },
 } as const;

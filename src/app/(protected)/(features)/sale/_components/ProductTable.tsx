@@ -15,7 +15,6 @@ export type ProductSaleFormDto = ProductSaleDto & {
 export const ProductTable = () => {
   const { setValue, watch } = useFormContext()
   const products: ProductSaleFormDto[] = watch('products')
-  console.log(products)
   const handleQuantityChange = (value: number | null, productId: string) => {
     if (value === null || value <= 0) return
     const updated = products.map((p) => {

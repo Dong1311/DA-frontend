@@ -85,8 +85,6 @@ export const SaleFormContent = () => {
       } else {
         setPaymentUrl(null)
       }
-
-      console.log('Response:', response)
     } catch (err) {
       console.error(err)
       message.error('Tạo đơn hàng thất bại!')

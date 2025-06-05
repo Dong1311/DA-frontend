@@ -20,7 +20,6 @@ export const ProductSelector = () => {
 
   const handleSelect = (productId: string) => {
     const product = items.find((p) => p.id === productId)
-    // console.log(product)
     if (!product) return
 
     const current = getValues('products') as ProductSaleFormDto[]

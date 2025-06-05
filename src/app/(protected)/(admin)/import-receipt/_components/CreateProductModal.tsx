@@ -39,7 +39,6 @@ export const CreateProductModal = ({ open, onClose, onCreate }: Props) => {
 
   const onSubmit = (data: ProductFormValues) => {
     onCreate(data)
-    console.log('data: ', data)
     reset()
     onClose()
     message.success('Đã thêm sản phẩm mới vào danh sách nhập')
