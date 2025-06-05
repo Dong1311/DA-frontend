@@ -12,6 +12,10 @@ export const $DisposalReceiptItemResponseDto = {
       type: 'string',
       isRequired: true,
     },
+    unitId: {
+      type: 'string',
+      isRequired: true,
+    },
     quantity: {
       type: 'number',
       isRequired: true,
@@ -20,16 +24,16 @@ export const $DisposalReceiptItemResponseDto = {
       type: 'number',
       isRequired: true,
     },
-    unitId: {
-      type: 'string',
-      isRequired: true,
-    },
     totalPrice: {
       type: 'number',
       isRequired: true,
     },
-    status: {
-      type: 'string',
+    product: {
+      type: 'ProductDto',
+      isRequired: true,
+    },
+    unit: {
+      type: 'ProductUnitDto',
       isRequired: true,
     },
   },

@@ -9,6 +9,7 @@ export type DisposalReceiptResponseDto = {
   totalAmount: number;
   createdAt: string;
   storeId: string;
+  status: string;
   disposalReceiptItems: Array<DisposalReceiptItemResponseDto>;
 };
 

@@ -25,6 +25,10 @@ export const $DisposalReceiptResponseDto = {
       type: 'string',
       isRequired: true,
     },
+    status: {
+      type: 'string',
+      isRequired: true,
+    },
     disposalReceiptItems: {
       type: 'array',
       contains: {
