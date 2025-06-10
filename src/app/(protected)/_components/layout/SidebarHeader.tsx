@@ -10,7 +10,6 @@ import {
   FileTextOutlined,
   ShopOutlined,
   ShoppingCartOutlined,
-  ShoppingOutlined,
   SwapOutlined,
   TagsOutlined,
   TeamOutlined,
@@ -59,7 +58,6 @@ export const SidebarHeader = () => {
           </HoverMenuItem>
 
           <HoverMenuItem icon={<SwapOutlined />} label="Giao dịch">
-            <SubItem icon={<ShoppingOutlined />} label="Đặt hàng" href="/order" />
             <SubItem icon={<FileExcelOutlined />} label="Hóa đơn" href="/invoice" />
             <SubItem icon={<UndoOutlined />} label="Trả hàng" href="/return" />
             <SubItem icon={<UploadOutlined />} label="Nhập hàng" href="/import-receipt" />
@@ -73,7 +71,6 @@ export const SidebarHeader = () => {
           <HoverMenuItem icon={<FileTextOutlined />} label="Báo cáo">
             <SubItem icon={<BarChartOutlined />} label="Cuối ngày" href="/reports/daily" />
             <SubItem icon={<ShoppingCartOutlined />} label="Bán hàng" href="/reports/sales" />
-            <SubItem icon={<ShoppingOutlined />} label="Đặt hàng" href="/reports/orders" />
             <SubItem icon={<DropboxOutlined />} label="Hàng hóa" href="/reports/products" />
             <SubItem icon={<UserOutlined />} label="Khách hàng" href="/reports/customers" />
           </HoverMenuItem>
@@ -111,7 +108,6 @@ export const SidebarHeader = () => {
             <HoverMenuItem icon={<SwapOutlined />} label="Giao dịch" onClick={() => toggleGroup('transactions')} />
             {openGroups['transactions'] && (
               <Flex vertical className="ml-6 mt-2" gap={4}>
-                <SubItem icon={<ShoppingOutlined />} label="Đặt hàng" href="/order" />
                 <SubItem icon={<FileExcelOutlined />} label="Hóa đơn" href="/invoice" />
                 <SubItem icon={<UndoOutlined />} label="Trả hàng" href="/return" />
                 <SubItem icon={<UploadOutlined />} label="Nhập hàng" href="/import-receipt" />
@@ -136,7 +132,6 @@ export const SidebarHeader = () => {
               <Flex vertical className="ml-6 mt-2" gap={4}>
                 <SubItem icon={<BarChartOutlined />} label="Cuối ngày" href="/reports/daily" />
                 <SubItem icon={<ShoppingCartOutlined />} label="Bán hàng" href="/reports/sales" />
-                <SubItem icon={<ShoppingOutlined />} label="Đặt hàng" href="/reports/orders" />
                 <SubItem icon={<DropboxOutlined />} label="Hàng hóa" href="/reports/products" />
                 <SubItem icon={<UserOutlined />} label="Khách hàng" href="/reports/customers" />
               </Flex>
