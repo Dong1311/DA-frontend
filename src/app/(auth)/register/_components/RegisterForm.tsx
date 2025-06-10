@@ -1,12 +1,17 @@
 'use client'
 
 import { useMutation } from '@tanstack/react-query'
+import { message } from 'antd'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import { AuthService } from '@/api-sdk'
+import { AuthService, type RegisterDto } from '@/api-sdk'
 
-export default function RegisterForm() {
+interface Props {
+  role: RegisterDto.role
+}
+
+export default function RegisterForm({ role }: Props) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -15,13 +20,22 @@ export default function RegisterForm() {
   const mutation = useMutation({
     mutationFn: () =>
       AuthService.authControllerRegister({
-        requestBody: { name, email, password },
+        requestBody: { name, email, password, role },
       }),
     onSuccess: () => {
-      router.push('/login')
+      if (role === 'ADMIN') {
+        message.success('Đăng ký thành công. Cửa hàng của bạn đang chờ phê duyệt.')
+      } else {
+        message.success('Đăng ký thành công.')
+      }
+
+      setTimeout(() => {
+        router.push('/login')
+      }, 1500)
     },
     onError: (err) => {
       console.error('Register failed:', err)
+      message.error('Đăng ký thất bại. Vui lòng thử lại.')
     },
   })
 
@@ -33,7 +47,7 @@ export default function RegisterForm() {
       }}
       className="mx-auto mt-20 flex max-w-sm flex-col gap-4 rounded-xl bg-white p-6 shadow-md"
     >
-      <h2 className="text-center text-2xl font-bold">Register</h2>
+      <h2 className="text-center text-2xl font-bold">Register as {role}</h2>
 
       <input
         type="text"

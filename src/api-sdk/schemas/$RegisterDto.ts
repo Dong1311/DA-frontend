@@ -16,5 +16,9 @@ export const $RegisterDto = {
       type: 'string',
       isRequired: true,
     },
+    role: {
+      type: 'Enum',
+      isRequired: true,
+    },
   },
 } as const;

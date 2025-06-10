@@ -70,4 +70,25 @@ export class ReportService {
       },
     });
   }
+  /**
+   * Get top 10 spending customers (after returns)
+   * @returns any
+   * @throws ApiError
+   */
+  public static reportControllerGetTopCustomers({
+    fromDate,
+    toDate,
+  }: {
+    fromDate?: string,
+    toDate?: string,
+  }): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/report/top-customers',
+      query: {
+        'fromDate': fromDate,
+        'toDate': toDate,
+      },
+    });
+  }
 }

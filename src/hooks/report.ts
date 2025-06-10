@@ -37,3 +37,39 @@ export const useWeeklyRevenue = ({ weekStart }: WeeklyRevenueParams) => {
     enabled: isValid,
   })
 }
+
+interface TopRevenueProductParams {
+  fromDate?: string
+  toDate?: string
+}
+
+export const useTopRevenueProducts = ({ fromDate, toDate }: TopRevenueProductParams) => {
+  return useQuery({
+    queryKey: ['report', 'top-products', fromDate, toDate],
+    queryFn: () =>
+      ReportService.reportControllerGetTopRevenueProducts({
+        fromDate,
+        toDate,
+      }),
+    enabled: true,
+  })
+}
+
+interface DateRangeParams {
+  fromDate?: string
+  toDate?: string
+}
+
+export const useTopSpendingCustomers = ({ fromDate, toDate }: DateRangeParams) => {
+  // const isValid = !!fromDate || !!toDate
+
+  return useQuery({
+    queryKey: ['report', 'top-customers', fromDate, toDate],
+    queryFn: () =>
+      ReportService.reportControllerGetTopCustomers({
+        fromDate,
+        toDate,
+      }),
+    // enabled: isValid,
+  })
+}

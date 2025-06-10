@@ -10,8 +10,9 @@ export type UpdateUserDto = {
 };
 export namespace UpdateUserDto {
   export enum role {
+    SUPER_ADMIN = 'SUPER_ADMIN',
     ADMIN = 'ADMIN',
-    STAFF = 'STAFF',
+    GUEST = 'GUEST',
   }
 }
 

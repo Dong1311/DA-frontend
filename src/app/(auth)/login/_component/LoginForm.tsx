@@ -1,6 +1,7 @@
 'use client'
 
 import { useMutation } from '@tanstack/react-query'
+import { message } from 'antd'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -23,8 +24,13 @@ export default function LoginForm() {
       setUser(data.user)
       router.push('/dashboard')
     },
-    onError: (err) => {
+    onError: (err: any) => {
       console.error('Login failed:', err)
+
+      const errorMsg =
+        err?.response?.data?.message || err?.body?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.'
+
+      message.error(errorMsg)
     },
   })
 

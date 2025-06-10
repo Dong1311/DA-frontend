@@ -39,7 +39,7 @@ export type { ProductImageDto } from './models/ProductImageDto';
 export type { ProductResponseDto } from './models/ProductResponseDto';
 export type { ProductSaleDto } from './models/ProductSaleDto';
 export type { ProductUnitDto } from './models/ProductUnitDto';
-export type { RegisterDto } from './models/RegisterDto';
+export { RegisterDto } from './models/RegisterDto';
 export type { ReportItemDto } from './models/ReportItemDto';
 export type { ReturnDto } from './models/ReturnDto';
 export type { ReturnItemDto } from './models/ReturnItemDto';
