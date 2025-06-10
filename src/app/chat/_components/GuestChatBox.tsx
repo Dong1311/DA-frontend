@@ -1,25 +1,47 @@
 'use client'
 
+import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import { ChatPublicService } from '@/api-sdk'
 import { ChatBox } from '@/components/ChatBox'
 import { useChatSocket } from '@/hooks/socket/useChatSocket'
+
 export const GuestChatBox = () => {
-  const [conversationId, setConversationId] = useState<string>('')
+  const [conversationId, setConversationId] = useState<string | null>(null)
+  const searchParams = useSearchParams()
+  const storeId = searchParams.get('storeId')
 
   useEffect(() => {
-    let stored = localStorage.getItem('guest_conversation_id')
-    if (!stored) {
-      stored = crypto.randomUUID()
-      localStorage.setItem('guest_conversation_id', stored)
+    const initConversation = async () => {
+      if (!storeId) return
+
+      let guestSessionId = localStorage.getItem('guestSessionId')
+      if (!guestSessionId) {
+        guestSessionId = crypto.randomUUID()
+        localStorage.setItem('guestSessionId', guestSessionId)
+      }
+
+      const response = await ChatPublicService.chatPublicControllerStartConversation({
+        requestBody: {
+          guestSessionId,
+          storeId,
+        },
+      })
+
+      setConversationId(response.conversationId)
     }
-    setConversationId(stored)
-  }, [])
+
+    initConversation()
+  }, [storeId])
 
   const { messages, sendMessage } = useChatSocket({
-    conversationId,
+    conversationId: conversationId || '',
     senderRole: 'GUEST',
   })
+
+  if (!storeId) return <div className="text-red-500">Vui lòng chọn nhà thuốc để bắt đầu chat.</div>
+  if (!conversationId) return <div>Đang khởi tạo cuộc trò chuyện...</div>
 
   return <ChatBox messages={messages} sendMessage={sendMessage} role="GUEST" />
 }

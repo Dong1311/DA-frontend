@@ -34,7 +34,7 @@ export const ChatBox: React.FC<ChatBoxProps> = ({ messages, sendMessage, role })
   }, [messages])
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4 rounded border bg-white p-4 shadow-md">
+    <div className="mx-auto max-w-full space-y-4 rounded border bg-white p-4 shadow-md">
       <div ref={chatRef} className="h-[420px] space-y-2 overflow-y-auto rounded border bg-gray-50 p-3">
         {messages.map((msg, index) => {
           const isSender = (role === 'GUEST' && msg.sender === 'guest') || (role === 'ADMIN' && msg.sender === 'admin')
@@ -46,6 +46,11 @@ export const ChatBox: React.FC<ChatBoxProps> = ({ messages, sendMessage, role })
                 }`}
               >
                 {msg.content}
+                {msg.createdAt && (
+                  <div className="mt-1 text-right text-xs text-gray-400">
+                    {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </div>
+                )}
               </div>
             </div>
           )

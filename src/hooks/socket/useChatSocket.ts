@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { io, type Socket } from 'socket.io-client'
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL || '';
+import { useChatMessages } from './useChatMessages'
+
+const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL || ''
 
 export type UserRole = 'GUEST' | 'ADMIN'
 
@@ -30,7 +32,12 @@ export const useChatSocket = ({
   senderId?: string
 }) => {
   const socketRef = useRef<Socket | null>(null)
-  const [messages, setMessages] = useState<ChatMessage[]>([])
+
+  const {
+    messages,
+    loading,
+    setMessages,
+  } = useChatMessages(conversationId)
 
   useEffect(() => {
     if (!conversationId || socketRef.current) return
@@ -51,7 +58,19 @@ export const useChatSocket = ({
 
     const handleChatMessage = (msg: ChatMessage) => {
       console.log('[ChatSocket] chat_message received:', msg)
-      setMessages((prev) => [...prev, msg])
+
+      setMessages((prev) => {
+        const isDuplicate = prev.some(
+          (m) =>
+            m.id === msg.id ||
+            (m.content === msg.content &&
+              m.sender === msg.sender &&
+              !m.id &&
+              !msg.id)
+        )
+
+        return isDuplicate ? prev : [...prev, msg]
+      })
     }
 
     socket.on('chat_message', handleChatMessage)
@@ -62,7 +81,7 @@ export const useChatSocket = ({
       socket.disconnect()
       socketRef.current = null
     }
-  }, [conversationId])
+  }, [conversationId, setMessages])
 
   const sendMessage = (content: string) => {
     const socket = socketRef.current
@@ -71,7 +90,8 @@ export const useChatSocket = ({
     const localMessage: ChatMessage = {
       content,
       sender: senderRole.toLowerCase() as 'guest' | 'admin',
-      senderId: senderId || null,
+      senderId: senderId ?? null,
+      createdAt: new Date().toISOString(),
     }
 
     setMessages((prev) => [...prev, localMessage])
@@ -89,5 +109,6 @@ export const useChatSocket = ({
   return {
     messages,
     sendMessage,
+    loading,
   }
 }
