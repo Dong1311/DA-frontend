@@ -53,6 +53,7 @@ export { UpdateDisposalReceiptDto } from './models/UpdateDisposalReceiptDto';
 export type { UpdateImportReceiptDto } from './models/UpdateImportReceiptDto';
 export type { UpdateProductDto } from './models/UpdateProductDto';
 export type { UpdateStockCheckDto } from './models/UpdateStockCheckDto';
+export { UpdateStoreStatusDto } from './models/UpdateStoreStatusDto';
 export type { UpdateSupplierDto } from './models/UpdateSupplierDto';
 export { UpdateUserDto } from './models/UpdateUserDto';
 
@@ -102,11 +103,14 @@ export { $UpdateDisposalReceiptDto } from './schemas/$UpdateDisposalReceiptDto';
 export { $UpdateImportReceiptDto } from './schemas/$UpdateImportReceiptDto';
 export { $UpdateProductDto } from './schemas/$UpdateProductDto';
 export { $UpdateStockCheckDto } from './schemas/$UpdateStockCheckDto';
+export { $UpdateStoreStatusDto } from './schemas/$UpdateStoreStatusDto';
 export { $UpdateSupplierDto } from './schemas/$UpdateSupplierDto';
 export { $UpdateUserDto } from './schemas/$UpdateUserDto';
 
+export { AdminService } from './services/AdminService';
 export { AppService } from './services/AppService';
 export { AuthService } from './services/AuthService';
+export { ChatPublicService } from './services/ChatPublicService';
 export { CustomersService } from './services/CustomersService';
 export { DisposalReceiptsService } from './services/DisposalReceiptsService';
 export { ImportReceiptsService } from './services/ImportReceiptsService';

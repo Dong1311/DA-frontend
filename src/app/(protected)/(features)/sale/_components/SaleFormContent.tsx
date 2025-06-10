@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form'
 
 import { type CreateInvoiceDto, type ProductSaleDto } from '@/api-sdk'
 import { useCreateInvoice } from '@/hooks/invoice'
-import { useSocket } from '@/hooks/useSocket'
+import { usePaymentSocket } from '@/hooks/socket/usePaymentSocket'
 
 import { CustomerInfo } from './CustomerInfo'
 import { OrderSummary } from './OrderSummary'
@@ -21,7 +21,7 @@ export const SaleFormContent = () => {
   const { handleSubmit, reset } = useFormContext()
   const paymentWindowRef = useRef<Window | null>(null)
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null)
-  const { paymentSuccessData } = useSocket()
+  const { paymentSuccessData } = usePaymentSocket()
 
   const resetForm = () => {
     reset({

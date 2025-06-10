@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { AuthService } from '@/api-sdk'
+import { UserRole } from '@/constants/enums'
 import { useAuthStore } from '@/stores/authStore'
 
 export default function LoginForm() {
@@ -22,7 +23,20 @@ export default function LoginForm() {
     },
     onSuccess: (data) => {
       setUser(data.user)
-      router.push('/dashboard')
+
+      switch (data.user.role) {
+        case UserRole.SUPER_ADMIN:
+          router.push('/management')
+          break
+        case UserRole.ADMIN:
+          router.push('/dashboard')
+          break
+        case UserRole.GUEST:
+          router.push('/history')
+          break
+        default:
+          router.push('/')
+      }
     },
     onError: (err: any) => {
       console.error('Login failed:', err)

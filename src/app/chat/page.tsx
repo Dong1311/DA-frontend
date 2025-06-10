@@ -1,13 +1,12 @@
 'use client'
-import { useSocket } from '@/hooks/useSocket'
 
-import { ChatBox } from './_components/ChatBox'
-export default function ChatPage() {
-  const { messages, sendMessage } = useSocket()
+import { GuestChatBox } from './_components/GuestChatBox'
 
+export default function GuestChatPage() {
   return (
-    <main className="min-h-screen bg-gray-100 px-4 py-10">
-      <ChatBox messages={messages} sendMessage={sendMessage} />
-    </main>
+    <div className="p-4">
+      <h1 className="mb-2 text-lg font-semibold">Chat với nhà thuốc</h1>
+      <GuestChatBox />
+    </div>
   )
 }
