@@ -51,6 +51,7 @@ export type { StockCheckDetailResponseDto } from './models/StockCheckDetailRespo
 export { StockCheckResponseDto } from './models/StockCheckResponseDto';
 export type { UpdateCustomerDto } from './models/UpdateCustomerDto';
 export { UpdateDisposalReceiptDto } from './models/UpdateDisposalReceiptDto';
+export type { UpdateGuestEmailDto } from './models/UpdateGuestEmailDto';
 export type { UpdateImportReceiptDto } from './models/UpdateImportReceiptDto';
 export type { UpdateProductDto } from './models/UpdateProductDto';
 export type { UpdateStockCheckDto } from './models/UpdateStockCheckDto';
@@ -102,6 +103,7 @@ export { $StockCheckDetailResponseDto } from './schemas/$StockCheckDetailRespons
 export { $StockCheckResponseDto } from './schemas/$StockCheckResponseDto';
 export { $UpdateCustomerDto } from './schemas/$UpdateCustomerDto';
 export { $UpdateDisposalReceiptDto } from './schemas/$UpdateDisposalReceiptDto';
+export { $UpdateGuestEmailDto } from './schemas/$UpdateGuestEmailDto';
 export { $UpdateImportReceiptDto } from './schemas/$UpdateImportReceiptDto';
 export { $UpdateProductDto } from './schemas/$UpdateProductDto';
 export { $UpdateStockCheckDto } from './schemas/$UpdateStockCheckDto';
@@ -116,6 +118,7 @@ export { AuthService } from './services/AuthService';
 export { ChatPublicService } from './services/ChatPublicService';
 export { CustomersService } from './services/CustomersService';
 export { DisposalReceiptsService } from './services/DisposalReceiptsService';
+export { GuestSalesService } from './services/GuestSalesService';
 export { ImportReceiptsService } from './services/ImportReceiptsService';
 export { MessagesService } from './services/MessagesService';
 export { ProductsService } from './services/ProductsService';

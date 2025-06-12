@@ -11,8 +11,8 @@ const { Text } = Typography
 
 export const OrderSummary = () => {
   const { watch, setValue } = useFormContext()
-  const products = watch('products')
-  const discount = watch('discount')
+  const products = watch('products') || []
+  const discount = watch('discount') || 0
 
   const totalAmount = products.reduce((sum: number, p: { totalPrice: number }) => sum + p.totalPrice, 0)
   const amountToPay = Math.max(0, totalAmount - discount)

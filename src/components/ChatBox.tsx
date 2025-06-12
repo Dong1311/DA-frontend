@@ -12,9 +12,10 @@ interface ChatBoxProps {
   messages: ChatMessage[]
   sendMessage: (content: string) => void
   role: 'GUEST' | 'ADMIN'
+  onClickMessage?: (content: string) => void
 }
 
-export const ChatBox: React.FC<ChatBoxProps> = ({ messages, sendMessage, role }) => {
+export const ChatBox: React.FC<ChatBoxProps> = ({ messages, sendMessage, role, onClickMessage }) => {
   const [input, setInput] = useState('')
   const chatRef = useRef<HTMLDivElement | null>(null)
 
@@ -26,7 +27,7 @@ export const ChatBox: React.FC<ChatBoxProps> = ({ messages, sendMessage, role })
       setInput('')
     }
   }
-
+  console.log(messages)
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight
@@ -34,7 +35,7 @@ export const ChatBox: React.FC<ChatBoxProps> = ({ messages, sendMessage, role })
   }, [messages])
 
   return (
-    <div className="mx-auto max-w-full space-y-4 rounded border bg-white p-4 shadow-md">
+    <div className="w-full space-y-4 rounded border bg-white p-4 shadow-md">
       <div ref={chatRef} className="h-[420px] space-y-2 overflow-y-auto rounded border bg-gray-50 p-3">
         {messages.map((msg, index) => {
           const isSender = (role === 'GUEST' && msg.sender === 'guest') || (role === 'ADMIN' && msg.sender === 'admin')
@@ -45,7 +46,12 @@ export const ChatBox: React.FC<ChatBoxProps> = ({ messages, sendMessage, role })
                   isSender ? 'bg-blue-600 text-right text-white' : 'bg-gray-200 text-left text-black'
                 }`}
               >
-                {msg.content}
+                <span
+                  onClick={() => onClickMessage?.(msg.content)}
+                  className={onClickMessage ? 'cursor-pointer hover:underline' : ''}
+                >
+                  {msg.content}
+                </span>
                 {msg.createdAt && (
                   <div className="mt-1 text-right text-xs text-gray-400">
                     {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

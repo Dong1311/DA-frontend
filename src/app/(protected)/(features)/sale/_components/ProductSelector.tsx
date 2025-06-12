@@ -22,7 +22,7 @@ export const ProductSelector = () => {
     const product = items.find((p) => p.id === productId)
     if (!product) return
 
-    const current = getValues('products') as ProductSaleFormDto[]
+    const current = (getValues('products') || []) as ProductSaleFormDto[]
     const exists = current.find((p) => p.id === product.id)
     if (exists) return
 
