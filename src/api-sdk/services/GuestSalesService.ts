@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { InvoiceResponseDto } from '../models/InvoiceResponseDto';
 import type { UpdateGuestEmailDto } from '../models/UpdateGuestEmailDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -30,6 +31,24 @@ export class GuestSalesService {
       },
       body: requestBody,
       mediaType: 'application/json',
+    });
+  }
+  /**
+   * Lấy thông tin hóa đơn theo ID
+   * @returns InvoiceResponseDto
+   * @throws ApiError
+   */
+  public static guestSalesControllerGetInvoice({
+    id,
+  }: {
+    id: string,
+  }): CancelablePromise<InvoiceResponseDto> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/public/sales/invoice/{id}',
+      path: {
+        'id': id,
+      },
     });
   }
 }

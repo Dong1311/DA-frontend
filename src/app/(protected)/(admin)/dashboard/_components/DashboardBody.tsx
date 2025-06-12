@@ -16,7 +16,7 @@ export const DashboardBody = () => {
   return (
     <div className="flex w-full flex-col gap-4 bg-white">
       <div className="flex flex-col rounded bg-white shadow-sm">
-        <Text className="mb-4 text-[16px] font-semibold text-black">KẾT QUẢ BÁN HÀNG HÔM NAY</Text>
+        <Text className="mb-4 text-[16px] font-semibold text-black">KẾT QUẢ BÁN HÀNG HÔM NAY 12/6</Text>
         <div className="flex divide-x overflow-hidden rounded ">
           <div className="flex flex-1 flex-col items-center justify-center gap-1">
             <DollarCircleOutlined className="text-[24px] text-blue-600" />
