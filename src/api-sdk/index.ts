@@ -122,6 +122,7 @@ export { GuestSalesService } from './services/GuestSalesService';
 export { ImportReceiptsService } from './services/ImportReceiptsService';
 export { MessagesService } from './services/MessagesService';
 export { ProductsService } from './services/ProductsService';
+export { RegisteredGuestService } from './services/RegisteredGuestService';
 export { ReportService } from './services/ReportService';
 export { ReturnsService } from './services/ReturnsService';
 export { SalesService } from './services/SalesService';
