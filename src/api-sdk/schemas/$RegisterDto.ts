@@ -20,5 +20,17 @@ export const $RegisterDto = {
       type: 'Enum',
       isRequired: true,
     },
+    storeName: {
+      type: 'string',
+    },
+    storeAddress: {
+      type: 'string',
+    },
+    storePhone: {
+      type: 'string',
+    },
+    licenseNumber: {
+      type: 'string',
+    },
   },
 } as const;

@@ -9,7 +9,7 @@ import { useChatSocket } from '@/hooks/socket/useChatSocket'
 import { ChatSaleForm } from './ChatSaleForm'
 
 export const AdminChatBox = ({ conversationId, adminId }: { conversationId: string; adminId: string }) => {
-  const { messages, sendMessage, loading } = useChatSocket({
+  const { messages, sendMessage, loading, sendImageMessage } = useChatSocket({
     conversationId,
     senderRole: 'ADMIN',
     senderId: adminId,
@@ -30,7 +30,7 @@ export const AdminChatBox = ({ conversationId, adminId }: { conversationId: stri
           Tạo đơn hàng
         </Button>
       </div>
-      <ChatBox messages={messages} sendMessage={sendMessage} role="ADMIN" />
+      <ChatBox messages={messages} sendMessage={sendMessage} sendImageMessage={sendImageMessage} role="ADMIN" />
 
       <ChatSaleForm
         conversationId={conversationId}

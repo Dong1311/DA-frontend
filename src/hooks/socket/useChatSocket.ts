@@ -13,6 +13,7 @@ export interface ChatMessage {
   sender: 'guest' | 'admin'
   senderId?: string | null
   createdAt?: string
+  attachments?: { imageUrl: string }[]
 }
 
 interface SendMessagePayload {
@@ -84,31 +85,35 @@ export const useChatSocket = ({
   }, [conversationId, setMessages])
 
   const sendMessage = (content: string) => {
+  const socket = socketRef.current
+  if (!socket) return
+
+  const payload: SendMessagePayload = {
+    conversationId,
+    content,
+    senderRole,
+    senderId,
+  }
+
+  socket.emit('chat_message', payload)
+}
+
+  const sendImageMessage = (imageUrl: string) => {
     const socket = socketRef.current
     if (!socket) return
 
-    const localMessage: ChatMessage = {
-      content,
-      sender: senderRole.toLowerCase() as 'guest' | 'admin',
-      senderId: senderId ?? null,
-      createdAt: new Date().toISOString(),
-    }
-
-    setMessages((prev) => [...prev, localMessage])
-
-    const payload: SendMessagePayload = {
+    socket.emit('chat_message', {
       conversationId,
-      content,
+      imageUrls: [imageUrl],
       senderRole,
       senderId,
-    }
-
-    socket.emit('chat_message', payload)
+    })
   }
 
   return {
     messages,
     sendMessage,
     loading,
+    sendImageMessage,
   }
 }

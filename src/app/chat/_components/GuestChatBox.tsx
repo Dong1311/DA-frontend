@@ -43,7 +43,7 @@ export const GuestChatBox = () => {
     initConversation()
   }, [storeId])
 
-  const { messages, sendMessage } = useChatSocket({
+  const { messages, sendMessage, sendImageMessage } = useChatSocket({
     conversationId: conversationId || '',
     senderRole: 'GUEST',
   })
@@ -53,7 +53,13 @@ export const GuestChatBox = () => {
 
   return (
     <>
-      <ChatBox messages={messages} sendMessage={sendMessage} role="GUEST" onClickMessage={handleClickMessage} />
+      <ChatBox
+        messages={messages}
+        sendMessage={sendMessage}
+        role="GUEST"
+        onClickMessage={handleClickMessage}
+        sendImageMessage={sendImageMessage}
+      />
       {checkoutInvoiceId && (
         <ModalCheckoutGuest
           open={!!checkoutInvoiceId}

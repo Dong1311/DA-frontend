@@ -21,6 +21,7 @@ export const useChatMessages = (conversationId: string) => {
             sender: msg.senderRole.toLowerCase() as 'guest' | 'admin',
             senderId: msg.senderId ?? null,
             createdAt: msg.createdAt,
+            attachments: msg.attachments ?? [],
           }))
         )
       } catch (err) {

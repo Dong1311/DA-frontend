@@ -7,6 +7,10 @@ export type RegisterDto = {
   email: string;
   password: string;
   role: RegisterDto.role;
+  storeName?: string;
+  storeAddress?: string;
+  storePhone?: string;
+  licenseNumber?: string;
 };
 export namespace RegisterDto {
   export enum role {

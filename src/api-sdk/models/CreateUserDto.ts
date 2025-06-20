@@ -7,6 +7,10 @@ export type CreateUserDto = {
   email: string;
   password: string;
   role: CreateUserDto.role;
+  storeName?: string;
+  storeAddress?: string;
+  storePhone?: string;
+  licenseNumber?: string;
 };
 export namespace CreateUserDto {
   export enum role {

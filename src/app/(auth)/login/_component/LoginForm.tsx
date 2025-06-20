@@ -1,26 +1,38 @@
 'use client'
 
 import { useMutation } from '@tanstack/react-query'
-import { message } from 'antd'
+import { Button, Flex, Form, Input, message, Typography } from 'antd'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 
 import { AuthService } from '@/api-sdk'
 import { UserRole } from '@/constants/enums'
 import { useAuthStore } from '@/stores/authStore'
 
+const { Title, Text } = Typography
+
+interface LoginFormValues {
+  email: string
+  password: string
+}
+
 export default function LoginForm() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const router = useRouter()
   const { setUser } = useAuthStore()
 
-  const mutation = useMutation({
-    mutationFn: async () => {
-      return await AuthService.authControllerLogin({
-        requestBody: { email, password },
-      })
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    defaultValues: {
+      email: '',
+      password: '',
     },
+  })
+
+  const mutation = useMutation({
+    mutationFn: async (data: LoginFormValues) => await AuthService.authControllerLogin({ requestBody: data }),
     onSuccess: (data) => {
       setUser(data.user)
 
@@ -40,53 +52,85 @@ export default function LoginForm() {
     },
     onError: (err: any) => {
       console.error('Login failed:', err)
-
       const errorMsg =
         err?.response?.data?.message || err?.body?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.'
-
       message.error(errorMsg)
     },
   })
 
+  const onSubmit = (data: LoginFormValues) => {
+    mutation.mutate(data)
+  }
+
   return (
-    <form
-      autoComplete="on"
-      onSubmit={(e) => {
-        e.preventDefault()
-        mutation.mutate()
-      }}
-      className="mx-auto mt-20 flex max-w-sm flex-col gap-4 rounded-xl bg-white p-6 shadow-md"
-    >
-      <h2 className="text-center text-2xl font-bold">Login</h2>
-      <input
-        type="email"
-        autoComplete="username"
-        name="username"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        className="rounded-md border px-4 py-2"
-      />
-      <input
-        type="password"
-        name="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        className="rounded-md border px-4 py-2"
-      />
-      <button type="submit" className="rounded-md bg-blue-600 py-2 text-white">
-        Login
-      </button>
-      <button
-        type="button"
-        className="rounded-md bg-red-600 py-2 text-white"
-        onClick={() => {
-          window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`
-        }}
+    <Flex align="center" justify="center" className="min-h-screen bg-gray-50 px-4 dark:bg-gray-900">
+      <Form
+        layout="vertical"
+        onFinish={handleSubmit(onSubmit)}
+        className="w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-10 shadow-lg dark:border-gray-700 dark:bg-gray-800"
       >
-        Login with Google
-      </button>
-    </form>
+        <Title level={2} className="mb-8 text-center text-3xl text-gray-900 dark:text-white">
+          Đăng nhập
+        </Title>
+
+        <Controller
+          name="email"
+          control={control}
+          rules={{ required: 'Vui lòng nhập email' }}
+          render={({ field }) => (
+            <Form.Item label="Email" validateStatus={errors.email ? 'error' : ''} help={errors.email?.message}>
+              <Input {...field} type="email" size="large" autoComplete="username" placeholder="email@example.com" />
+            </Form.Item>
+          )}
+        />
+
+        <Controller
+          name="password"
+          control={control}
+          rules={{ required: 'Vui lòng nhập mật khẩu' }}
+          render={({ field }) => (
+            <Form.Item label="Mật khẩu" validateStatus={errors.password ? 'error' : ''} help={errors.password?.message}>
+              <Input.Password {...field} size="large" autoComplete="current-password" placeholder="••••••••" />
+            </Form.Item>
+          )}
+        />
+
+        <Form.Item className="mt-6">
+          <Button type="primary" htmlType="submit" block size="large" className="bg-blue-600 hover:bg-blue-700">
+            Đăng nhập
+          </Button>
+        </Form.Item>
+
+        <Form.Item>
+          <Button
+            block
+            danger
+            size="large"
+            onClick={() => {
+              window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`
+            }}
+          >
+            Đăng nhập với Google
+          </Button>
+        </Form.Item>
+
+        <Form.Item className="mt-6 text-center">
+          <Text type="secondary">Bạn chưa có tài khoản?</Text>
+          <Flex justify="center" gap="large" className="mt-3">
+            <Button type="link" size="large" onClick={() => router.push('/register?role=guest')}>
+              Đăng ký Guest
+            </Button>
+            <Button
+              type="link"
+              size="large"
+              className="text-green-600"
+              onClick={() => router.push('/register?role=admin')}
+            >
+              Đăng ký Cửa hàng
+            </Button>
+          </Flex>
+        </Form.Item>
+      </Form>
+    </Flex>
   )
 }
