@@ -3,6 +3,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { Button, Flex, Form, Input, message, Typography } from 'antd'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { AuthService } from '@/api-sdk'
@@ -61,15 +62,22 @@ export default function LoginForm() {
   const onSubmit = (data: LoginFormValues) => {
     mutation.mutate(data)
   }
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  if (!isMounted) return null
 
   return (
-    <Flex align="center" justify="center" className="min-h-screen bg-gray-50 px-4 dark:bg-gray-900">
+    <Flex align="center" justify="center" className="min-h-screen bg-gray-50 px-4 ">
       <Form
         layout="vertical"
         onFinish={handleSubmit(onSubmit)}
-        className="w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-10 shadow-lg dark:border-gray-700 dark:bg-gray-800"
+        className="w-full max-w-xl rounded-2xl border border-gray-200 bg-white p-10 shadow-lg  "
       >
-        <Title level={2} className="mb-8 text-center text-3xl text-gray-900 dark:text-white">
+        <Title level={2} className="mb-8 text-center text-3xl text-gray-900 ">
           Đăng nhập
         </Title>
 
@@ -117,15 +125,10 @@ export default function LoginForm() {
         <Form.Item className="mt-6 text-center">
           <Text type="secondary">Bạn chưa có tài khoản?</Text>
           <Flex justify="center" gap="large" className="mt-3">
-            <Button type="link" size="large" onClick={() => router.push('/register?role=guest')}>
+            <Button type="link" size="large" onClick={() => router.push('/register/guest')}>
               Đăng ký Guest
             </Button>
-            <Button
-              type="link"
-              size="large"
-              className="text-green-600"
-              onClick={() => router.push('/register?role=admin')}
-            >
+            <Button type="link" size="large" className="text-green-600" onClick={() => router.push('/register/admin')}>
               Đăng ký Cửa hàng
             </Button>
           </Flex>

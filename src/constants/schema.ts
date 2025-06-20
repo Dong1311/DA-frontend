@@ -1,5 +1,8 @@
 import { z } from 'zod'
 
+import { RegisterDto } from '@/api-sdk'
+
+
 export const supplierTypeEnum = z.enum(['INDIVIDUAL', 'COMPANY'])
 
 export const supplierSchema = z.object({
@@ -53,14 +56,6 @@ export const customerSchema = z.object({
 
 export type CustomerFormValues = z.infer<typeof customerSchema>
 
-// const newProductSchema = z.object({
-//   code: z.string().min(1, 'Mã sản phẩm là bắt buộc'),
-//   name: z.string().min(1, 'Tên sản phẩm là bắt buộc'),
-//   shortName: z.string().optional(),
-//   salePrice: z.coerce.number().min(0),
-//   costPrice: z.coerce.number().min(0),
-// })
-
 export const importReceiptItemSchema = z
   .object({
     productId: z.string().uuid('productId phải là UUID'),
@@ -104,3 +99,58 @@ export const disposalReceiptSchema = z.object({
 })
 
 export type DisposalReceiptFormValues = z.infer<typeof disposalReceiptSchema>
+
+export const RegisterFormSchema = z
+  .object({
+    name: z.string().nonempty('Vui lòng nhập tên'),
+    email: z.string().email('Email không hợp lệ'),
+    password: z.string().nonempty('Vui lòng nhập mật khẩu'),
+    confirmPassword: z.string().nonempty('Vui lòng xác nhận mật khẩu'),
+    role: z.nativeEnum(RegisterDto.role),
+    storeName: z.string().optional(),
+    storeAddress: z.string().optional(),
+    storePhone: z.string().optional(),
+    licenseNumber: z.string().optional(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'Mật khẩu không khớp',
+  })
+  .superRefine((data, ctx) => {
+    if (data.role === RegisterDto.role.ADMIN) {
+      if (!data.storeName?.trim()) {
+        ctx.addIssue({
+          path: ['storeName'],
+          code: z.ZodIssueCode.custom,
+          message: 'Vui lòng nhập tên cửa hàng',
+        })
+      }
+
+      if (!data.storeAddress?.trim()) {
+        ctx.addIssue({
+          path: ['storeAddress'],
+          code: z.ZodIssueCode.custom,
+          message: 'Vui lòng nhập địa chỉ cửa hàng',
+        })
+      }
+
+      if (!data.storePhone?.trim()) {
+        ctx.addIssue({
+          path: ['storePhone'],
+          code: z.ZodIssueCode.custom,
+          message: 'Vui lòng nhập số điện thoại',
+        })
+      }
+
+      if (!data.licenseNumber?.trim()) {
+        ctx.addIssue({
+          path: ['licenseNumber'],
+          code: z.ZodIssueCode.custom,
+          message: 'Vui lòng nhập mã số giấy phép',
+        })
+      }
+    }
+  })
+
+
+export type RegisterFormValues = z.infer<typeof RegisterFormSchema>

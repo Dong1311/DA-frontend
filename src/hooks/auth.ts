@@ -46,3 +46,19 @@ export const useAuthCheck = () => {
 
   return { isChecking, user }
 }
+
+export const useLogout = () => {
+  const router = useRouter()
+
+  const logout = async () => {
+    try {
+      await AuthService.authControllerLogout()
+      router.replace('/login')
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
+  }
+
+  return { logout }
+}
+

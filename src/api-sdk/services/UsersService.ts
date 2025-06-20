@@ -9,6 +9,7 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class UsersService {
   /**
+   * Create new user (admin or guest)
    * @returns any
    * @throws ApiError
    */
@@ -25,16 +26,28 @@ export class UsersService {
     });
   }
   /**
+   * Get all users
    * @returns any
    * @throws ApiError
    */
-  public static usersControllerFindAll(): CancelablePromise<any> {
+  public static usersControllerFindAll({
+    limit,
+    page,
+  }: {
+    limit?: number,
+    page?: number,
+  }): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/users',
+      query: {
+        'limit': limit,
+        'page': page,
+      },
     });
   }
   /**
+   * Get user by ID
    * @returns any
    * @throws ApiError
    */
@@ -52,6 +65,7 @@ export class UsersService {
     });
   }
   /**
+   * Update user by ID
    * @returns any
    * @throws ApiError
    */
@@ -73,6 +87,7 @@ export class UsersService {
     });
   }
   /**
+   * Delete user by ID
    * @returns any
    * @throws ApiError
    */
@@ -86,6 +101,24 @@ export class UsersService {
       url: '/users/{id}',
       path: {
         'id': id,
+      },
+    });
+  }
+  /**
+   * Get store and its users by store ID
+   * @returns any
+   * @throws ApiError
+   */
+  public static usersControllerFindStore({
+    storeId,
+  }: {
+    storeId: string,
+  }): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/users/store/{storeId}',
+      path: {
+        'storeId': storeId,
       },
     });
   }

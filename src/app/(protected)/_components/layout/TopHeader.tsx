@@ -2,22 +2,12 @@
 
 import { LogoutOutlined, MailOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
 import { Badge, Flex, Tooltip } from 'antd'
-import { useRouter } from 'next/navigation'
 
-import { AuthService } from '@/api-sdk'
 import { Text } from '@/components'
+import { useLogout } from '@/hooks/auth'
 
 export const TopHeader = () => {
-  const router = useRouter()
-
-  const handleLogout = async () => {
-    try {
-      await AuthService.authControllerLogout()
-      router.replace('/login')
-    } catch (error) {
-      console.error('Logout failed:', error)
-    }
-  }
+  const { logout } = useLogout()
 
   return (
     <Flex align="center" justify="space-between" className="h-[50px] bg-white px-4 text-sm">
@@ -35,7 +25,7 @@ export const TopHeader = () => {
         <UserOutlined className="text-lg" />
 
         <Tooltip title="Logout">
-          <LogoutOutlined className="cursor-pointer text-lg" onClick={handleLogout} />
+          <LogoutOutlined className="cursor-pointer text-lg" onClick={logout} />
         </Tooltip>
       </Flex>
     </Flex>
