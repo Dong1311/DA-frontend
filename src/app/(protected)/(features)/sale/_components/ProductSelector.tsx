@@ -37,6 +37,7 @@ export const ProductSelector = () => {
       {
         id: product.id,
         code: product.code,
+        name: product.name,
         quantity: 1,
         unitId: baseUnit.id,
         unitPrice: baseUnit.unitPrice,

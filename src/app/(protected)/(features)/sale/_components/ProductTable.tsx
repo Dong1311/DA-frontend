@@ -65,6 +65,7 @@ export const ProductTable = () => {
       },
     },
     { title: 'Mã SP', dataIndex: 'code' },
+    { title: 'Tên SP', dataIndex: 'name' },
     {
       title: 'Đơn vị',
       dataIndex: 'unitId',

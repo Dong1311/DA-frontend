@@ -1,6 +1,6 @@
 'use client'
 
-import { BarsOutlined, FileExcelOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons'
+import { BarsOutlined, FileExcelOutlined, PlusOutlined } from '@ant-design/icons'
 import { Button, Flex } from 'antd'
 import { message } from 'antd'
 import { useState } from 'react'
@@ -15,10 +15,10 @@ export const SupplierToolbar = () => {
   const { data } = useSupplierList(1, 1000)
 
   const handleExport = () => {
-    if (!data || data.length === 0) {
+    if (!data || data.items.length === 0) {
       return message.warning('Không có dữ liệu để xuất')
     }
-    exportSuppliersToExcel(data)
+    exportSuppliersToExcel(data.items)
   }
 
   return (
@@ -27,10 +27,10 @@ export const SupplierToolbar = () => {
         <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
           Thêm mới
         </Button>
-        <Button icon={<UploadOutlined />}>Import</Button>
         <Button icon={<FileExcelOutlined />} onClick={handleExport}>
           Xuất file
         </Button>
+
         <Button icon={<BarsOutlined />} />
       </Flex>
 

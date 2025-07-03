@@ -61,8 +61,6 @@ interface DateRangeParams {
 }
 
 export const useTopSpendingCustomers = ({ fromDate, toDate }: DateRangeParams) => {
-  // const isValid = !!fromDate || !!toDate
-
   return useQuery({
     queryKey: ['report', 'top-customers', fromDate, toDate],
     queryFn: () =>
@@ -70,6 +68,38 @@ export const useTopSpendingCustomers = ({ fromDate, toDate }: DateRangeParams) =
         fromDate,
         toDate,
       }),
-    // enabled: isValid,
+  })
+}
+
+interface DailySummaryParams {
+  date: string
+}
+
+export const useDailySummary = ({ date }: DailySummaryParams) => {
+  return useQuery({
+    queryKey: ['report', 'daily-summary', date],
+    queryFn: async () => {
+      return await ReportService.reportControllerGetDailySummary({ date })
+    },
+    enabled: !!date,
+  })
+}
+
+interface RevenueByPeriodParams {
+  type: 'day' | 'month'
+  refDate?: string
+}
+
+export const useRevenueByPeriod = ({ type, refDate }: RevenueByPeriodParams) => {
+  const isEnabled = type === 'day' || type === 'month'
+
+  return useQuery({
+    queryKey: ['report', 'period-revenue', type, refDate],
+    queryFn: () =>
+      ReportService.reportControllerGetRevenueByPeriod({
+        type,
+        refDate,
+      }),
+    enabled: isEnabled,
   })
 }

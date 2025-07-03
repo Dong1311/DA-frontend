@@ -21,7 +21,6 @@ interface Props {
 
 export const StockCheckDetailModal = ({ open, loading, stockCheck, onClose }: Props) => {
   const isDraft = stockCheck?.status === 'DRAFT'
-
   const methods = useForm<StockCheckFormValues>({
     resolver: zodResolver(stockCheckSchema),
     defaultValues: {
@@ -133,6 +132,11 @@ export const StockCheckDetailModal = ({ open, loading, stockCheck, onClose }: Pr
                 title: 'Sản phẩm',
                 dataIndex: 'product',
                 render: (p) => p?.name ?? '(đã xóa)',
+              },
+              {
+                title: 'Mã sản phẩm',
+                dataIndex: 'product',
+                render: (p) => p?.code ?? '(đã xóa)',
               },
               {
                 title: 'Đơn vị',

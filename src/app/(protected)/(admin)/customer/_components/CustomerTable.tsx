@@ -55,10 +55,10 @@ export const CustomerTable = ({
     },
     {
       title: 'Tổng mua hàng',
-      dataIndex: 'totalPurchase',
+      dataIndex: 'netSpending',
       ellipsis: true,
       onCell: () => ({ style: { width: '10%' } }),
-      render: (value: number) => <Text>{value?.toLocaleString() || '0'}</Text>,
+      render: (value: number) => <Text>{value || '0'}</Text>,
     },
     {
       title: '',

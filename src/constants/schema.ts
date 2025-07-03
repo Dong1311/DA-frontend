@@ -154,3 +154,27 @@ export const RegisterFormSchema = z
 
 
 export type RegisterFormValues = z.infer<typeof RegisterFormSchema>
+
+export const profileSchema = z.object({
+  name: z.string().min(1, 'Vui lòng nhập tên'),
+  email: z.string().email('Email không hợp lệ'),
+  password: z
+    .string()
+    .transform((val) => (val === '' ? undefined : val))
+    .refine((val) => !val || val.length >= 6, {
+      message: 'Mật khẩu phải ít nhất 6 ký tự',
+    })
+    .optional(),
+
+  confirmPassword: z.string().optional(),
+
+  storeName: z.string().optional(),
+  storeAddress: z.string().optional(),
+  storePhone: z.string().optional(),
+  licenseNumber: z.string().optional(),
+})
+ .refine((data) => !data.password || data.password === data.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'Mật khẩu xác nhận không khớp',
+  })
+export type ProfileFormValues = z.infer<typeof profileSchema>

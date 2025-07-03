@@ -8,7 +8,7 @@ import { Text } from '@/components'
 
 import { PricebookSearch } from './PricebookSearch'
 import { PricebookTable } from './PricebookTable'
-import { PricebookToolbar } from './PricebookToolbar'
+// import { PricebookToolbar } from './PricebookToolbar'
 
 export const PricebookLayout = () => {
   const router = useRouter()
@@ -43,7 +43,7 @@ export const PricebookLayout = () => {
       <Flex vertical className="min-w-0 flex-1 overflow-y-auto px-2" justify="start" align="stretch">
         <Flex justify="space-between" align="center" className="mb-4">
           <PricebookSearch onSearch={handleSearch} defaultValue={initialKeyword} />
-          <PricebookToolbar />
+          {/* <PricebookToolbar /> */}
         </Flex>
 
         <PricebookTable searchKeyword={searchKeyword} page={page} onPageChange={setPage} />

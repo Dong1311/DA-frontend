@@ -8,6 +8,7 @@ import {
   FileDoneOutlined,
   FileExcelOutlined,
   FileTextOutlined,
+  MessageOutlined,
   ShopOutlined,
   ShoppingCartOutlined,
   SwapOutlined,
@@ -74,6 +75,11 @@ export const SidebarHeader = () => {
             <SubItem icon={<DropboxOutlined />} label="Hàng hóa" href="/reports/products" />
             <SubItem icon={<UserOutlined />} label="Khách hàng" href="/reports/customers" />
           </HoverMenuItem>
+        </Flex>
+        <Flex wrap="wrap" gap={8} justify="end">
+          <a href="/admin-chat" target="_blank" rel="noopener noreferrer">
+            <HoverMenuItem icon={<MessageOutlined />} label="Tin nhắn" />
+          </a>
         </Flex>
 
         <Flex wrap="wrap" gap={8} justify="end">

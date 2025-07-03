@@ -47,21 +47,42 @@ export class UsersService {
     });
   }
   /**
-   * Get user by ID
+   * Get store info with current user
    * @returns any
    * @throws ApiError
    */
-  public static usersControllerFindOne({
-    id,
-  }: {
-    id: string,
-  }): CancelablePromise<any> {
+  public static usersControllerGetMyStore(): CancelablePromise<any> {
     return __request(OpenAPI, {
       method: 'GET',
-      url: '/users/{id}',
-      path: {
-        'id': id,
-      },
+      url: '/users/store',
+    });
+  }
+  /**
+   * Get full current user info from database
+   * @returns any
+   * @throws ApiError
+   */
+  public static usersControllerGetMe(): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/users/me',
+    });
+  }
+  /**
+   * Update current user info
+   * @returns any
+   * @throws ApiError
+   */
+  public static usersControllerUpdateProfile({
+    requestBody,
+  }: {
+    requestBody: UpdateUserDto,
+  }): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: 'PATCH',
+      url: '/users/me',
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
   /**
@@ -101,24 +122,6 @@ export class UsersService {
       url: '/users/{id}',
       path: {
         'id': id,
-      },
-    });
-  }
-  /**
-   * Get store and its users by store ID
-   * @returns any
-   * @throws ApiError
-   */
-  public static usersControllerFindStore({
-    storeId,
-  }: {
-    storeId: string,
-  }): CancelablePromise<any> {
-    return __request(OpenAPI, {
-      method: 'GET',
-      url: '/users/store/{storeId}',
-      path: {
-        'storeId': storeId,
       },
     });
   }

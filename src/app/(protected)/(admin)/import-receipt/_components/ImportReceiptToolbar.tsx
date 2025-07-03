@@ -1,24 +1,22 @@
 'use client'
 
-import { BarsOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Flex } from 'antd'
+import { BarsOutlined, FileExcelOutlined, PlusOutlined } from '@ant-design/icons'
+import { Button, Flex, message } from 'antd'
 import { useState } from 'react'
 
-// import { useImportReceiptList } from '@/hooks/importReceipt'
-// import { exportImportReceiptsToExcel } from '@/utils/exportToExcel'
+import { useImportReceiptList } from '@/hooks/import-receipt'
+import { exportImportReceiptsToExcel } from '@/utils/exportToExcel'
+
 import { CreateImportReceiptModal } from './CreateImportReceiptModal'
 
 export const ImportReceiptToolbar = () => {
   const [open, setOpen] = useState(false)
-  // const { data } = useImportReceiptList()
-
-  // const handleExport = () => {
-  //   if (!data || data.length === 0) {
-  //     return message.warning('Không có dữ liệu để xuất')
-  //   }
-  //   exportImportReceiptsToExcel(data)
-  // }
-
+  const { data } = useImportReceiptList(1, 1000)
+  const handleExport = () => {
+    const receipts = data?.items ?? []
+    if (!receipts.length) return message.warning('Không có dữ liệu để xuất')
+    exportImportReceiptsToExcel(receipts)
+  }
   return (
     <>
       <Flex wrap="wrap" justify="flex-end" gap={8} className="w-full">
@@ -26,9 +24,9 @@ export const ImportReceiptToolbar = () => {
           <span className="hidden lg:inline">Thêm mới</span>
         </Button>
 
-        {/* <Button icon={<FileExcelOutlined />} onClick={handleExport}>
+        <Button icon={<FileExcelOutlined />} onClick={handleExport}>
           <span className="hidden lg:inline">Xuất file</span>
-        </Button> */}
+        </Button>
 
         <Button icon={<BarsOutlined />} />
       </Flex>

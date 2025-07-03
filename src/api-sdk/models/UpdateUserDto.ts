@@ -7,6 +7,10 @@ export type UpdateUserDto = {
   email?: string;
   password?: string;
   role?: UpdateUserDto.role;
+  storeName?: string;
+  storeAddress?: string;
+  storePhone?: string;
+  licenseNumber?: string;
 };
 export namespace UpdateUserDto {
   export enum role {

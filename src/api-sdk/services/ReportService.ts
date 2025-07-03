@@ -8,6 +8,24 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class ReportService {
   /**
+   * Get daily summary (invoices, imports, returns, revenue)
+   * @returns any
+   * @throws ApiError
+   */
+  public static reportControllerGetDailySummary({
+    date,
+  }: {
+    date: string,
+  }): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/report/daily-summary',
+      query: {
+        'date': date,
+      },
+    });
+  }
+  /**
    * Get daily product report
    * @returns PaginatedReportDto
    * @throws ApiError
@@ -88,6 +106,27 @@ export class ReportService {
       query: {
         'fromDate': fromDate,
         'toDate': toDate,
+      },
+    });
+  }
+  /**
+   * Get revenue by period (day in month OR month in year)
+   * @returns any
+   * @throws ApiError
+   */
+  public static reportControllerGetRevenueByPeriod({
+    type,
+    refDate,
+  }: {
+    type: 'day' | 'month',
+    refDate?: string,
+  }): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/report/period-revenue',
+      query: {
+        'type': type,
+        'refDate': refDate,
       },
     });
   }

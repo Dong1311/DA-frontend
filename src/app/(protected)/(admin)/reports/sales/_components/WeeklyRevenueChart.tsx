@@ -6,7 +6,6 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import { useWeeklyRevenue } from '@/hooks/report'
 
 export const WeeklyRevenueChart = ({ weekStart }: { weekStart?: string }) => {
-  console.log(weekStart)
   const { data, isLoading } = useWeeklyRevenue({ weekStart })
 
   if (isLoading) {

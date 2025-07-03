@@ -16,5 +16,17 @@ export const $UpdateUserDto = {
     role: {
       type: 'Enum',
     },
+    storeName: {
+      type: 'string',
+    },
+    storeAddress: {
+      type: 'string',
+    },
+    storePhone: {
+      type: 'string',
+    },
+    licenseNumber: {
+      type: 'string',
+    },
   },
 } as const;

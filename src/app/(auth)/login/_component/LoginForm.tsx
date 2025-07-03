@@ -42,7 +42,7 @@ export default function LoginForm() {
           router.push('/management')
           break
         case UserRole.ADMIN:
-          router.push('/dashboard')
+          router.push('/product/list')
           break
         case UserRole.GUEST:
           router.push('/history')
