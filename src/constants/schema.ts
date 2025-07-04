@@ -111,6 +111,7 @@ export const RegisterFormSchema = z
     storeAddress: z.string().optional(),
     storePhone: z.string().optional(),
     licenseNumber: z.string().optional(),
+    guestSessionId: z.string().optional(), 
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ['confirmPassword'],

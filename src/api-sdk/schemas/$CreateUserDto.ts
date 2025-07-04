@@ -16,6 +16,9 @@ export const $CreateUserDto = {
       type: 'string',
       isRequired: true,
     },
+    guestSessionId: {
+      type: 'string',
+    },
     role: {
       type: 'Enum',
       isRequired: true,

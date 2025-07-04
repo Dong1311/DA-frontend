@@ -7,7 +7,7 @@ export default function CallbackPage() {
   const router = useRouter()
 
   useEffect(() => {
-    router.replace('/product/list')
+    router.replace('/dashboard')
   }, [router])
 
   return <p>Đang đăng nhập...</p>

@@ -1,7 +1,7 @@
 'use client'
 
-import { FileExcelOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Flex, message } from 'antd'
+import { FileExcelOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons'
+import { Button, Flex, message, Upload } from 'antd'
 import { useState } from 'react'
 
 import { useCustomerList } from '@/hooks/customer'
@@ -22,6 +22,11 @@ export const CustomerToolbar = () => {
   return (
     <>
       <Flex wrap="wrap" justify="flex-end" gap={8} className="w-full">
+        <Upload showUploadList={false}>
+          <Button icon={<UploadOutlined />} type="default">
+            <span className="hidden lg:inline">Nhập file</span>
+          </Button>
+        </Upload>
         <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
           <span className="hidden lg:inline">Thêm mới</span>
         </Button>

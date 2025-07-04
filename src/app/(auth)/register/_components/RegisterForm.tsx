@@ -44,6 +44,15 @@ export default function RegisterForm({ role }: Props) {
 
   const [isMounted, setIsMounted] = useState(false)
   useEffect(() => setIsMounted(true), [])
+  useEffect(() => {
+    if (role === 'GUEST') {
+      const guestSessionId = localStorage.getItem('guestSessionId')
+      if (guestSessionId) {
+        methods.setValue('guestSessionId', guestSessionId)
+      }
+    }
+  }, [role, methods])
+
   if (!isMounted) return null
 
   return (

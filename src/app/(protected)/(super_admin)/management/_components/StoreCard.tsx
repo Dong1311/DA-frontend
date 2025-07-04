@@ -29,6 +29,9 @@ export const StoreCard = ({ store, onSubmit, loading }: StoreCardProps) => {
       <Flex vertical gap={12}>
         <Text>ID: {store.id}</Text>
         <Text>Địa chỉ: {store.address || 'Chưa có'}</Text>
+        <Text>Mã số giấy phép kinh doanh: {store.licenseNumber || 'Chưa có'}</Text>
+        <Text>Tên cửa hàng: {store.name || 'Chưa có'}</Text>
+        <Text>Số điện thoại: {store.phone || 'Chưa có'}</Text>
 
         <Flex gap={4}>
           <Text strong>Chủ cửa hàng:</Text>

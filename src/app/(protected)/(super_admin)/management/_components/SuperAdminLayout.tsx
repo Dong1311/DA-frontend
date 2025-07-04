@@ -18,7 +18,7 @@ export const StoreApprovalLayout = () => {
   return (
     <Flex vertical gap={16} className="w-full p-4">
       <SuperAdminHeader />
-      <Text>Duyệt cửa hàng đang chờ</Text>
+      <Text style={{ fontSize: '18px', fontWeight: 600 }}>Duyệt cửa hàng đang chờ</Text>
 
       {data?.map((store: any) => (
         <StoreCard

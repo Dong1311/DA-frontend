@@ -19,14 +19,16 @@ const ConversationList = ({
   selectedId: string | null
 }) => {
   return (
-    <div className="w-1/3 overflow-y-auto border-r">
+    <div className="h-full w-[33%] shrink-0 overflow-y-auto border-r">
       {conversations.map((c) => (
         <div
           key={c.id}
           onClick={() => onSelect(c.id)}
           className={`cursor-pointer px-4 py-3 hover:bg-gray-100 ${selectedId === c.id ? 'bg-gray-200' : ''}`}
         >
-          <div className="font-medium">Guest: {c.guestEmail || 'Chưa có email'}</div>
+          <div className="font-medium">
+            {c.userName || 'Guest'}: {c.userEmail || 'Chưa có email'}
+          </div>
           <div className="text-sm text-gray-500">{new Date(c.createdAt).toLocaleString()}</div>
         </div>
       ))}
@@ -55,16 +57,14 @@ export default function AdminChatPage() {
   if (!user) return <div>Đang tải người dùng...</div>
 
   return (
-    <Flex className="h-[calc(100vh-64px)] w-full flex-1">
+    <Flex style={{ height: 'calc(100vh - 64px)', overflow: 'hidden' }} className="w-full">
       <ConversationList conversations={conversations} selectedId={selectedId} onSelect={handleSelect} />
 
-      <Flex className="w-full">
+      <Flex style={{ flex: 1, overflowY: 'auto' }} className="relative size-full" vertical>
         {selectedId ? (
           <AdminChatBox conversationId={selectedId} adminId={user.id} />
         ) : (
-          <Flex className="flex h-full items-center justify-center text-gray-400">
-            Chọn một cuộc trò chuyện để bắt đầu
-          </Flex>
+          <Flex className="h-full items-center justify-center text-gray-400">Chọn một cuộc trò chuyện để bắt đầu</Flex>
         )}
       </Flex>
     </Flex>

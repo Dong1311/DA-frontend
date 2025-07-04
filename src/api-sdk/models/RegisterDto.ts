@@ -6,6 +6,7 @@ export type RegisterDto = {
   name: string;
   email: string;
   password: string;
+  guestSessionId?: string;
   role: RegisterDto.role;
   storeName?: string;
   storeAddress?: string;

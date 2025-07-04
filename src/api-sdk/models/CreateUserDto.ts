@@ -6,6 +6,7 @@ export type CreateUserDto = {
   name: string;
   email: string;
   password: string;
+  guestSessionId?: string;
   role: CreateUserDto.role;
   storeName?: string;
   storeAddress?: string;

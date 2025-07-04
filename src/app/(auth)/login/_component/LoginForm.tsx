@@ -36,13 +36,16 @@ export default function LoginForm() {
     mutationFn: async (data: LoginFormValues) => await AuthService.authControllerLogin({ requestBody: data }),
     onSuccess: (data) => {
       setUser(data.user)
+      if (data.user.guestSessionId) {
+        localStorage.setItem('guestSessionId', data.user.guestSessionId)
+      }
 
       switch (data.user.role) {
         case UserRole.SUPER_ADMIN:
           router.push('/management')
           break
         case UserRole.ADMIN:
-          router.push('/product/list')
+          router.push('/dashboard')
           break
         case UserRole.GUEST:
           router.push('/history')

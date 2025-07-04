@@ -16,6 +16,9 @@ export const $RegisterDto = {
       type: 'string',
       isRequired: true,
     },
+    guestSessionId: {
+      type: 'string',
+    },
     role: {
       type: 'Enum',
       isRequired: true,

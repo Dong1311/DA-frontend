@@ -44,7 +44,6 @@ export const ChatBox: React.FC<ChatBoxProps> = ({ messages, sendMessage, role, o
     setInput('')
   }
 
-  console.log(messages)
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight
