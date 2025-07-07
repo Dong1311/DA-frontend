@@ -34,10 +34,10 @@ export const TopHeader = () => {
   return (
     <>
       <Flex align="center" justify="space-between" className="h-[60px] bg-white px-6 shadow-sm">
-        <Flex align="center" gap={10}>
-          <img src="/images/kiotviet_logo.png" alt="logo" className="size-8" />
-          <Text className="text-xl font-bold text-black">KiotViet</Text>
-        </Flex>
+        <div className="ms-3 gap-2">
+          {/* <img src="/images/kiotviet_logo.png" alt="logo" className="h-6" style={{ width: '40px', height: '40px' }} />
+        <Text className="text-[20px] font-bold text-black">KiotViet</Text> */}
+        </div>
 
         <Flex align="center" gap={24}>
           <Text className="font-semibold">{store?.phone ?? ''}</Text>
