@@ -23,6 +23,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="google-adsense-account" content="ca-pub-1371851871021365" />
+      </head>
+
       <body className={inter.className}>
         <RouteLoader />
         <Providers>
