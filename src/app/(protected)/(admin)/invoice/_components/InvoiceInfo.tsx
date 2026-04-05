@@ -1,9 +1,10 @@
 import { Button, Col, Form, InputNumber, message, Modal, Row, Typography } from 'antd'
 import { useState } from 'react'
 
-import { type InvoiceResponseDto } from '@/api-sdk'
+import { type CreateReturnDto, type InvoiceResponseDto } from '@/api-sdk'
 import { Text } from '@/components'
 import { useCreateReturn } from '@/hooks/return'
+
 const { Title } = Typography
 
 type ReturnProductInput = {
@@ -15,9 +16,21 @@ type ReturnProductInput = {
   unitPrice: number
 }
 
+interface ReturnFormValues {
+  products: ReturnProductInput[]
+}
+
+const extractErrorMessage = (error: unknown): string => {
+  if (typeof error === 'object' && error && 'message' in error && typeof error.message === 'string') {
+    return error.message
+  }
+
+  return 'Tạo phiếu trả hàng thất bại'
+}
+
 export const InvoiceInfo = ({ invoice }: { invoice: InvoiceResponseDto }) => {
   const [openReturnModal, setOpenReturnModal] = useState(false)
-  const [form] = Form.useForm()
+  const [form] = Form.useForm<ReturnFormValues>()
   const createReturn = useCreateReturn()
 
   const returnProducts: ReturnProductInput[] = invoice.invoiceItems.map((item) => ({
@@ -29,36 +42,33 @@ export const InvoiceInfo = ({ invoice }: { invoice: InvoiceResponseDto }) => {
     unitPrice: item.unitPrice,
   }))
 
-  const onSubmitReturn = (values: any) => {
-    const productsToReturn: ReturnProductInput[] = values.products.filter((p: ReturnProductInput) => p.quantity > 0)
+  const onSubmitReturn = (values: ReturnFormValues) => {
+    const productsToReturn = values.products.filter((product) => product.quantity > 0)
 
     if (productsToReturn.length === 0) {
       message.warning('Vui lòng chọn ít nhất một sản phẩm để trả')
       return
     }
 
-    const refundAmount = productsToReturn.reduce((sum, p) => sum + p.quantity * p.unitPrice, 0)
+    const refundAmount = productsToReturn.reduce((sum, product) => sum + product.quantity * product.unitPrice, 0)
+    const payload: CreateReturnDto = {
+      invoiceId: invoice.id,
+      customerId: invoice.customerId ?? '',
+      refundAmount,
+      storeId: invoice.storeId,
+      products: productsToReturn,
+    }
 
-    createReturn.mutate(
-      {
-        invoiceId: invoice.id,
-        customerId: invoice.customerId ?? '',
-        refundAmount,
-        storeId: invoice.storeId,
-        products: productsToReturn,
+    createReturn.mutate(payload, {
+      onSuccess: () => {
+        message.success('Tạo phiếu trả hàng thành công')
+        setOpenReturnModal(false)
+        form.resetFields()
       },
-      {
-        onSuccess: () => {
-          message.success('Tạo phiếu trả hàng thành công')
-          setOpenReturnModal(false)
-          form.resetFields()
-        },
-        onError: (error: any) => {
-          const errorMsg = error?.response?.data?.message || error?.message || 'Tạo phiếu trả hàng thất bại'
-          message.error(errorMsg)
-        },
-      }
-    )
+      onError: (error: unknown) => {
+        message.error(extractErrorMessage(error))
+      },
+    })
   }
 
   return (
@@ -74,7 +84,7 @@ export const InvoiceInfo = ({ invoice }: { invoice: InvoiceResponseDto }) => {
           <Text strong>Ngày tạo:</Text> <Text>{new Date(invoice.createdAt).toLocaleString()}</Text>
         </Col>
         <Col span={12}>
-          <Text strong>Khách hàng: </Text> <Text>{invoice.customer ? invoice.customer.name : ''}</Text>
+          <Text strong>Khách hàng:</Text> <Text>{invoice.customer ? invoice.customer.name : ''}</Text>
         </Col>
         <Col span={12}>
           <Text strong>Trạng thái:</Text> <Text>{invoice.paymentStatus}</Text>
@@ -106,22 +116,22 @@ export const InvoiceInfo = ({ invoice }: { invoice: InvoiceResponseDto }) => {
         okText="Gửi"
       >
         <Form form={form} layout="vertical" onFinish={onSubmitReturn} initialValues={{ products: returnProducts }}>
-          {returnProducts.map((p, idx) => (
+          {returnProducts.map((product, idx) => (
             <Form.Item
-              label={`${p.code} - ${p.name} (tối đa ${p.maxQuantity})`}
-              key={p.productId}
+              label={`${product.code} - ${product.name} (tối đa ${product.maxQuantity})`}
+              key={product.productId}
               name={['products', idx, 'quantity']}
               rules={[
                 { required: true, message: 'Vui lòng nhập số lượng trả' },
                 {
                   type: 'number',
                   min: 0,
-                  max: p.maxQuantity,
-                  message: `Số lượng phải từ 0 đến ${p.maxQuantity}`,
+                  max: product.maxQuantity,
+                  message: `Số lượng phải từ 0 đến ${product.maxQuantity}`,
                 },
               ]}
             >
-              <InputNumber min={0} max={p.maxQuantity} />
+              <InputNumber min={0} max={product.maxQuantity} />
             </Form.Item>
           ))}
 

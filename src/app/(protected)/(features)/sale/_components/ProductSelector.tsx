@@ -2,14 +2,14 @@ import { AutoComplete, message } from 'antd'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
+import { type SaleFormValues } from '@/features/invoice/types/sale-form.types'
 import { useProductSearch } from '@/hooks/product'
 
 import type { ProductSaleFormDto } from './ProductTable'
 
 export const ProductSelector = () => {
   const [searchValue, setSearchValue] = useState('')
-  const { getValues, setValue } = useFormContext()
-
+  const { getValues, setValue } = useFormContext<SaleFormValues>()
   const { data: searchResults } = useProductSearch(searchValue, 1, 1000)
 
   const items = searchResults?.items ?? []
@@ -19,16 +19,21 @@ export const ProductSelector = () => {
   }
 
   const handleSelect = (productId: string) => {
-    const product = items.find((p) => p.id === productId)
+    const product = items.find((item) => item.id === productId)
     if (!product) return
 
-    const current = (getValues('products') || []) as ProductSaleFormDto[]
-    const exists = current.find((p) => p.id === product.id)
+    const current = getValues('products') as ProductSaleFormDto[]
+    const exists = current.find((item) => item.id === product.id)
     if (exists) return
 
     const baseUnit = product.productUnits?.[0]
     if (!baseUnit) {
       message.error(`Sản phẩm "${product.code}" không có đơn vị`)
+      return
+    }
+
+    if (!baseUnit.id || baseUnit.unitPrice === undefined) {
+      message.error(`Sản phẩm "${product.code}" thiếu thông tin đơn vị cơ sở`)
       return
     }
 

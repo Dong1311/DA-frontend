@@ -4,19 +4,14 @@ import { Card, Empty, Input, List, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-interface CustomerDto {
-  id: string
-  name: string
-  phone?: string
-  address?: string
-}
-
+import { type CustomerDto } from '@/api-sdk'
+import { type SaleFormValues } from '@/features/invoice/types/sale-form.types'
 import { useCustomerSearch } from '@/hooks/customer'
 
 export const CustomerInfo = () => {
   const [keyword, setKeyword] = useState('')
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerDto | null>(null)
-  const { setValue, watch } = useFormContext()
+  const { setValue, watch } = useFormContext<SaleFormValues>()
   const customerId = watch('customerId')
 
   const { data, isLoading } = useCustomerSearch(keyword, 1, 1000)

@@ -3,7 +3,7 @@
 import { Button, Flex, Input, message, Modal, Steps } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 
-import { GuestSalesService } from '@/api-sdk'
+import { GuestSalesService, type InvoiceItemDto, type InvoiceResponseDto } from '@/api-sdk'
 import { Text } from '@/components'
 import { usePaymentSocket } from '@/hooks/socket/usePaymentSocket'
 
@@ -21,9 +21,8 @@ export const ModalCheckoutGuest = ({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null)
   const paymentWindowRef = useRef<Window | null>(null)
-  const [invoiceDetail, setInvoiceDetail] = useState<any>(null)
+  const [invoiceDetail, setInvoiceDetail] = useState<InvoiceResponseDto | null>(null)
   const [isPaid, setIsPaid] = useState(false)
-
   const { paymentSuccessData } = usePaymentSocket()
 
   useEffect(() => {
@@ -34,8 +33,8 @@ export const ModalCheckoutGuest = ({
         setInvoiceDetail(invoice)
         setIsPaid(invoice.paymentStatus === 'PAID')
       })
-      .catch((err) => {
-        console.error('Không lấy được thông tin đơn hàng:', err)
+      .catch((error) => {
+        console.error('Không lấy được thông tin đơn hàng:', error)
         message.error('Không thể tải thông tin đơn hàng')
       })
   }, [open, invoiceId])
@@ -49,12 +48,17 @@ export const ModalCheckoutGuest = ({
       if (paymentWindowRef.current && !paymentWindowRef.current.closed) {
         paymentWindowRef.current.close()
       }
+
       onClose()
     }
   }, [paymentSuccessData, invoiceId, onClose, open])
 
   const handleSubmitEmail = async () => {
-    if (!guestEmail.includes('@')) return message.error('Email không hợp lệ')
+    if (!guestEmail.includes('@')) {
+      message.error('Email không hợp lệ')
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -73,13 +77,15 @@ export const ModalCheckoutGuest = ({
       }
 
       setStep(2)
-    } catch (err) {
-      console.error('Lỗi khi xử lý invoice:', err)
+    } catch (error) {
+      console.error('Lỗi khi xử lý invoice:', error)
       message.error('Không thể tiếp tục tiến trình')
     } finally {
       setIsSubmitting(false)
     }
   }
+
+  const invoiceItems: InvoiceItemDto[] = invoiceDetail?.invoiceItems ?? []
 
   const renderStepContent = () => {
     switch (step) {
@@ -90,9 +96,7 @@ export const ModalCheckoutGuest = ({
               <Text>Mã đơn: {invoiceDetail?.id}</Text>
             </Flex>
             <Flex>
-              <Text>
-                Ngày tạo: {invoiceDetail?.createdAt ? new Date(invoiceDetail.createdAt).toLocaleString() : '...'}
-              </Text>
+              <Text>Ngày tạo: {invoiceDetail?.createdAt ? new Date(invoiceDetail.createdAt).toLocaleString() : '...'}</Text>
             </Flex>
             <Flex>
               <Text>Tổng tiền: {invoiceDetail?.totalAmount?.toLocaleString()} đ</Text>
@@ -104,11 +108,11 @@ export const ModalCheckoutGuest = ({
               </Text>
             </Flex>
 
-            {invoiceDetail?.invoiceItems?.length > 0 && (
+            {invoiceItems.length > 0 && (
               <Flex vertical className="mt-2">
                 <Text>Danh sách sản phẩm:</Text>
                 <ul className="ml-4 mt-1 list-disc">
-                  {invoiceDetail.invoiceItems.map((item: any) => (
+                  {invoiceItems.map((item) => (
                     <li key={item.id}>
                       {item.product?.name || 'Sản phẩm'} x {item.quantity} - {(item.totalPrice || 0).toLocaleString()} đ
                     </li>
@@ -140,7 +144,7 @@ export const ModalCheckoutGuest = ({
         if (isPaid) return null
         return (
           <Flex vertical className="space-y-4">
-            <Input placeholder="Nhập email" value={guestEmail} onChange={(e) => setEmail(e.target.value)} />
+            <Input placeholder="Nhập email" value={guestEmail} onChange={(event) => setEmail(event.target.value)} />
             <Flex gap={8}>
               <Button block onClick={() => setStep(0)}>
                 Quay lại
@@ -184,14 +188,9 @@ export const ModalCheckoutGuest = ({
     <Modal open={open} onCancel={onClose} footer={null} width={500} centered>
       <Steps
         current={step}
-        items={
-          isPaid
-            ? [{ title: 'Đã thanh toán' }]
-            : [{ title: 'Xem đơn hàng' }, { title: 'Nhập email' }, { title: 'Thanh toán' }]
-        }
+        items={isPaid ? [{ title: 'Đã thanh toán' }] : [{ title: 'Xem đơn hàng' }, { title: 'Nhập email' }, { title: 'Thanh toán' }]}
         className="mb-6"
       />
-
       {renderStepContent()}
     </Modal>
   )

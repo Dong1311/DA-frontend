@@ -1,20 +1,19 @@
 'use client'
 
 import { Button, Col, Layout, message, Modal, Row } from 'antd'
-import { useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { type CreateInvoiceDto, type ProductSaleDto } from '@/api-sdk'
+import { CreateInvoiceDto, type InvoiceResponseDto, type ProductSaleDto } from '@/api-sdk'
 import { OrderSummary } from '@/app/(protected)/(features)/sale/_components/OrderSummary'
 import { ProductSelector } from '@/app/(protected)/(features)/sale/_components/ProductSelector'
 import { type ProductSaleFormDto, ProductTable } from '@/app/(protected)/(features)/sale/_components/ProductTable'
+import { type CreateInvoiceRequestDto, type SaleFormValues } from '@/features/invoice/types/sale-form.types'
 import { useCreateInvoice } from '@/hooks/invoice'
-import { usePaymentSocket } from '@/hooks/socket/usePaymentSocket'
 
 import { ChatSaleFormProvider } from './ChatSaleFormProvider'
 
 const { Content } = Layout
-const CASH = 'CASH'
+const CASH = CreateInvoiceDto.paymentMethod.CASH
 
 interface ChatSaleFormProps {
   conversationId: string
@@ -23,10 +22,15 @@ interface ChatSaleFormProps {
   onClose: () => void
 }
 
+interface ChatSaleFormContentProps {
+  conversationId: string
+  onInvoiceCreated: (invoiceId: string) => void
+  onClose: () => void
+  isPending: boolean
+  createInvoice: (payload: CreateInvoiceRequestDto) => Promise<InvoiceResponseDto>
+}
+
 export const ChatSaleForm = ({ conversationId, onInvoiceCreated, open, onClose }: ChatSaleFormProps) => {
-  const paymentWindowRef = useRef<Window | null>(null)
-  const [paymentUrl, setPaymentUrl] = useState<string | null>(null)
-  const { paymentSuccessData } = usePaymentSocket()
   const { mutateAsync: createInvoice, isPending } = useCreateInvoice()
 
   return (
@@ -38,10 +42,6 @@ export const ChatSaleForm = ({ conversationId, onInvoiceCreated, open, onClose }
           onClose={onClose}
           isPending={isPending}
           createInvoice={createInvoice}
-          paymentUrl={paymentUrl}
-          setPaymentUrl={setPaymentUrl}
-          paymentSuccessData={paymentSuccessData}
-          paymentWindowRef={paymentWindowRef}
         />
       </ChatSaleFormProvider>
     </Modal>
@@ -54,38 +54,28 @@ const ChatSaleFormContent = ({
   onClose,
   isPending,
   createInvoice,
-}: {
-  conversationId: string
-  onInvoiceCreated: (invoiceId: string) => void
-  onClose: () => void
-  isPending: boolean
-  createInvoice: any
-  paymentSuccessData: any
-  paymentUrl: string | null
-  setPaymentUrl: React.Dispatch<React.SetStateAction<string | null>>
-  paymentWindowRef: React.MutableRefObject<Window | null>
-}) => {
-  const { handleSubmit, reset } = useFormContext()
+}: ChatSaleFormContentProps) => {
+  const { handleSubmit, reset } = useFormContext<SaleFormValues>()
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: SaleFormValues) => {
     const products: ProductSaleFormDto[] = data.products || []
     if (!products.length) {
       message.error('Đơn hàng trống')
       return
     }
 
-    const cleanedProducts: ProductSaleDto[] = products.map((p) => ({
-      id: p.id,
-      code: p.code,
-      quantity: p.quantity,
-      unitPrice: p.unitPrice,
-      totalPrice: p.totalPrice,
-      unitId: p.unitId,
+    const cleanedProducts: ProductSaleDto[] = products.map((product) => ({
+      id: product.id,
+      code: product.code,
+      quantity: product.quantity,
+      unitPrice: product.unitPrice,
+      totalPrice: product.totalPrice,
+      unitId: product.unitId,
     }))
 
-    const totalAmount = cleanedProducts.reduce((sum, p) => sum + p.totalPrice, 0)
+    const totalAmount = cleanedProducts.reduce((sum, product) => sum + product.totalPrice, 0)
 
-    const payload: CreateInvoiceDto = {
+    const payload: CreateInvoiceRequestDto = {
       ...data,
       conversationId,
       totalAmount,
@@ -105,8 +95,8 @@ const ChatSaleFormContent = ({
         reset()
         onClose()
       }
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      console.error(error)
       message.error('Tạo đơn hàng thất bại!')
     }
   }

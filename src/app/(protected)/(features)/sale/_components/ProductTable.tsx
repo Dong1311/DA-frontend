@@ -1,49 +1,47 @@
 'use client'
 
 import { Button, InputNumber, Select, Table } from 'antd'
+import type { ColumnsType } from 'antd/es/table'
 import { useFormContext } from 'react-hook-form'
 
-import { type ProductSaleDto, type ProductUnitDto } from '@/api-sdk'
+import { type SaleFormValues, type SaleProductFormItem } from '@/features/invoice/types/sale-form.types'
 import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas'
 
-export type ProductSaleFormDto = ProductSaleDto & {
-  stock: number
-  productUnits: ProductUnitDto[]
-  images: { url: string }[]
-}
+export type ProductSaleFormDto = SaleProductFormItem
 
 export const ProductTable = () => {
-  const { setValue, watch } = useFormContext()
-  const products: ProductSaleFormDto[] = watch('products')
+  const { setValue, watch } = useFormContext<SaleFormValues>()
+  const products = watch('products')
+
   const handleQuantityChange = (value: number | null, productId: string) => {
     if (value === null || value <= 0) return
-    const updated = products.map((p) => {
-      if (p.id === productId) {
+    const updated = products.map((product) => {
+      if (product.id === productId) {
         const quantity = value
         return {
-          ...p,
+          ...product,
           quantity,
-          totalPrice: quantity * p.unitPrice,
+          totalPrice: quantity * product.unitPrice,
         }
       }
-      return p
+      return product
     })
     setValue('products', updated)
   }
 
   const handleUnitChange = (unitId: string, productId: string) => {
-    const updated = products.map((p) => {
-      if (p.id === productId) {
-        const selectedUnit = p.productUnits.find((u) => u.id === unitId)
+    const updated = products.map((product) => {
+      if (product.id === productId) {
+        const selectedUnit = product.productUnits.find((unit) => unit.id === unitId)
         const unitPrice = selectedUnit?.unitPrice ?? 0
         return {
-          ...p,
+          ...product,
           unitId,
           unitPrice,
-          totalPrice: p.quantity * unitPrice,
+          totalPrice: product.quantity * unitPrice,
         }
       }
-      return p
+      return product
     })
     setValue('products', updated)
   }
@@ -51,11 +49,11 @@ export const ProductTable = () => {
   const removeProduct = (productId: string) => {
     setValue(
       'products',
-      products.filter((p) => p.id !== productId)
+      products.filter((product) => product.id !== productId)
     )
   }
 
-  const columns = [
+  const columns: ColumnsType<ProductSaleFormDto> = [
     {
       title: 'Ảnh',
       dataIndex: 'images',
@@ -69,13 +67,13 @@ export const ProductTable = () => {
     {
       title: 'Đơn vị',
       dataIndex: 'unitId',
-      render: (_: string, record: ProductSaleFormDto) => (
+      render: (_value, record) => (
         <Select
           value={record.unitId}
-          onChange={(val) => handleUnitChange(val, record.id)}
-          options={record.productUnits.map((u) => ({
-            label: u.unitName,
-            value: u.id,
+          onChange={(nextUnitId) => handleUnitChange(nextUnitId, record.id)}
+          options={record.productUnits.map((unit) => ({
+            label: unit.unitName,
+            value: unit.id,
           }))}
           style={{ width: 100 }}
         />
@@ -84,23 +82,23 @@ export const ProductTable = () => {
     {
       title: 'Số lượng',
       dataIndex: 'quantity',
-      render: (quantity: number, record: ProductSaleFormDto) => (
+      render: (quantity, record) => (
         <InputNumber
           min={1}
           max={record.stock}
           value={quantity}
-          onChange={(val) => handleQuantityChange(val, record.id)}
+          onChange={(nextQuantity) => handleQuantityChange(nextQuantity, record.id)}
         />
       ),
     },
     {
       title: 'Tổng tiền',
       dataIndex: 'totalPrice',
-      render: (val: number | null | undefined) => `${formatNumberWithCommas(val ?? 0)} VND`,
+      render: (value: number | null | undefined) => `${formatNumberWithCommas(value ?? 0)} VND`,
     },
     {
       title: '',
-      render: (_: any, record: ProductSaleFormDto) => (
+      render: (_value, record) => (
         <Button danger onClick={() => removeProduct(record.id)}>
           Xóa
         </Button>

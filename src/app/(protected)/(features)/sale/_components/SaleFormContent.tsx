@@ -1,10 +1,11 @@
 'use client'
 
 import { Button, Col, Layout, message, Row } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { type CreateInvoiceDto, type ProductSaleDto } from '@/api-sdk'
+import { CreateInvoiceDto, type ProductSaleDto } from '@/api-sdk'
+import { type CreateInvoiceRequestDto, type SaleFormValues } from '@/features/invoice/types/sale-form.types'
 import { useCreateInvoice } from '@/hooks/invoice'
 import { usePaymentSocket } from '@/hooks/socket/usePaymentSocket'
 
@@ -15,15 +16,15 @@ import { ProductSelector } from './ProductSelector'
 import { type ProductSaleFormDto, ProductTable } from './ProductTable'
 
 const { Content } = Layout
-const CASH = 'CASH'
+const CASH = CreateInvoiceDto.paymentMethod.CASH
 
 export const SaleFormContent = () => {
-  const { handleSubmit, reset } = useFormContext()
+  const { handleSubmit, reset } = useFormContext<SaleFormValues>()
   const paymentWindowRef = useRef<Window | null>(null)
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null)
   const { paymentSuccessData } = usePaymentSocket()
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     reset({
       products: [],
       discount: 0,
@@ -31,7 +32,7 @@ export const SaleFormContent = () => {
       paymentMethod: CASH,
       customerId: undefined,
     })
-  }
+  }, [reset])
 
   useEffect(() => {
     if (paymentUrl) {
@@ -47,10 +48,10 @@ export const SaleFormContent = () => {
     message.success(`Thanh toán thành công hóa đơn ${paymentSuccessData.invoiceId}!`)
     resetForm()
     setPaymentUrl(null)
-  }, [paymentSuccessData])
+  }, [paymentSuccessData, resetForm])
   const { mutateAsync: createInvoice, isPending } = useCreateInvoice()
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: SaleFormValues) => {
     const products: ProductSaleFormDto[] = data.products
     if (!products || products.length === 0) {
       message.error('Đơn hàng trống')
@@ -68,7 +69,7 @@ export const SaleFormContent = () => {
 
     const totalAmount = cleanedProducts.reduce((sum, p) => sum + p.totalPrice, 0)
 
-    const payload: CreateInvoiceDto = {
+    const payload: CreateInvoiceRequestDto = {
       ...data,
       totalAmount,
       products: cleanedProducts,

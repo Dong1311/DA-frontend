@@ -54,7 +54,11 @@ export const ImportReceiptForm = ({ disabled = false }: { disabled?: boolean }) 
     setValue('items', newItems)
   }
 
-  const handleChangeItem = (index: number, field: 'quantity' | 'unitPrice' | 'unitId', value: any) => {
+  const handleChangeItem = <K extends 'quantity' | 'unitPrice' | 'unitId'>(
+    index: number,
+    field: K,
+    value: CreateImportReceiptItemDto[K]
+  ) => {
     const newItems = [...items]
     newItems[index] = {
       ...newItems[index],

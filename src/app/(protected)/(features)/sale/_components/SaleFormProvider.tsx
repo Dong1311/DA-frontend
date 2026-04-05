@@ -4,20 +4,7 @@ import { type ReactNode } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { CreateInvoiceDto } from '@/api-sdk/models/CreateInvoiceDto'
-
-export type SaleFormValues = {
-  customerId?: string
-  paymentMethod?: CreateInvoiceDto.paymentMethod
-  products: {
-    id: string
-    quantity: number
-    unitPrice: number
-    totalPrice: number
-  }[]
-  totalAmount: number
-  discount: number
-  amountPaid: number
-}
+import { type SaleFormValues } from '@/features/invoice/types/sale-form.types'
 
 export const SaleFormProvider = ({ children }: { children: ReactNode }) => {
   const methods = useForm<SaleFormValues>({

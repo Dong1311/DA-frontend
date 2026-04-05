@@ -5,16 +5,17 @@ import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { FormattedCurrencyInput } from '@/components/FormattedCurrencyInput'
+import { type SaleFormValues } from '@/features/invoice/types/sale-form.types'
 import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas'
 
 const { Text } = Typography
 
 export const OrderSummary = () => {
-  const { watch, setValue } = useFormContext()
+  const { watch, setValue } = useFormContext<SaleFormValues>()
   const products = watch('products') || []
   const discount = watch('discount') || 0
 
-  const totalAmount = products.reduce((sum: number, p: { totalPrice: number }) => sum + p.totalPrice, 0)
+  const totalAmount = products.reduce((sum, product) => sum + product.totalPrice, 0)
   const amountToPay = Math.max(0, totalAmount - discount)
 
   const [customerPaid, setCustomerPaid] = useState(amountToPay)

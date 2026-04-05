@@ -1,9 +1,11 @@
 'use client'
 
 import { Button, Table } from 'antd'
+import type { ColumnsType } from 'antd/es/table'
 import { useState } from 'react'
 
 import { Text } from '@/components'
+import { type ImportReceiptListItem } from '@/features/import-receipt/api/import-receipt-api'
 import { useImportReceiptDetail, useImportReceiptList, useImportReceiptSearch } from '@/hooks/import-receipt'
 
 import { ImportReceiptEditModal } from './ImportReceiptEditModal'
@@ -21,15 +23,13 @@ export const ImportReceiptTable = ({
 
   const { data: allReceipts, isLoading: isLoadingAll, refetch: refetchList } = useImportReceiptList(page, limit)
   const { data: searchResults, isLoading: isLoadingSearch } = useImportReceiptSearch(searchKeyword, page, limit)
-
   const [editingId, setEditingId] = useState<string | null>(null)
-
   const { data: editingReceipt, isLoading: isEditingLoading } = useImportReceiptDetail(editingId ?? '')
 
   const data = searchKeyword ? searchResults : allReceipts
   const isLoading = searchKeyword ? isLoadingSearch : isLoadingAll
 
-  const columns = [
+  const columns: ColumnsType<ImportReceiptListItem> = [
     {
       title: 'Mã đơn',
       dataIndex: 'code',
@@ -57,7 +57,7 @@ export const ImportReceiptTable = ({
       dataIndex: 'supplier',
       key: 'supplier',
       ellipsis: true,
-      render: (supplier: { name: string }) => <Text>{supplier?.name}</Text>,
+      render: (supplier?: { name: string } | null) => <Text>{supplier?.name}</Text>,
       onCell: () => ({ style: { width: '25%' } }),
     },
     {
@@ -65,14 +65,14 @@ export const ImportReceiptTable = ({
       dataIndex: 'amountDue',
       key: 'amountDue',
       ellipsis: true,
-      render: (val: number) => val.toLocaleString(),
+      render: (amountDue: number) => amountDue.toLocaleString(),
       onCell: () => ({ style: { width: '15%' } }),
     },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
-      ellipsis: true,
       key: 'status',
+      ellipsis: true,
       render: (status: string) => (
         <Text type={status === 'COMPLETED' ? 'success' : 'secondary'}>
           {status === 'COMPLETED' ? 'Đã nhập hàng' : 'Bản nháp'}
@@ -80,15 +80,12 @@ export const ImportReceiptTable = ({
       ),
       onCell: () => ({ style: { width: '15%' } }),
     },
-
     {
       title: 'Hành động',
       key: 'actions',
       ellipsis: true,
-      render: (_: any, record: { id: string; status: string }) => (
-        <Button onClick={() => setEditingId(record.id)}>
-          {record.status === 'COMPLETED' ? 'Chi tiết' : 'Chỉnh sửa'}
-        </Button>
+      render: (_value, record) => (
+        <Button onClick={() => setEditingId(record.id)}>{record.status === 'COMPLETED' ? 'Chi tiết' : 'Chỉnh sửa'}</Button>
       ),
       onCell: () => ({ style: { width: '15%' } }),
     },
@@ -112,7 +109,7 @@ export const ImportReceiptTable = ({
 
       {editingReceipt && (
         <ImportReceiptEditModal
-          open={!!editingId}
+          open={Boolean(editingId)}
           onClose={() => setEditingId(null)}
           isLoading={isEditingLoading}
           receipt={editingReceipt}
