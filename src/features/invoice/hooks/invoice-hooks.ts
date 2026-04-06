@@ -1,21 +1,29 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 
+import { SalesService } from '@/api-sdk'
 import { queryKeys } from '@/features/shared/query-keys'
 
-import { invoiceApi, type InvoiceSearchParams } from '../api/invoice-api'
 import type { CreateInvoiceRequestDto } from '../types/sale-form.types'
+
+export interface InvoiceSearchParams {
+  keyword?: string
+  fromDate?: string
+  toDate?: string
+  page: number
+  limit: number
+}
 
 export const useInvoiceList = (page: number, limit: number) => {
   return useQuery({
     queryKey: queryKeys.invoices.list({ page, limit }),
-    queryFn: () => invoiceApi.list({ page, limit }),
+    queryFn: () => SalesService.salesControllerGetAllInvoices({ page, limit }),
   })
 }
 
 export const useInvoiceById = (id: string) => {
   return useQuery({
     queryKey: queryKeys.invoices.byId(id),
-    queryFn: () => invoiceApi.byId(id),
+    queryFn: () => SalesService.salesControllerGetInvoice({ id }),
     enabled: Boolean(id),
   })
 }
@@ -24,7 +32,7 @@ export const useInvoiceSearch = ({ keyword = '', fromDate, toDate, page, limit }
   return useQuery({
     queryKey: queryKeys.invoices.search({ keyword, fromDate, toDate, page, limit }),
     queryFn: () =>
-      invoiceApi.search({
+      SalesService.salesControllerSearchInvoices({
         keyword,
         fromDate,
         toDate,
@@ -37,6 +45,6 @@ export const useInvoiceSearch = ({ keyword = '', fromDate, toDate, page, limit }
 
 export const useCreateInvoice = () => {
   return useMutation({
-    mutationFn: (payload: CreateInvoiceRequestDto) => invoiceApi.create(payload),
+    mutationFn: (requestBody: CreateInvoiceRequestDto) => SalesService.salesControllerCreateInvoice({ requestBody }),
   })
 }

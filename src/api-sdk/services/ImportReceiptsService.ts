@@ -3,7 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateImportReceiptDto } from '../models/CreateImportReceiptDto';
+import type { DeleteImportReceiptResponseDto } from '../models/DeleteImportReceiptResponseDto';
 import type { ImportReceiptResponseDto } from '../models/ImportReceiptResponseDto';
+import type { PaginatedImportReceiptResponseDto } from '../models/PaginatedImportReceiptResponseDto';
 import type { UpdateImportReceiptDto } from '../models/UpdateImportReceiptDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -11,14 +13,14 @@ import { request as __request } from '../core/request';
 export class ImportReceiptsService {
   /**
    * Create new import receipt
-   * @returns any
+   * @returns ImportReceiptResponseDto
    * @throws ApiError
    */
   public static importReceiptControllerCreate({
     requestBody,
   }: {
     requestBody: CreateImportReceiptDto,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<ImportReceiptResponseDto> {
     return __request(OpenAPI, {
       method: 'POST',
       url: '/import-receipts',
@@ -27,7 +29,7 @@ export class ImportReceiptsService {
     });
   }
   /**
-   * @returns any
+   * @returns PaginatedImportReceiptResponseDto
    * @throws ApiError
    */
   public static importReceiptControllerFindAll({
@@ -36,7 +38,7 @@ export class ImportReceiptsService {
   }: {
     limit?: number,
     page?: number,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<PaginatedImportReceiptResponseDto> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/import-receipts',
@@ -47,7 +49,7 @@ export class ImportReceiptsService {
     });
   }
   /**
-   * @returns any
+   * @returns PaginatedImportReceiptResponseDto
    * @throws ApiError
    */
   public static importReceiptControllerSearch({
@@ -58,7 +60,7 @@ export class ImportReceiptsService {
     keyword: string,
     limit?: number,
     page?: number,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<PaginatedImportReceiptResponseDto> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/import-receipts/search',
@@ -89,7 +91,7 @@ export class ImportReceiptsService {
   }
   /**
    * Update import receipt
-   * @returns any
+   * @returns ImportReceiptResponseDto
    * @throws ApiError
    */
   public static importReceiptControllerUpdate({
@@ -98,7 +100,7 @@ export class ImportReceiptsService {
   }: {
     id: string,
     requestBody: UpdateImportReceiptDto,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<ImportReceiptResponseDto> {
     return __request(OpenAPI, {
       method: 'PATCH',
       url: '/import-receipts/{id}',
@@ -111,14 +113,14 @@ export class ImportReceiptsService {
   }
   /**
    * Delete import receipt
-   * @returns any
+   * @returns DeleteImportReceiptResponseDto
    * @throws ApiError
    */
   public static importReceiptControllerRemove({
     id,
   }: {
     id: string,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<DeleteImportReceiptResponseDto> {
     return __request(OpenAPI, {
       method: 'DELETE',
       url: '/import-receipts/{id}',

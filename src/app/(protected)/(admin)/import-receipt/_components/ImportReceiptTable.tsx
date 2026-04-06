@@ -4,8 +4,8 @@ import { Button, Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { useState } from 'react'
 
+import { type ImportReceiptListItemResponseDto } from '@/api-sdk'
 import { Text } from '@/components'
-import { type ImportReceiptListItem } from '@/features/import-receipt/api/import-receipt-api'
 import { useImportReceiptDetail, useImportReceiptList, useImportReceiptSearch } from '@/hooks/import-receipt'
 
 import { ImportReceiptEditModal } from './ImportReceiptEditModal'
@@ -29,7 +29,7 @@ export const ImportReceiptTable = ({
   const data = searchKeyword ? searchResults : allReceipts
   const isLoading = searchKeyword ? isLoadingSearch : isLoadingAll
 
-  const columns: ColumnsType<ImportReceiptListItem> = [
+  const columns: ColumnsType<ImportReceiptListItemResponseDto> = [
     {
       title: 'Mã đơn',
       dataIndex: 'code',

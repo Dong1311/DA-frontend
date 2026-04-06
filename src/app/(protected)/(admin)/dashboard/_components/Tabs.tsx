@@ -5,8 +5,8 @@ import dayjs from 'dayjs'
 import { useState } from 'react'
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
+import { type RevenueByPeriodPointDto } from '@/api-sdk'
 import { SkeletonBox } from '@/components'
-import { type PeriodRevenuePoint } from '@/features/report/api/report-api'
 import { useRevenueByPeriod } from '@/hooks/report'
 import { useClientReady } from '@/hooks/useClientReady'
 
@@ -36,7 +36,7 @@ export const RevenueTabs = () => {
     )
   }
 
-  const chartData = (data || []).map((item: PeriodRevenuePoint) => ({
+  const chartData = (data || []).map((item: RevenueByPeriodPointDto) => ({
     label: tabKey === 'day' ? item.date : item.month,
     total: item.total,
   }))

@@ -2,21 +2,26 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { DailySummaryResponseDto } from '../models/DailySummaryResponseDto';
 import type { PaginatedReportDto } from '../models/PaginatedReportDto';
+import type { RevenueByPeriodPointDto } from '../models/RevenueByPeriodPointDto';
+import type { TopRevenueProductDto } from '../models/TopRevenueProductDto';
+import type { TopSpendingCustomerDto } from '../models/TopSpendingCustomerDto';
+import type { WeeklyRevenuePointDto } from '../models/WeeklyRevenuePointDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class ReportService {
   /**
    * Get daily summary (invoices, imports, returns, revenue)
-   * @returns any
+   * @returns DailySummaryResponseDto
    * @throws ApiError
    */
   public static reportControllerGetDailySummary({
     date,
   }: {
     date: string,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<DailySummaryResponseDto> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/report/daily-summary',
@@ -51,14 +56,14 @@ export class ReportService {
   }
   /**
    * Get weekly revenue for chart
-   * @returns any
+   * @returns WeeklyRevenuePointDto
    * @throws ApiError
    */
   public static reportControllerGetWeeklyRevenue({
     weekStart,
   }: {
     weekStart?: string,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<Array<WeeklyRevenuePointDto>> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/report/weekly-revenue',
@@ -69,7 +74,7 @@ export class ReportService {
   }
   /**
    * Get top 10 revenue products (after returns)
-   * @returns any
+   * @returns TopRevenueProductDto
    * @throws ApiError
    */
   public static reportControllerGetTopRevenueProducts({
@@ -78,7 +83,7 @@ export class ReportService {
   }: {
     fromDate?: string,
     toDate?: string,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<Array<TopRevenueProductDto>> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/report/top-products',
@@ -90,7 +95,7 @@ export class ReportService {
   }
   /**
    * Get top 10 spending customers (after returns)
-   * @returns any
+   * @returns TopSpendingCustomerDto
    * @throws ApiError
    */
   public static reportControllerGetTopCustomers({
@@ -99,7 +104,7 @@ export class ReportService {
   }: {
     fromDate?: string,
     toDate?: string,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<Array<TopSpendingCustomerDto>> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/report/top-customers',
@@ -111,7 +116,7 @@ export class ReportService {
   }
   /**
    * Get revenue by period (day in month OR month in year)
-   * @returns any
+   * @returns RevenueByPeriodPointDto
    * @throws ApiError
    */
   public static reportControllerGetRevenueByPeriod({
@@ -120,7 +125,7 @@ export class ReportService {
   }: {
     type: 'day' | 'month',
     refDate?: string,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<Array<RevenueByPeriodPointDto>> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/report/period-revenue',

@@ -9,6 +9,18 @@ export interface DateRangeParams {
 }
 
 export const queryKeys = {
+  customers: {
+    all: ['customers'] as const,
+    list: ({ page, limit }: PaginationParams) => ['customers', page, limit] as const,
+    search: ({ keyword, page, limit }: { keyword: string } & PaginationParams) =>
+      ['customers', 'search', keyword, page, limit] as const,
+  },
+  suppliers: {
+    all: ['suppliers'] as const,
+    list: ({ page, limit }: PaginationParams) => ['suppliers', page, limit] as const,
+    search: ({ keyword, page, limit }: { keyword: string } & PaginationParams) =>
+      ['suppliers', 'search', keyword, page, limit] as const,
+  },
   products: {
     all: ['products'] as const,
     list: ({ page, limit }: PaginationParams) => ['products', page, limit] as const,

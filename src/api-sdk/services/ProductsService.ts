@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { CreateProductDto } from '../models/CreateProductDto';
 import type { PaginatedProductResponseDto } from '../models/PaginatedProductResponseDto';
+import type { ProductResponseDto } from '../models/ProductResponseDto';
 import type { UpdateProductDto } from '../models/UpdateProductDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -11,14 +12,14 @@ import { request as __request } from '../core/request';
 export class ProductsService {
   /**
    * Create a new product
-   * @returns any
+   * @returns ProductResponseDto
    * @throws ApiError
    */
   public static productControllerCreate({
     requestBody,
   }: {
     requestBody: CreateProductDto,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<ProductResponseDto> {
     return __request(OpenAPI, {
       method: 'POST',
       url: '/products',
@@ -73,14 +74,14 @@ export class ProductsService {
   }
   /**
    * Get a product by ID
-   * @returns any
+   * @returns ProductResponseDto
    * @throws ApiError
    */
   public static productControllerFindOne({
     id,
   }: {
     id: string,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<ProductResponseDto> {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/products/{id}',
@@ -91,7 +92,7 @@ export class ProductsService {
   }
   /**
    * Update a product by ID
-   * @returns any
+   * @returns ProductResponseDto
    * @throws ApiError
    */
   public static productControllerUpdate({
@@ -100,7 +101,7 @@ export class ProductsService {
   }: {
     id: string,
     requestBody: UpdateProductDto,
-  }): CancelablePromise<any> {
+  }): CancelablePromise<ProductResponseDto> {
     return __request(OpenAPI, {
       method: 'PATCH',
       url: '/products/{id}',

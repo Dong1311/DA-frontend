@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { type SupplierFormValues, supplierSchema } from '@/constants/schema'
+import type { SupplierListItem } from '@/features/supplier/types/supplier-types'
 import { useUpdateSupplier } from '@/hooks/supplier'
 
 import { SupplierForm } from './SupplierForm'
@@ -13,7 +14,7 @@ import { SupplierForm } from './SupplierForm'
 interface Props {
   open: boolean
   onClose: () => void
-  supplier: any
+  supplier: SupplierListItem
 }
 
 export const EditSupplierModal = ({ open, onClose, supplier }: Props) => {
@@ -23,11 +24,17 @@ export const EditSupplierModal = ({ open, onClose, supplier }: Props) => {
   })
 
   const { handleSubmit, reset } = methods
-  const { mutateAsync } = useUpdateSupplier()
+  const { mutateAsync } = useUpdateSupplier<SupplierFormValues>()
 
   useEffect(() => {
     if (supplier) {
-      reset(supplier)
+      reset({
+        name: supplier.name,
+        phone: supplier.phone ?? undefined,
+        address: supplier.address ?? undefined,
+        taxCode: supplier.taxCode ?? undefined,
+        group: supplier.group ?? undefined,
+      })
     }
   }, [supplier, reset])
 

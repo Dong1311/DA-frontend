@@ -1,21 +1,27 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { type CreateStockCheckDto, type UpdateStockCheckDto } from '@/api-sdk'
+import { type CreateStockCheckDto, StockCheckService, type UpdateStockCheckDto } from '@/api-sdk'
 import { queryKeys } from '@/features/shared/query-keys'
 
-import { stockCheckApi, type StockCheckSearchParams } from '../api/stock-check-api'
+export interface StockCheckSearchParams {
+  keyword?: string
+  fromDate?: string
+  toDate?: string
+  page: number
+  limit: number
+}
 
 export const useStockCheckList = (page: number, limit: number) => {
   return useQuery({
     queryKey: queryKeys.stockChecks.list({ page, limit }),
-    queryFn: () => stockCheckApi.list(page, limit),
+    queryFn: () => StockCheckService.stockCheckControllerGetAll({ page, limit }),
   })
 }
 
 export const useStockCheckById = (id: string) => {
   return useQuery({
     queryKey: queryKeys.stockChecks.detail(id),
-    queryFn: () => stockCheckApi.detail(id),
+    queryFn: () => StockCheckService.stockCheckControllerGetOne({ id }),
     enabled: Boolean(id),
   })
 }
@@ -24,7 +30,7 @@ export const useStockCheckSearch = ({ keyword = '', fromDate, toDate, page, limi
   return useQuery({
     queryKey: queryKeys.stockChecks.search({ keyword, fromDate, toDate, page, limit }),
     queryFn: () =>
-      stockCheckApi.search({
+      StockCheckService.stockCheckControllerSearch({
         keyword,
         fromDate,
         toDate,
@@ -39,7 +45,7 @@ export const useCreateStockCheck = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (payload: CreateStockCheckDto) => stockCheckApi.create(payload),
+    mutationFn: (requestBody: CreateStockCheckDto) => StockCheckService.stockCheckControllerCreate({ requestBody }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.stockChecks.all })
     },
@@ -50,7 +56,8 @@ export const useUpdateStockCheck = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: UpdateStockCheckDto }) => stockCheckApi.update({ id, payload }),
+    mutationFn: ({ id, payload }: { id: string; payload: UpdateStockCheckDto }) =>
+      StockCheckService.stockCheckControllerUpdate({ id, requestBody: payload }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.stockChecks.all })
     },

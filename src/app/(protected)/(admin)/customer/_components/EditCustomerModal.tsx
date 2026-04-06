@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { type CustomerFormValues, customerSchema } from '@/constants/schema'
+import type { CustomerListItem } from '@/features/customer/types/customer-types'
 import { useUpdateCustomer } from '@/hooks/customer'
 
 import { CustomerForm } from './CustomerForm'
@@ -13,7 +14,7 @@ import { CustomerForm } from './CustomerForm'
 interface Props {
   open: boolean
   onClose: () => void
-  customer: any
+  customer: CustomerListItem
 }
 
 export const EditCustomerModal = ({ open, onClose, customer }: Props) => {
@@ -26,11 +27,20 @@ export const EditCustomerModal = ({ open, onClose, customer }: Props) => {
   })
 
   const { handleSubmit, reset } = methods
-  const { mutateAsync } = useUpdateCustomer()
+  const { mutateAsync } = useUpdateCustomer<CustomerFormValues>()
 
   useEffect(() => {
     if (customer) {
-      reset(customer)
+      reset({
+        name: customer.name,
+        phone: customer.phone ?? undefined,
+        dob: customer.dob ?? undefined,
+        gender: customer.gender ?? undefined,
+        address: customer.address ?? undefined,
+        type: customer.type ?? undefined,
+        totalPurchase: customer.totalPurchase ?? 0,
+        netPurchase: customer.netPurchase ?? 0,
+      })
     }
   }, [customer, reset])
 

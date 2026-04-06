@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { type CustomerDto } from '@/api-sdk'
+import type { CustomerListItem } from '@/features/customer/types/customer-types'
 import { type SaleFormValues } from '@/features/invoice/types/sale-form.types'
 import { useCustomerSearch } from '@/hooks/customer'
 
@@ -16,7 +17,7 @@ export const CustomerInfo = () => {
 
   const { data, isLoading } = useCustomerSearch(keyword, 1, 1000)
 
-  const customers = data?.items ?? []
+  const customers: CustomerListItem[] = data?.items ?? []
 
   const handleSelectCustomer = (customer: CustomerDto) => {
     setValue('customerId', customer.id)
@@ -49,8 +50,7 @@ export const CustomerInfo = () => {
               bordered
               style={{ marginTop: 12, maxHeight: 200, overflowY: 'auto' }}
               dataSource={customers}
-              renderItem={(item) => {
-                const customer = item as CustomerDto
+              renderItem={(customer) => {
                 return (
                   <List.Item onClick={() => handleSelectCustomer(customer)} style={{ cursor: 'pointer' }}>
                     <div>

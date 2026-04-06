@@ -1,9 +1,10 @@
 'use client'
 
-import { Button, Table } from 'antd'
+import { Button, Table, type TableColumnsType } from 'antd'
 import { useState } from 'react'
 
 import { Text } from '@/components'
+import type { CustomerListItem } from '@/features/customer/types/customer-types'
 import { useCustomerList, useCustomerSearch } from '@/hooks/customer'
 
 import { EditCustomerModal } from './EditCustomerModal'
@@ -24,9 +25,9 @@ export const CustomerTable = ({
   const data = searchKeyword ? searchResults : allCustomers
   const isLoading = searchKeyword ? isLoadingSearch : isLoadingAll
 
-  const [editingCustomer, setEditingCustomer] = useState<any | null>(null)
+  const [editingCustomer, setEditingCustomer] = useState<CustomerListItem | null>(null)
 
-  const columns = [
+  const columns: TableColumnsType<CustomerListItem> = [
     {
       title: 'Tên khách hàng',
       dataIndex: 'name',
@@ -64,7 +65,7 @@ export const CustomerTable = ({
       title: '',
       key: 'actions',
       onCell: () => ({ style: { width: '10%' } }),
-      render: (_: any, record: any) => (
+      render: (_, record) => (
         <Button type="link" onClick={() => setEditingCustomer(record)}>
           Sửa
         </Button>

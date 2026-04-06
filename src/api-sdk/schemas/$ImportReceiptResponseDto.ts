@@ -30,7 +30,7 @@ export const $ImportReceiptResponseDto = {
       isRequired: true,
     },
     status: {
-      type: 'string',
+      type: 'Enum',
       isRequired: true,
     },
     importReceiptItems: {

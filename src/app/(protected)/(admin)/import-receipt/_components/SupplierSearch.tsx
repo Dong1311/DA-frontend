@@ -4,6 +4,7 @@ import { Form, Select } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
+import type { SupplierListItem } from '@/features/supplier/types/supplier-types'
 import { useSupplierList } from '@/hooks/supplier'
 
 export const SupplierSearch = ({ disabled = false }: { disabled?: boolean }) => {
@@ -16,7 +17,7 @@ export const SupplierSearch = ({ disabled = false }: { disabled?: boolean }) => 
 
   const filteredSuppliers = useMemo(() => {
     if (!searchText) return suppliers
-    return suppliers.filter((s: any) => s.name.toLowerCase().includes(searchText.toLowerCase()))
+    return suppliers.filter((supplier) => supplier.name.toLowerCase().includes(searchText.toLowerCase()))
   }, [searchText, suppliers])
 
   useEffect(() => {
@@ -41,9 +42,9 @@ export const SupplierSearch = ({ disabled = false }: { disabled?: boolean }) => 
         onSearch={(val) => setSearchText(val)}
         onClear={() => setSearchText('')}
         loading={isLoading}
-        options={filteredSuppliers.map((s: any) => ({
-          label: s.name,
-          value: s.id,
+        options={filteredSuppliers.map((supplier: SupplierListItem) => ({
+          label: supplier.name,
+          value: supplier.id,
         }))}
         value={supplierId || undefined}
         onChange={(val) => setValue('supplierId', val || '')}

@@ -10,7 +10,14 @@ export type ImportReceiptResponseDto = {
   name: string;
   supplierId: string;
   amountDue: number;
-  status: string;
+  status: ImportReceiptResponseDto.status;
   importReceiptItems: Array<ImportReceiptItemResponseDto>;
 };
+export namespace ImportReceiptResponseDto {
+  export enum status {
+    DRAFT = 'DRAFT',
+    COMPLETED = 'COMPLETED',
+    CANCELLED = 'CANCELLED',
+  }
+}
 

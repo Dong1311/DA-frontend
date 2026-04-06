@@ -1,9 +1,10 @@
 'use client'
 
-import { Table } from 'antd'
+import { Table, type TableColumnsType } from 'antd'
 import { useState } from 'react'
 
 import { Text } from '@/components'
+import type { SupplierListItem } from '@/features/supplier/types/supplier-types'
 import { useSupplierList, useSupplierSearch } from '@/hooks/supplier'
 
 import { EditSupplierModal } from './EditSupplierModal'
@@ -25,9 +26,9 @@ export const SupplierTable = ({
   const data = searchKeyword ? searchResults : allSuppliers
   const isLoading = searchKeyword ? isLoadingSearch : isLoadingAll
 
-  const [editingSupplier, setEditingSupplier] = useState<any | null>(null)
+  const [editingSupplier, setEditingSupplier] = useState<SupplierListItem | null>(null)
 
-  const columns = [
+  const columns: TableColumnsType<SupplierListItem> = [
     {
       title: 'Tên nhà cung cấp',
       dataIndex: 'name',
